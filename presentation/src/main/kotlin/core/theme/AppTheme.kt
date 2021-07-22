@@ -19,7 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.takeOrElse
-import com.google.accompanist.coil.LocalImageLoader
+import coil.compose.LocalImageLoader
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.CoroutineScope

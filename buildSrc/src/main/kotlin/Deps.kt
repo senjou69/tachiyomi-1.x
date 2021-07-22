@@ -62,7 +62,6 @@ object Deps {
     const val pager = "com.google.accompanist:accompanist-pager:$version"
     const val pagerIndicator = "com.google.accompanist:accompanist-pager-indicators:$version"
     const val flowlayout = "com.google.accompanist:accompanist-flowlayout:$version"
-    const val coil = "com.google.accompanist:accompanist-coil:$version"
     const val insets = "com.google.accompanist:accompanist-insets:$version"
     const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
@@ -91,7 +90,11 @@ object Deps {
     const val api = "org.tinylog:tinylog-api:$version"
   }
 
-  const val coil = "io.coil-kt:coil:1.2.2"
+  object coil {
+    private const val version = "1.3.0"
+    const val core = "io.coil-kt:coil:$version"
+    const val compose = "io.coil-kt:coil-compose:$version"
+  }
 
   const val mockk = "io.mockk:mockk:1.11.0"
 

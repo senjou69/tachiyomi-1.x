@@ -32,7 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.compose.rememberImagePainter
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.util.Typefaces
@@ -92,7 +92,7 @@ private fun LibraryMangaComfortableGridItem(
   ) {
     Column {
       Image(
-        painter = rememberCoilPainter(rememberMangaCover(manga)),
+        painter = rememberImagePainter(rememberMangaCover(manga)),
         contentDescription = null,
         modifier = Modifier
           .aspectRatio(3f / 4f)

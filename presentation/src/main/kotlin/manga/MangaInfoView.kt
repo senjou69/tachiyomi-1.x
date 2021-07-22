@@ -55,7 +55,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowRow
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.source.Source
@@ -84,9 +84,9 @@ fun MangaInfoHeader(
     )
 
     Image(
-      painter = rememberCoilPainter(
-        request = cover,
-        requestBuilder = {
+      painter = rememberImagePainter(
+        data = cover,
+        builder = {
           listener(onSuccess = { _, _ ->
             imageLoaded = true
           })
@@ -111,7 +111,7 @@ fun MangaInfoHeader(
       // Cover + main info
       Row(modifier = Modifier.padding(top = 16.dp)) {
         Image(
-          painter = rememberCoilPainter(cover),
+          painter = rememberImagePainter(cover),
           contentDescription = null,
           modifier = Modifier
             .padding(16.dp)

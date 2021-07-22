@@ -36,7 +36,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.compose.rememberImagePainter
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.util.Typefaces
@@ -97,7 +97,7 @@ private fun LibraryMangaCompactGridItem(
       .clip(MaterialTheme.shapes.medium)
   ) {
     Image(
-      painter = rememberCoilPainter(rememberMangaCover(manga)),
+      painter = rememberImagePainter(rememberMangaCover(manga)),
       contentDescription = null,
       modifier = Modifier.fillMaxSize(),
       contentScale = ContentScale.Crop

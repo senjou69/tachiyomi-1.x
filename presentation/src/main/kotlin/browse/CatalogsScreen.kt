@@ -55,7 +55,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.compose.rememberImagePainter
 import tachiyomi.domain.catalog.model.Catalog
 import tachiyomi.domain.catalog.model.CatalogBundled
 import tachiyomi.domain.catalog.model.CatalogInstalled
@@ -325,7 +325,7 @@ fun CatalogPic(catalog: Catalog) {
     }
     else -> {
       Image(
-        painter = rememberCoilPainter(catalog),
+        painter = rememberImagePainter(catalog),
         contentDescription = null,
         modifier = Modifier.fillMaxSize()
       )

@@ -40,10 +40,10 @@ dependencies {
   implementation(Deps.accompanist.pager)
   implementation(Deps.accompanist.pagerIndicator)
   implementation(Deps.accompanist.flowlayout)
-  implementation(Deps.accompanist.coil)
   implementation(Deps.accompanist.insets)
   implementation(Deps.accompanist.systemUiController)
   implementation(Deps.accompanist.swipeRefresh)
 
-  implementation(Deps.coil)
+  implementation(Deps.coil.core)
+  implementation(Deps.coil.compose)
 }
