@@ -6,6 +6,12 @@ object Deps {
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
+    object coroutines {
+      private const val version = "1.5.1"
+      const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+      const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+    }
+
     object serialization {
       private const val version = "1.2.2"
       const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
@@ -13,48 +19,42 @@ object Deps {
     }
   }
 
-  object coroutines {
-    private const val version = "1.5.1"
-    const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
-    const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
-  }
-
-  object androidX {
+  object androidx {
     const val core = "androidx.core:core-ktx:1.7.0-alpha01"
     const val appCompat = "androidx.appcompat:appcompat:1.4.0-alpha03"
     const val browser = "androidx.browser:browser:1.3.0"
     const val sqlite = "androidx.sqlite:sqlite-ktx:2.2.0-alpha02"
     const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-rc02"
-  }
 
-  object compose {
-    const val version = "1.0.0"
-    const val compiler = "androidx.compose.compiler:compiler:$version"
-    const val ui = "androidx.compose.ui:ui:$version"
-    const val material = "androidx.compose.material:material:$version"
-    const val icons = "androidx.compose.material:material-icons-extended:$version"
-    const val tooling = "androidx.compose.ui:ui-tooling:$version"
-    const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha05"
-    const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta01"
-  }
+    object compose {
+      const val version = "1.0.0"
+      const val compiler = "androidx.compose.compiler:compiler:$version"
+      const val ui = "androidx.compose.ui:ui:$version"
+      const val material = "androidx.compose.material:material:$version"
+      const val icons = "androidx.compose.material:material-icons-extended:$version"
+      const val tooling = "androidx.compose.ui:ui-tooling:$version"
+      const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha05"
+      const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta01"
+    }
 
-  object lifecycle {
-    private const val version = "2.4.0-alpha02"
-    const val common = "androidx.lifecycle:lifecycle-common-java8:$version"
-    const val process = "androidx.lifecycle:lifecycle-process:$version"
-    const val extensions = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
-  }
+    object lifecycle {
+      private const val version = "2.4.0-alpha02"
+      const val common = "androidx.lifecycle:lifecycle-common-java8:$version"
+      const val process = "androidx.lifecycle:lifecycle-process:$version"
+      const val extensions = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
+    }
 
-  object workManager {
-    private const val version = "2.7.0-alpha04"
-    const val runtime = "androidx.work:work-runtime-ktx:$version"
-  }
+    object workManager {
+      private const val version = "2.7.0-alpha04"
+      const val runtime = "androidx.work:work-runtime-ktx:$version"
+    }
 
-  object room {
-    private const val version = "2.4.0-alpha03"
-    const val runtime = "androidx.room:room-runtime:$version"
-    const val ktx = "androidx.room:room-ktx:$version"
-    const val compiler = "androidx.room:room-compiler:$version"
+    object room {
+      private const val version = "2.4.0-alpha03"
+      const val runtime = "androidx.room:room-runtime:$version"
+      const val ktx = "androidx.room:room-ktx:$version"
+      const val compiler = "androidx.room:room-compiler:$version"
+    }
   }
 
   object accompanist {
@@ -79,7 +79,7 @@ object Deps {
   }
 
   const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
-  const val duktape = "com.squareup.duktape:duktape-android:1.3.0"
+  const val quickjs = "app.cash.quickjs:quickjs-android:0.9.1"
   const val jsoup = "org.jsoup:jsoup:1.13.1"
 
   const val flomo = "io.github.erikhuizinga:flomo:0.1.0-beta"

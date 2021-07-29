@@ -8,26 +8,26 @@
 
 package tachiyomi.core.http
 
-import com.squareup.duktape.Duktape
+import app.cash.quickjs.QuickJs
 
 /**
- * An implementation of [JS] to execute JavaScript code backed by the duktape-android library.
+ * An implementation of [JS] to execute JavaScript code backed by the quickjs library.
  */
-internal class DuktapeJS(private val duktape: Duktape) : JS {
+internal class QuickJS(private val engine: QuickJs) : JS {
 
   /**
    * Evaluates the given JavaScript [script] and returns its result as [String] or throws an
    * exception.
    */
   override fun evaluateAsString(script: String): String {
-    return duktape.evaluate(script) as String
+    return engine.evaluate(script) as String
   }
 
   /**
    * Evaluates the given JavaScript [script] and returns its result as [Int] or throws an exception.
    */
   override fun evaluateAsInt(script: String): Int {
-    return duktape.evaluate(script) as Int
+    return engine.evaluate(script) as Int
   }
 
   /**
@@ -35,7 +35,7 @@ internal class DuktapeJS(private val duktape: Duktape) : JS {
    * exception.
    */
   override fun evaluateAsDouble(script: String): Double {
-    return duktape.evaluate(script) as Double
+    return engine.evaluate(script) as Double
   }
 
   /**
@@ -43,15 +43,14 @@ internal class DuktapeJS(private val duktape: Duktape) : JS {
    * exception.
    */
   override fun evaluateAsBoolean(script: String): Boolean {
-    return duktape.evaluate(script) as Boolean
+    return engine.evaluate(script) as Boolean
   }
 
   /**
-   * Closes this duktape instance. No evaluations can be made on this instance after calling this
-   * method.
+   * Closes this instance. No evaluations can be made on this instance after calling this method.
    */
   override fun close() {
-    duktape.close()
+    engine.close()
   }
 
 }

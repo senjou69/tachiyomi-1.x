@@ -8,19 +8,19 @@
 
 package tachiyomi.core.http
 
-import com.squareup.duktape.Duktape
+import app.cash.quickjs.QuickJs
 import javax.inject.Inject
 
 /**
- * A factory for creating instances of [DuktapeJS].
+ * A factory for creating instances of [QuickJS].
  */
-internal class DuktapeJSFactory @Inject constructor() : JSFactory {
+internal class QuickJSFactory @Inject constructor() : JSFactory {
 
   /**
-   * Returns a new instance of [DuktapeJS].
+   * Returns a new instance of [QuickJS].
    */
   override fun create(): JS {
-    return DuktapeJS(Duktape.create())
+    return QuickJS(QuickJs.create())
   }
 
 }
