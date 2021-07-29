@@ -2,6 +2,7 @@ plugins {
   id("com.android.library")
   id("kotlin-android")
   id("kotlin-kapt")
+  id("com.google.devtools.ksp") version "1.5.10-1.0.0-beta02"
 }
 
 val removeDomainClasses by tasks.registering(Delete::class) {
@@ -15,12 +16,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java) {
   finalizedBy(removeDomainClasses)
 }
 
-android {
-  kapt {
-    arguments {
-      arg("room.schemaLocation", "$projectDir/schemas")
-    }
-  }
+ksp {
+  arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {
@@ -33,7 +30,7 @@ dependencies {
   implementation(Deps.androidx.workManager.runtime)
   implementation(Deps.androidx.room.runtime)
   implementation(Deps.androidx.room.ktx)
-  kapt(Deps.androidx.room.compiler)
+  ksp(Deps.androidx.room.compiler)
   implementation(Deps.sqlite)
 
   implementation(Deps.toothpick.runtime)

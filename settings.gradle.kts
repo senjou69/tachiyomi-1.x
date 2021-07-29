@@ -7,3 +7,10 @@ include(":app")
 include(":source-api")
 
 rootProject.name = "Tachiyomi 1.x"
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    google()
+  }
+}
