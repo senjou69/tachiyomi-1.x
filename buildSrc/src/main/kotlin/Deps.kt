@@ -34,7 +34,6 @@ object Deps {
       const val icons = "androidx.compose.material:material-icons-extended:$version"
       const val tooling = "androidx.compose.ui:ui-tooling:$version"
       const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha05"
-      const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta01"
     }
 
     object lifecycle {

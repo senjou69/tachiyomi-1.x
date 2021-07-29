@@ -10,11 +10,7 @@ package tachiyomi.ui.browse
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.size
@@ -42,24 +38,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintSet
-import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import tachiyomi.domain.catalog.model.Catalog
 import tachiyomi.domain.catalog.model.CatalogBundled
 import tachiyomi.domain.catalog.model.CatalogInstalled
-import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
 import tachiyomi.ui.R
@@ -67,6 +60,7 @@ import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.theme.RandomColors
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.main.Route
+import kotlin.math.max
 
 @Composable
 fun CatalogsScreen(navController: NavController) {
@@ -102,7 +96,6 @@ fun CatalogsScreen(navController: NavController) {
             modifier = Modifier.padding(16.dp, 8.dp, 16.dp, 4.dp)
           )
         }
-
         items(vm.updatableCatalogs) { catalog ->
           CatalogItem(
             catalog = catalog,
@@ -164,7 +157,7 @@ fun CatalogsScreen(navController: NavController) {
             installStep = vm.installSteps[catalog.pkgName],
             onClick = { onClick(catalog) },
             onInstall = { vm.installCatalog(catalog) },
-            onUninstall = { vm.uninstallCatalog(catalog) }
+            onUninstall = { }
           )
         }
       }
@@ -210,109 +203,108 @@ fun CatalogItem(
   catalog: Catalog,
   showInstallButton: Boolean = false,
   installStep: InstallStep? = null,
-  onClick: (Catalog) -> Any,
-  onInstall: (Catalog) -> Unit,
-  onUninstall: (Catalog) -> Unit
+  onClick: () -> Unit,
+  onInstall: () -> Unit,
+  onUninstall: () -> Unit
 ) {
-  ConstraintLayout(
-    constraintSet = ConstraintSet {
-      val pic = createRefFor("pic")
-      val title = createRefFor("title")
-      val description = createRefFor("description")
-      val icons = createRefFor("icons")
-
-      constrain(pic) {
-        width = Dimension.value(48.dp)
-        height = Dimension.value(48.dp)
-        start.linkTo(parent.start)
-        top.linkTo(parent.top)
-        bottom.linkTo(parent.bottom)
-      }
-      constrain(title) {
-        linkTo(start = pic.end, startMargin = 12.dp, end = icons.start, bias = 0.0f)
-        top.linkTo(parent.top)
-      }
-      constrain(description) {
-        linkTo(start = title.start, end = parent.end, bias = 0.0f)
-        top.linkTo(title.bottom)
-      }
-      constrain(icons) {
-        height = Dimension.value(48.dp)
-        top.linkTo(title.top)
-        end.linkTo(parent.end)
-        bottom.linkTo(title.bottom)
-      }
-    },
-    modifier = Modifier
-      .clickable(
-        enabled = catalog is CatalogLocal,
-        onClick = { onClick(catalog) }
-      )
-      .fillMaxWidth()
-      .padding(12.dp, 12.dp, 8.dp, 12.dp)
-  ) {
-    val mediumColor = LocalContentColor.current.copy(alpha = ContentAlpha.medium)
-    val title = buildAnnotatedString {
-      append("${catalog.name} ")
-      val versionSpan = SpanStyle(fontSize = 12.sp, color = mediumColor)
-      if (catalog is CatalogInstalled) {
-        withStyle(versionSpan) { append("v${catalog.versionCode}") }
-      } else if (catalog is CatalogRemote) {
-        withStyle(versionSpan) { append("v${catalog.versionCode}") }
-      }
-    }
-
-    Box(modifier = Modifier.layoutId("pic")) {
-      CatalogPic(catalog)
-    }
-    Text(title, modifier = Modifier.layoutId("title"), style = MaterialTheme.typography.subtitle1)
-    Text(
-      catalog.description,
-      modifier = Modifier.layoutId("description"),
-      style = MaterialTheme.typography.body2,
-      color = mediumColor
-    )
-    Row(
-      modifier = Modifier.layoutId("icons"),
-      verticalAlignment = Alignment.CenterVertically
-    ) {
-      val rowModifier = Modifier.size(48.dp)
-
-      // Show either progress indicator or install button
-      if (installStep != null && !installStep.isFinished()) {
-        CircularProgressIndicator(modifier = rowModifier.then(Modifier.padding(4.dp)))
-      } else if (showInstallButton) {
-        IconButton(onClick = { onInstall(catalog) }) {
-          Image(
-            Icons.Filled.GetApp, colorFilter = ColorFilter.tint(mediumColor),
-            contentDescription = null
-          )
-        }
-      }
-      if (catalog !is CatalogBundled) {
-        val longPressMod = Modifier.pointerInput(Unit) {
-          detectTapGestures(onLongPress = {
-            (catalog as? CatalogInstalled)?.let(onUninstall)
-          })
-        }
-        IconButton(onClick = { }, modifier = rowModifier) {
-          Image(
-            Icons.Filled.Settings, colorFilter = ColorFilter.tint(mediumColor),
-            modifier = longPressMod, contentDescription = null
-          )
-        }
-      }
+  val mediumColor = LocalContentColor.current.copy(alpha = ContentAlpha.medium)
+  val title = buildAnnotatedString {
+    append("${catalog.name} ")
+    val versionSpan = SpanStyle(fontSize = 12.sp, color = mediumColor)
+    if (catalog is CatalogInstalled) {
+      withStyle(versionSpan) { append("v${catalog.versionCode}") }
+    } else if (catalog is CatalogRemote) {
+      withStyle(versionSpan) { append("v${catalog.versionCode}") }
     }
   }
+
+  Layout(
+    modifier = Modifier.clickable(onClick = onClick),
+    content = {
+      CatalogPic(
+        catalog = catalog,
+        modifier = Modifier
+          .layoutId("pic")
+          .padding(12.dp)
+          .size(48.dp)
+      )
+      Text(
+        text = title,
+        style = MaterialTheme.typography.subtitle1,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier
+          .layoutId("title")
+          .padding(top = 12.dp)
+      )
+      Text(
+        text = catalog.description,
+        style = MaterialTheme.typography.body2,
+        color = mediumColor,
+        maxLines = 2,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier
+          .layoutId("desc")
+          .padding(bottom = 12.dp, end = 12.dp)
+      )
+      Row(modifier = Modifier.layoutId("icons")) {
+        val iconModifier = Modifier.size(48.dp)
+
+        // Show either progress indicator or install button
+        if (installStep != null && !installStep.isFinished()) {
+          CircularProgressIndicator(modifier = iconModifier.then(Modifier.padding(4.dp)))
+        } else if (showInstallButton) {
+          IconButton(onClick = onInstall) {
+            Image(
+              Icons.Filled.GetApp, colorFilter = ColorFilter.tint(mediumColor),
+              contentDescription = null
+            )
+          }
+        }
+        if (catalog !is CatalogBundled) {
+          // TODO should we add uninstall button here?
+          IconButton(onClick = { }) {
+            Image(
+              imageVector = Icons.Filled.Settings,
+              colorFilter = ColorFilter.tint(mediumColor),
+              contentDescription = null
+            )
+          }
+        }
+      }
+    },
+    measurePolicy = { measurables, fullConstraints ->
+      val picPlaceable = measurables.first { it.layoutId == "pic" }.measure(fullConstraints)
+      val constraints = fullConstraints.copy(
+        maxWidth = fullConstraints.maxWidth - picPlaceable.width
+      )
+
+      val iconsPlaceable = measurables.first { it.layoutId == "icons" }.measure(constraints)
+      val titlePlaceable = measurables.first { it.layoutId == "title" }
+        .measure(constraints.copy(maxWidth = constraints.maxWidth - iconsPlaceable.width))
+      val descPlaceable = measurables.first { it.layoutId == "desc" }.measure(constraints)
+
+      val height = max(picPlaceable.height, titlePlaceable.height + descPlaceable.height)
+      layout(fullConstraints.maxWidth, height) {
+        picPlaceable.placeRelative(0, 0)
+        titlePlaceable.placeRelative(picPlaceable.width, 0)
+        descPlaceable.placeRelative(picPlaceable.width, titlePlaceable.height)
+        iconsPlaceable.placeRelative(
+          x = constraints.maxWidth - iconsPlaceable.width + picPlaceable.width,
+          y = -2.dp.roundToPx()
+        )
+      }
+    }
+  )
 }
 
 @Composable
-fun CatalogPic(catalog: Catalog) {
+fun CatalogPic(catalog: Catalog, modifier: Modifier = Modifier) {
   when (catalog) {
     is CatalogBundled -> {
       val letter = catalog.name.take(1)
       Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         shape = CircleShape, color = RandomColors.get(letter)
       ) {
         Text(
@@ -327,18 +319,19 @@ fun CatalogPic(catalog: Catalog) {
       Image(
         painter = rememberImagePainter(catalog),
         contentDescription = null,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier
       )
     }
   }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun CatalogItemPreview() {
   CatalogItem(
     catalog = CatalogRemote(
       name = "My Catalog",
+      description = "Some description",
       sourceId = 0L,
       pkgName = "my.catalog",
       versionName = "1.0.0",

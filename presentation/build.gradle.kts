@@ -31,7 +31,6 @@ dependencies {
   implementation(Deps.androidx.compose.material)
   implementation(Deps.androidx.compose.icons)
   implementation(Deps.androidx.compose.navigation)
-  implementation(Deps.androidx.compose.constraintLayout)
 
   implementation(Deps.accompanist.pager)
   implementation(Deps.accompanist.pagerIndicator)
