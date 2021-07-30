@@ -8,8 +8,6 @@
 
 package tachiyomi.ui.browse
 
-data class LanguageChoices(val choices: List<LanguageChoice>, val selected: LanguageChoice)
-
 sealed class LanguageChoice {
   object All : LanguageChoice()
   data class One(val language: Language) : LanguageChoice()

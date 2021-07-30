@@ -23,6 +23,8 @@ dependencies {
   implementationProject(Projects.data)
   implementationProject(Projects.presentation)
 
+  implementation(Deps.androidx.emoji)
+
   implementation(Deps.toothpick.runtime)
   implementation(Deps.toothpick.smoothie)
   implementation(Deps.toothpick.ktp)

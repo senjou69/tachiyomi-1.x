@@ -10,6 +10,7 @@ package tachiyomi.ui.browse
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -23,6 +24,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
@@ -31,13 +35,17 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.GetApp
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringResource
@@ -53,9 +61,11 @@ import coil.compose.rememberImagePainter
 import tachiyomi.domain.catalog.model.Catalog
 import tachiyomi.domain.catalog.model.CatalogBundled
 import tachiyomi.domain.catalog.model.CatalogInstalled
+import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
 import tachiyomi.ui.R
+import tachiyomi.ui.core.components.EmojiText
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.theme.RandomColors
 import tachiyomi.ui.core.viewmodel.viewModel
@@ -73,7 +83,15 @@ fun CatalogsScreen(navController: NavController) {
   Scaffold(
     topBar = {
       Toolbar(
-        title = { Text(stringResource(R.string.browse_label)) }
+        title = { Text(stringResource(R.string.browse_label)) },
+        actions = {
+          IconButton(onClick = { /*TODO*/ }) {
+            Icon(Icons.Default.Search, contentDescription = null)
+          }
+          IconButton(onClick = { /*TODO*/ }) {
+            Icon(Icons.Default.MoreVert, contentDescription = null)
+          }
+        }
       )
     }
   ) {
@@ -81,21 +99,14 @@ fun CatalogsScreen(navController: NavController) {
       if (vm.updatableCatalogs.isNotEmpty() || vm.localCatalogs.isNotEmpty()) {
         item {
           Text(
-            "Installed",
-            style = MaterialTheme.typography.h6,
+            "Installed".uppercase(),
+            style = MaterialTheme.typography.subtitle2,
+            color = LocalContentColor.current.copy(alpha = ContentAlpha.medium),
             modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 4.dp)
           )
         }
       }
       if (vm.updatableCatalogs.isNotEmpty()) {
-        item {
-          Text(
-            "Update available (${vm.updatableCatalogs.size})",
-            style = MaterialTheme.typography.subtitle1,
-            color = LocalContentColor.current.copy(alpha = ContentAlpha.medium),
-            modifier = Modifier.padding(16.dp, 8.dp, 16.dp, 4.dp)
-          )
-        }
         items(vm.updatableCatalogs) { catalog ->
           CatalogItem(
             catalog = catalog,
@@ -108,16 +119,6 @@ fun CatalogsScreen(navController: NavController) {
         }
       }
       if (vm.localCatalogs.isNotEmpty()) {
-        if (vm.updatableCatalogs.isNotEmpty()) {
-          item {
-            Text(
-              "Up to date",
-              style = MaterialTheme.typography.subtitle1,
-              color = LocalContentColor.current.copy(alpha = ContentAlpha.medium),
-              modifier = Modifier.padding(16.dp, 8.dp, 16.dp, 4.dp)
-            )
-          }
-        }
         items(vm.localCatalogs) { catalog ->
           CatalogItem(
             catalog = catalog,
@@ -132,8 +133,9 @@ fun CatalogsScreen(navController: NavController) {
       if (vm.remoteCatalogs.isNotEmpty()) {
         item {
           Text(
-            "Available",
-            style = MaterialTheme.typography.h6,
+            "Available".uppercase(),
+            style = MaterialTheme.typography.subtitle2,
+            color = LocalContentColor.current.copy(alpha = ContentAlpha.medium),
             modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 4.dp)
           )
         }
@@ -185,16 +187,19 @@ fun LanguageChip(choice: LanguageChoice, isSelected: Boolean, onClick: () -> Uni
       is LanguageChoice.One -> choice.language.toEmoji() ?: ""
       is LanguageChoice.Others -> stringResource(R.string.lang_others)
     }
-    // TODO wait for EmojiCompat support
-    Text(
-      text,
-      modifier = Modifier.wrapContentSize(Alignment.Center),
-      color = if (isSelected) {
-        MaterialTheme.colors.onPrimary
-      } else {
-        Color.Black
-      }
-    )
+    if (choice is LanguageChoice.One) {
+      EmojiText(text, modifier = Modifier.wrapContentSize(Alignment.Center))
+    } else {
+      Text(
+        text = text,
+        modifier = Modifier.wrapContentSize(Alignment.Center),
+        color = if (isSelected) {
+          MaterialTheme.colors.onPrimary
+        } else {
+          Color.Black
+        }
+      )
+    }
   }
 }
 
@@ -247,28 +252,47 @@ fun CatalogItem(
           .layoutId("desc")
           .padding(bottom = 12.dp, end = 12.dp)
       )
-      Row(modifier = Modifier.layoutId("icons")) {
-        val iconModifier = Modifier.size(48.dp)
-
+      Row(modifier = Modifier.layoutId("icons").padding(end = 4.dp)) {
         // Show either progress indicator or install button
         if (installStep != null && !installStep.isFinished()) {
-          CircularProgressIndicator(modifier = iconModifier.then(Modifier.padding(4.dp)))
+          CircularProgressIndicator(
+            modifier = Modifier
+              .size(48.dp)
+              .padding(4.dp)
+          )
         } else if (showInstallButton) {
           IconButton(onClick = onInstall) {
-            Image(
-              Icons.Filled.GetApp, colorFilter = ColorFilter.tint(mediumColor),
-              contentDescription = null
+            Icon(
+              imageVector = Icons.Filled.GetApp,
+              contentDescription = null,
+              tint = LocalContentColor.current.copy(ContentAlpha.medium)
             )
           }
         }
-        if (catalog !is CatalogBundled) {
-          // TODO should we add uninstall button here?
-          IconButton(onClick = { }) {
-            Image(
-              imageVector = Icons.Filled.Settings,
-              colorFilter = ColorFilter.tint(mediumColor),
-              contentDescription = null
+
+        var expanded by remember { mutableStateOf(false) }
+        Box {
+          IconButton(onClick = { expanded = true }) {
+            Icon(
+              imageVector = Icons.Filled.MoreVert,
+              contentDescription = null,
+              tint = LocalContentColor.current.copy(ContentAlpha.medium)
             )
+          }
+          DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            if (catalog is CatalogLocal) {
+              DropdownMenuItem(onClick = { /*TODO*/ }) {
+                Text("Open catalog profile")
+              }
+              DropdownMenuItem(onClick = { /*TODO*/ }) {
+                Text("Pin")
+              }
+            }
+            if (catalog is CatalogInstalled) {
+              DropdownMenuItem(onClick = { /*TODO*/ }) {
+                Text("Uninstall")
+              }
+            }
           }
         }
       }

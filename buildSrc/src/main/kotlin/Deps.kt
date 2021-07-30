@@ -25,6 +25,7 @@ object Deps {
     const val browser = "androidx.browser:browser:1.3.0"
     const val sqlite = "androidx.sqlite:sqlite-ktx:2.2.0-alpha02"
     const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-rc02"
+    const val emoji = "androidx.emoji2:emoji2-views:1.0.0-alpha03"
 
     object compose {
       const val version = "1.0.0"

@@ -145,7 +145,7 @@ class CatalogsViewModel @Inject constructor(
     choice: LanguageChoice
   ): List<CatalogRemote> {
     return when (choice) {
-      is LanguageChoice.All -> catalogs
+      LanguageChoice.All -> catalogs
       is LanguageChoice.One -> catalogs.filter { choice.language.code == it.lang }
       is LanguageChoice.Others -> {
         val codes = choice.languages.map { it.code }
