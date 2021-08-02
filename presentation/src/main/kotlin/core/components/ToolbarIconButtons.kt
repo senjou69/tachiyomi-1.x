@@ -12,6 +12,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
@@ -19,5 +20,12 @@ import androidx.navigation.NavHostController
 fun BackIconButton(navController: NavHostController) {
   IconButton(onClick = { navController.popBackStack() }) {
     Icon(Icons.Default.ArrowBack, contentDescription = null)
+  }
+}
+
+@Composable
+fun CloseIconButton(navController: NavHostController) {
+  IconButton(onClick = { navController.popBackStack() }) {
+    Icon(Icons.Default.Close, contentDescription = null)
   }
 }

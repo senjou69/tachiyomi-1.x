@@ -64,6 +64,9 @@ import tachiyomi.ui.more.settings.SettingsScreen
 import tachiyomi.ui.more.settings.SettingsSecurityScreen
 import tachiyomi.ui.more.settings.SettingsTrackingScreen
 import tachiyomi.ui.updates.UpdatesScreen
+import tachiyomi.ui.webview.WebViewScreen
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -117,6 +120,19 @@ fun MainNavHost(startRoute: Route) {
           ) { backStackEntry ->
             val mangaId = backStackEntry.arguments?.getLong("mangaId") as Long
             MangaScreen(navController, mangaId)
+          }
+
+          composable(
+            "${Route.WebView.id}/{sourceId}/{encodedUrl}",
+            arguments = listOf(
+              navArgument("sourceId") { type = NavType.LongType },
+              navArgument("encodedUrl") { type = NavType.StringType },
+            )
+          ) { backStackEntry ->
+            val sourceId = backStackEntry.arguments?.getLong("sourceId") as Long
+            val encodedUrl = backStackEntry.arguments?.getString("encodedUrl") as String
+            val url = URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8.toString())
+            WebViewScreen(navController, sourceId, url)
           }
 
           composable(Route.More.id) { MoreScreen(navController) }

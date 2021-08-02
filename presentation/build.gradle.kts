@@ -23,6 +23,7 @@ dependencies {
 
   implementation(Deps.androidx.appCompat)
   implementation(Deps.androidx.browser)
+  implementation(Deps.androidx.webkit)
   implementation(Deps.androidx.emoji)
 
   implementation(Deps.androidx.compose.compiler)
