@@ -7,7 +7,6 @@ plugins {
 android {
   kotlinOptions {
     jvmTarget = JavaVersion.VERSION_1_8.toString()
-    useIR = true
   }
   buildFeatures {
     compose = true
