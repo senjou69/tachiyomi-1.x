@@ -62,12 +62,11 @@ import kotlin.math.max
 @Composable
 fun CatalogItem(
   catalog: Catalog,
-  showInstallButton: Boolean = false,
   installStep: InstallStep? = null,
-  onClick: () -> Unit,
-  onInstall: () -> Unit,
-  onUninstall: () -> Unit,
-  onPinToggle: () -> Unit
+  onClick: (() -> Unit)? = null,
+  onInstall: (() -> Unit)? = null,
+  onUninstall: (() -> Unit)? = null,
+  onPinToggle: (() -> Unit)? = null
 ) {
   val title = buildAnnotatedString {
     append("${catalog.name} ")
@@ -87,14 +86,8 @@ fun CatalogItem(
     is CatalogRemote -> catalog.lang
   }?.let { Language(it).toEmoji() }
 
-  val rowModifier = if (catalog !is CatalogRemote) {
-    Modifier.clickable(onClick = onClick)
-  } else {
-    Modifier
-  }
-
   Layout(
-    modifier = rowModifier,
+    modifier = onClick?.let { Modifier.clickable(onClick = it) } ?: Modifier,
     content = {
       CatalogPic(
         catalog = catalog,
@@ -132,7 +125,6 @@ fun CatalogItem(
       )
       CatalogButtons(
         catalog = catalog,
-        showInstallButton = showInstallButton,
         installStep = installStep,
         onInstall = onInstall,
         onUninstall = onUninstall,
@@ -204,12 +196,11 @@ private fun CatalogPic(catalog: Catalog, modifier: Modifier = Modifier) {
 @Composable
 private fun CatalogButtons(
   catalog: Catalog,
-  showInstallButton: Boolean,
   installStep: InstallStep?,
-  modifier: Modifier = Modifier,
-  onInstall: () -> Unit,
-  onUninstall: () -> Unit,
-  onPinToggle: () -> Unit
+  onInstall: (() -> Unit)?,
+  onUninstall: (() -> Unit)?,
+  onPinToggle: (() -> Unit)?,
+  modifier: Modifier = Modifier
 ) {
   Row(modifier = modifier) {
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
@@ -220,7 +211,7 @@ private fun CatalogButtons(
             .size(48.dp)
             .padding(12.dp)
         )
-      } else if (showInstallButton) {
+      } else if (onInstall != null) {
         IconButton(onClick = onInstall) {
           Icon(
             imageVector = Filled.GetApp,
@@ -231,8 +222,8 @@ private fun CatalogButtons(
       if (catalog !is CatalogRemote) {
         CatalogMenuButton(
           catalog = catalog,
-          onUninstall = onUninstall,
-          onPinToggle = onPinToggle
+          onPinToggle = onPinToggle,
+          onUninstall = onUninstall
         )
       }
     }
@@ -242,9 +233,9 @@ private fun CatalogButtons(
 @Composable
 private fun CatalogMenuButton(
   catalog: Catalog,
-  modifier: Modifier = Modifier,
-  onPinToggle: () -> Unit,
-  onUninstall: () -> Unit
+  onPinToggle: (() -> Unit)?,
+  onUninstall: (() -> Unit)?,
+  modifier: Modifier = Modifier
 ) {
   var expanded by remember { mutableStateOf(false) }
   Box(modifier) {
@@ -252,15 +243,15 @@ private fun CatalogMenuButton(
       Icon(imageVector = Filled.MoreVert, contentDescription = null)
     }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-      if (catalog is CatalogLocal) {
-        DropdownMenuItem(onClick = { /*TODO*/ }) {
-          Text("Details")
-        }
+      DropdownMenuItem(onClick = { /*TODO*/ }) {
+        Text("Details")
+      }
+      if (onPinToggle != null && catalog is CatalogLocal) {
         DropdownMenuItem(onClick = onPinToggle) {
           Text(if (!catalog.isPinned) "Pin" else "Unpin")
         }
       }
-      if (catalog is CatalogInstalled) {
+      if (onUninstall != null) {
         DropdownMenuItem(onClick = onUninstall) {
           Text("Uninstall")
         }

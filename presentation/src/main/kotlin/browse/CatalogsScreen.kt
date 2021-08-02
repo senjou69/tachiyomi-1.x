@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import tachiyomi.domain.catalog.model.Catalog
+import tachiyomi.domain.catalog.model.CatalogBundled
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.viewmodel.viewModel
@@ -57,8 +58,45 @@ fun CatalogsScreen(navController: NavController) {
     }
   ) {
     LazyColumn {
-      if (vm.updatableCatalogs.isNotEmpty() || vm.localCatalogs.isNotEmpty()) {
-        item {
+      if (vm.localCatalogs.any { it.isPinned } || vm.updatableCatalogs.any { it.isPinned }) {
+        item(key = "h1") {
+          Text(
+            "Pinned".uppercase(),
+            style = MaterialTheme.typography.subtitle2,
+            color = LocalContentColor.current.copy(alpha = ContentAlpha.medium),
+            modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 4.dp)
+          )
+        }
+        for (catalog in vm.updatableCatalogs) {
+          if (catalog.isPinned) {
+            item(key = catalog.sourceId) {
+              CatalogItem(
+                catalog = catalog,
+                installStep = vm.installSteps[catalog.pkgName],
+                onClick = { onClickCatalog(catalog) },
+                onInstall = { vm.installCatalog(catalog) },
+                onUninstall = { vm.uninstallCatalog(catalog) },
+                onPinToggle = { vm.togglePinnedCatalog(catalog) }
+              )
+            }
+          }
+        }
+        for (catalog in vm.localCatalogs) {
+          if (catalog.isPinned) {
+            item(key = catalog.sourceId) {
+              CatalogItem(
+                catalog = catalog,
+                onClick = { onClickCatalog(catalog) },
+                onUninstall = { vm.uninstallCatalog(catalog) }
+                  .takeIf { catalog !is CatalogBundled },
+                onPinToggle = { vm.togglePinnedCatalog(catalog) }
+              )
+            }
+          }
+        }
+      }
+      if (vm.localCatalogs.any { !it.isPinned } || vm.updatableCatalogs.any { !it.isPinned }) {
+        item(key = "h2") {
           Text(
             "Installed".uppercase(),
             style = MaterialTheme.typography.subtitle2,
@@ -66,35 +104,36 @@ fun CatalogsScreen(navController: NavController) {
             modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 4.dp)
           )
         }
-      }
-      if (vm.updatableCatalogs.isNotEmpty()) {
-        items(vm.updatableCatalogs) { catalog ->
-          CatalogItem(
-            catalog = catalog,
-            showInstallButton = true,
-            installStep = vm.installSteps[catalog.pkgName],
-            onClick = { onClickCatalog(catalog) },
-            onInstall = { vm.installCatalog(catalog) },
-            onUninstall = { vm.uninstallCatalog(catalog) },
-            onPinToggle = { vm.togglePinnedCatalog(catalog) }
-          )
+        for (catalog in vm.updatableCatalogs) {
+          if (!catalog.isPinned) {
+            item(key = catalog.sourceId) {
+              CatalogItem(
+                catalog = catalog,
+                installStep = vm.installSteps[catalog.pkgName],
+                onClick = { onClickCatalog(catalog) },
+                onInstall = { vm.installCatalog(catalog) },
+                onUninstall = { vm.uninstallCatalog(catalog) },
+                onPinToggle = { vm.togglePinnedCatalog(catalog) }
+              )
+            }
+          }
         }
-      }
-      if (vm.localCatalogs.isNotEmpty()) {
-        items(vm.localCatalogs) { catalog ->
-          CatalogItem(
-            catalog = catalog,
-            showInstallButton = false,
-            installStep = null,
-            onClick = { onClickCatalog(catalog) },
-            onInstall = { vm.installCatalog(catalog) },
-            onUninstall = { vm.uninstallCatalog(catalog) },
-            onPinToggle = { vm.togglePinnedCatalog(catalog) }
-          )
+        for (catalog in vm.localCatalogs) {
+          if (!catalog.isPinned) {
+            item(key = catalog.sourceId) {
+              CatalogItem(
+                catalog = catalog,
+                onClick = { onClickCatalog(catalog) },
+                onUninstall = { vm.uninstallCatalog(catalog) }
+                  .takeIf { catalog !is CatalogBundled },
+                onPinToggle = { vm.togglePinnedCatalog(catalog) }
+              )
+            }
+          }
         }
       }
       if (vm.remoteCatalogs.isNotEmpty()) {
-        item {
+        item(key = "h3") {
           Text(
             "Available".uppercase(),
             style = MaterialTheme.typography.subtitle2,
@@ -105,7 +144,16 @@ fun CatalogsScreen(navController: NavController) {
 
         item {
           LazyRow(modifier = Modifier.padding(8.dp)) {
-            items(vm.languageChoices) { choice ->
+            items(
+              items = vm.languageChoices,
+              key = { choice ->
+                when (choice) {
+                  LanguageChoice.All -> "all"
+                  is LanguageChoice.One -> choice.language.code
+                  is LanguageChoice.Others -> "others"
+                }
+              }
+            ) { choice ->
               LanguageChip(
                 choice = choice,
                 isSelected = choice == vm.selectedLanguage,
@@ -115,15 +163,11 @@ fun CatalogsScreen(navController: NavController) {
           }
         }
 
-        items(vm.remoteCatalogs) { catalog ->
+        items(vm.remoteCatalogs, key = { it.sourceId }) { catalog ->
           CatalogItem(
             catalog = catalog,
-            showInstallButton = true,
             installStep = vm.installSteps[catalog.pkgName],
-            onClick = { onClickCatalog(catalog) },
-            onInstall = { vm.installCatalog(catalog) },
-            onUninstall = { },
-            onPinToggle = { }
+            onInstall = { vm.installCatalog(catalog) }
           )
         }
       }
