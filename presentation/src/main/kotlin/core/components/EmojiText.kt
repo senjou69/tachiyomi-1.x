@@ -8,6 +8,7 @@
 
 package tachiyomi.ui.core.components
 
+import android.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -21,10 +22,8 @@ fun EmojiText(
   modifier: Modifier = Modifier
 ) {
   AndroidView(
-    factory = { EmojiTextView(it, null) },
+    factory = { EmojiTextView(it, null).apply { setTextColor(Color.BLACK) } },
     modifier = modifier,
-    update = {
-      it.text = text
-    }
+    update = { it.text = text }
   )
 }

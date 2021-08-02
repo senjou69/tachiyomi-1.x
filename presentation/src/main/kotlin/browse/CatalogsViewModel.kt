@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import tachiyomi.domain.catalog.interactor.GetCatalogsByType
 import tachiyomi.domain.catalog.interactor.InstallCatalog
 import tachiyomi.domain.catalog.interactor.SyncRemoteCatalogs
+import tachiyomi.domain.catalog.interactor.TogglePinnedCatalog
 import tachiyomi.domain.catalog.interactor.UninstallCatalog
 import tachiyomi.domain.catalog.interactor.UpdateCatalog
 import tachiyomi.domain.catalog.model.Catalog
@@ -31,7 +32,8 @@ class CatalogsViewModel @Inject constructor(
   private val installCatalog: InstallCatalog,
   private val uninstallCatalog: UninstallCatalog,
   private val updateCatalog: UpdateCatalog,
-  private val syncRemoteCatalogs: SyncRemoteCatalogs
+  private val syncRemoteCatalogs: SyncRemoteCatalogs,
+  private val togglePinnedCatalog: TogglePinnedCatalog
 ) : BaseViewModel() {
 
   var localCatalogs by mutableStateOf(emptyList<CatalogLocal>())
@@ -85,6 +87,12 @@ class CatalogsViewModel @Inject constructor(
           installSteps - pkgName
         }
       }
+    }
+  }
+
+  fun togglePinnedCatalog(catalog: CatalogLocal) {
+    scope.launch {
+      togglePinnedCatalog.await(catalog)
     }
   }
 
