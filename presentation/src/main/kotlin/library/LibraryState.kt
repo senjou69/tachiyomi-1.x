@@ -8,9 +8,6 @@
 
 package tachiyomi.ui.library
 
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,11 +15,8 @@ import androidx.compose.runtime.referentialEqualityPolicy
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import tachiyomi.domain.library.model.CategoryWithCount
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 class LibraryState(
   sheetPage: Int = 0,
   searchMode: Boolean = false,
@@ -35,9 +29,7 @@ class LibraryState(
   var categories by mutableStateOf(emptyList<CategoryWithCount>(), referentialEqualityPolicy())
   var selectedCategoryIndex by mutableStateOf(0)
   var selectedManga = mutableStateListOf<Long>()
-
-  val sheetState = ModalBottomSheetState(ModalBottomSheetValue.Hidden)
-  val pagerState = PagerState(categories.size, selectedCategoryIndex, infiniteLoop = true)
+  var showSheet by mutableStateOf(false)
 
   companion object {
     val Saver: Saver<LibraryState, Any> = listSaver(

@@ -23,6 +23,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Surface
@@ -39,6 +40,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -49,7 +51,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import tachiyomi.domain.library.model.CategoryWithCount
 import tachiyomi.domain.library.model.DisplayMode
 import tachiyomi.domain.library.model.LibraryManga
@@ -58,7 +62,6 @@ import tachiyomi.ui.core.theme.CustomColors
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.main.Route
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 @Composable
 fun LibraryScreen(
   navController: NavController,
@@ -70,52 +73,44 @@ fun LibraryScreen(
   )
   val scope = rememberCoroutineScope()
 
-  LaunchedEffect(vm) {
-    snapshotFlow { vm.pagerState.currentPage }.collect {
-      vm.setSelectedPage(it)
-    }
+  LaunchedEffect(vm.selectionMode, vm.showSheet) {
+    requestHideBottomNav(vm.selectionMode || vm.showSheet)
   }
-  LaunchedEffect(vm.selectionMode, vm.sheetState.targetValue) {
-    requestHideBottomNav(
-      vm.selectionMode || vm.sheetState.targetValue != ModalBottomSheetValue.Hidden
-    )
-  }
+
   val columns by vm.getLibraryColumns()
 
-  ModalBottomSheetLayout(
-    sheetState = vm.sheetState,
-    sheetContent = { LibrarySheet(vm.sheetPage) { vm.setSheetPage(it) } }
+  LibrarySheetLayout(
+    showSheet = vm.showSheet,
+    currentPage = vm.sheetPage,
+    onSheetDismissed = { vm.setSheetVisibility(false) },
+    onPageChanged = { vm.setSheetPage(it) }
   ) {
-    Column {
-      LibraryToolbar(
-        selectedCategory = vm.selectedCategory,
-        selectedManga = vm.selectedManga,
-        showCategoryTabs = vm.showCategoryTabs,
-        showCountInCategory = vm.showCountInCategory,
-        selectionMode = vm.selectionMode,
-        searchMode = vm.searchMode,
-        searchQuery = vm.searchQuery,
-        onClickSearch = { vm.openSearch() },
-        onClickFilter = { vm.showSheet(scope) },
-        onClickRefresh = { vm.updateLibrary() },
-        onClickCloseSelection = { vm.unselectAll() },
-        onClickCloseSearch = { vm.closeSearch() },
-        onClickSelectAll = { vm.selectAllInCurrentCategory() },
-        onClickUnselectAll = { vm.flipAllInCurrentCategory() },
-        onChangeSearchQuery = { vm.updateQuery(it) }
-      )
-      LibraryTabs(
-        state = vm.pagerState,
-        visible = vm.showCategoryTabs,
-        categories = vm.categories,
-        showCount = vm.showCountInCategory,
-        onClickTab = { vm.animatePagerScrollToPage(it, scope) }
-      )
-      Box {
-        LibraryPager(
-          state = vm.pagerState,
+    Box {
+      Column {
+        LibraryToolbar(
+          selectedCategory = vm.selectedCategory,
+          selectedManga = vm.selectedManga,
+          showCategoryTabs = vm.showCategoryTabs,
+          showCountInCategory = vm.showCountInCategory,
+          selectionMode = vm.selectionMode,
+          searchMode = vm.searchMode,
+          searchQuery = vm.searchQuery,
+          onClickSearch = { vm.openSearch() },
+          onClickFilter = { vm.setSheetVisibility(true) },
+          onClickRefresh = { vm.updateLibrary() },
+          onClickCloseSelection = { vm.unselectAll() },
+          onClickCloseSearch = { vm.closeSearch() },
+          onClickSelectAll = { vm.selectAllInCurrentCategory() },
+          onClickUnselectAll = { vm.flipAllInCurrentCategory() },
+          onChangeSearchQuery = { vm.updateQuery(it) }
+        )
+        LibraryContent(
+          scope = scope,
           categories = vm.categories,
           displayMode = vm.displayMode,
+          currentPage = vm.selectedCategoryIndex,
+          showPageTabs = vm.showCategoryTabs,
+          showCountInCategory = vm.showCountInCategory,
           selectedManga = vm.selectedManga,
           columns = columns,
           getLibraryForPage = { vm.getLibraryForCategoryIndex(it) },
@@ -126,21 +121,102 @@ fun LibraryScreen(
               vm.toggleManga(manga)
             }
           },
-          onLongClickManga = { vm.toggleManga(it) }
-        )
-
-        LibrarySelectionBar(
-          visible = vm.selectionMode,
-          modifier = Modifier.align(Alignment.BottomCenter),
-          onClickChangeCategory = { vm.changeCategoriesForSelectedManga() },
-          onClickDownload = { vm.downloadSelectedManga() },
-          onClickMarkAsRead = { vm.toggleReadSelectedManga(read = true) },
-          onClickMarkAsUnread = { vm.toggleReadSelectedManga(read = false) },
-          onClickDeleteDownloads = { vm.deleteDownloadsSelectedManga() }
+          onLongClickManga = { vm.toggleManga(it) },
+          onPageChanged = { vm.setSelectedPage(it) },
         )
       }
+      LibrarySelectionBar(
+        visible = vm.selectionMode,
+        modifier = Modifier.align(Alignment.BottomCenter),
+        onClickChangeCategory = { vm.changeCategoriesForSelectedManga() },
+        onClickDownload = { vm.downloadSelectedManga() },
+        onClickMarkAsRead = { vm.toggleReadSelectedManga(read = true) },
+        onClickMarkAsUnread = { vm.toggleReadSelectedManga(read = false) },
+        onClickDeleteDownloads = { vm.deleteDownloadsSelectedManga() }
+      )
     }
   }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun LibrarySheetLayout(
+  showSheet: Boolean,
+  currentPage: Int,
+  onSheetDismissed: () -> Unit,
+  onPageChanged: (Int) -> Unit,
+  content: @Composable () -> Unit
+) {
+  val sheetState = remember { ModalBottomSheetState(ModalBottomSheetValue.Hidden) }
+
+  // Check whether the sheet needs to be shown or hidden.
+  LaunchedEffect(showSheet) {
+    if (showSheet) {
+      sheetState.show()
+    } else if (sheetState.currentValue != ModalBottomSheetValue.Hidden) {
+      sheetState.hide()
+    }
+  }
+  // Notify when the sheet has been dismissed
+  LaunchedEffect(sheetState) {
+    snapshotFlow { sheetState.currentValue == ModalBottomSheetValue.Hidden }
+      .collect { hide -> if (hide) onSheetDismissed() }
+  }
+
+  ModalBottomSheetLayout(
+    sheetState = sheetState,
+    sheetContent = { LibrarySheet(currentPage, onPageChanged) },
+    content = content
+  )
+}
+
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
+@Composable
+private fun LibraryContent(
+  scope: CoroutineScope,
+  categories: List<CategoryWithCount>,
+  displayMode: DisplayMode,
+  currentPage: Int,
+  showPageTabs: Boolean,
+  showCountInCategory: Boolean,
+  selectedManga: List<Long>,
+  columns: Int,
+  getLibraryForPage: @Composable (Int) -> State<List<LibraryManga>>,
+  onClickManga: (LibraryManga) -> Unit,
+  onLongClickManga: (LibraryManga) -> Unit,
+  onPageChanged: (Int) -> Unit
+) {
+  if (categories.isEmpty()) return
+
+  val infiniteLoop = categories.size > 2
+  val state = remember(infiniteLoop) {
+    PagerState(categories.size, currentPage, infiniteLoop = infiniteLoop)
+  }.apply {
+    pageCount = categories.size
+  }
+
+  LaunchedEffect(state) {
+    snapshotFlow { state.currentPage }.collect {
+      onPageChanged(it)
+    }
+  }
+
+  LibraryTabs(
+    state = state,
+    visible = showPageTabs,
+    categories = categories,
+    showCount = showCountInCategory,
+    onClickTab = { scope.launch { state.animateScrollToPage(it) } }
+  )
+  LibraryPager(
+    state = state,
+    displayMode = displayMode,
+    selectedManga = selectedManga,
+    columns = columns,
+    getLibraryForPage = getLibraryForPage,
+    onClickManga = onClickManga,
+    onLongClickManga = onLongClickManga,
+  )
 }
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
@@ -152,8 +228,6 @@ private fun LibraryTabs(
   showCount: Boolean,
   onClickTab: (Int) -> Unit
 ) {
-  if (categories.isEmpty()) return
-
   AnimatedVisibility(
     visible = visible,
     enter = expandVertically(),
@@ -189,7 +263,6 @@ private fun LibraryTabs(
 @Composable
 private fun LibraryPager(
   state: PagerState,
-  categories: List<CategoryWithCount>,
   displayMode: DisplayMode,
   selectedManga: List<Long>,
   columns: Int,
@@ -197,8 +270,6 @@ private fun LibraryPager(
   onClickManga: (LibraryManga) -> Unit,
   onLongClickManga: (LibraryManga) -> Unit
 ) {
-  if (categories.isEmpty()) return
-
   HorizontalPager(state = state) { page ->
     val library by getLibraryForPage(page)
     when (displayMode) {
