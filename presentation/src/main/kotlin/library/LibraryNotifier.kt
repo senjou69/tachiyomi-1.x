@@ -8,6 +8,7 @@
 
 package tachiyomi.ui.library
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Intent
@@ -80,6 +81,7 @@ class LibraryNotifier @Inject constructor(
   }
 
   private companion object {
+    @SuppressLint("StaticFieldLeak") // This is the activity context
     var lastNotification: NotificationCompat.Builder? = null
     var serviceStartedDeferred: CompletableDeferred<Unit>? = null
   }

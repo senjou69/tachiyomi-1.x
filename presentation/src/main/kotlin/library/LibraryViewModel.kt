@@ -10,18 +10,17 @@ package tachiyomi.ui.library
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalConfiguration
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -116,25 +115,12 @@ class LibraryViewModel @Inject constructor(
     }.collectAsState(emptyList())
   }
 
-  @Composable
-  fun getLibraryColumns(): State<Int> {
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.screenWidthDp > configuration.screenHeightDp
-    val (preference, columns) = remember(isLandscape) {
-      if (isLandscape) {
-        libraryPreferences.columnsInLandscape()
-      } else {
-        libraryPreferences.columnsInPortrait()
-      }.let {
-        it to mutableStateOf(it.get())
-      }
-    }
-    LaunchedEffect(isLandscape) {
-      preference.changes()
-        .onEach { columns.value = it }
-        .launchIn(this)
-    }
-    return columns
+  fun getColumnsForOrientation(isLandscape: Boolean, scope: CoroutineScope): StateFlow<Int> {
+    return if (isLandscape) {
+      libraryPreferences.columnsInLandscape()
+    } else {
+      libraryPreferences.columnsInPortrait()
+    }.stateIn(scope)
   }
 
   fun toggleManga(manga: LibraryManga) {

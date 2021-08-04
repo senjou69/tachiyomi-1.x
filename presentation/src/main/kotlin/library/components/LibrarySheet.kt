@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.library
+package tachiyomi.ui.library.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -62,6 +62,7 @@ import tachiyomi.domain.library.model.LibrarySort
 import tachiyomi.ui.core.components.ChoiceChip
 import tachiyomi.ui.core.theme.CustomColors
 import tachiyomi.ui.core.viewmodel.viewModel
+import tachiyomi.ui.library.LibrarySheetViewModel
 import kotlin.math.round
 
 @OptIn(ExperimentalPagerApi::class)
