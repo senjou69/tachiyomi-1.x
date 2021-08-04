@@ -52,7 +52,10 @@ fun LanguageChip(choice: LanguageChoice, isSelected: Boolean, onClick: () -> Uni
       is Others -> stringResource(string.lang_others)
     }
     if (choice is One) {
-      EmojiText(text, modifier = Modifier.wrapContentSize(Alignment.Center))
+      EmojiText(
+        text = text,
+        modifier = Modifier.wrapContentSize(Alignment.Center)
+      )
     } else {
       Text(
         text = text,
