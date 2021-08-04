@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.browse
+package tachiyomi.ui.browse.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tachiyomi.ui.R.string
+import tachiyomi.ui.browse.LanguageChoice
 import tachiyomi.ui.browse.LanguageChoice.All
 import tachiyomi.ui.browse.LanguageChoice.One
 import tachiyomi.ui.browse.LanguageChoice.Others

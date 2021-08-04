@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.browse
+package tachiyomi.ui.browse.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -55,6 +55,7 @@ import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
+import tachiyomi.ui.browse.Language
 import tachiyomi.ui.core.components.EmojiText
 import tachiyomi.ui.core.theme.RandomColors
 import kotlin.math.max

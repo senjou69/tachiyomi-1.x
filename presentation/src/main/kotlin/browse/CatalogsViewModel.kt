@@ -8,10 +8,10 @@
 
 package tachiyomi.ui.browse
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tachiyomi.domain.catalog.interactor.GetCatalogsByType
 import tachiyomi.domain.catalog.interactor.InstallCatalog
@@ -28,6 +28,7 @@ import tachiyomi.ui.core.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 class CatalogsViewModel @Inject constructor(
+  private val state: CatalogsState,
   private val getCatalogsByType: GetCatalogsByType,
   private val installCatalog: InstallCatalog,
   private val uninstallCatalog: UninstallCatalog,
@@ -36,37 +37,46 @@ class CatalogsViewModel @Inject constructor(
   private val togglePinnedCatalog: TogglePinnedCatalog
 ) : BaseViewModel() {
 
-  var localCatalogs by mutableStateOf(emptyList<CatalogLocal>())
-    private set
-  var updatableCatalogs by mutableStateOf(emptyList<CatalogInstalled>())
-    private set
-  var remoteCatalogs by mutableStateOf(emptyList<CatalogRemote>())
-    private set
-  var languageChoices by mutableStateOf(emptyList<LanguageChoice>())
-    private set
-  var selectedLanguage by mutableStateOf<LanguageChoice>(LanguageChoice.All)
-    private set
-  var installSteps by mutableStateOf(emptyMap<String, InstallStep>())
-    private set
-  var refreshingCatalogs by mutableStateOf(false)
-    private set
-
-  private var unfilteredRemoteCatalogs = emptyList<CatalogRemote>()
+  val localCatalogs get() = state.localCatalogs
+  val updatableCatalogs get() = state.updatableCatalogs
+  val remoteCatalogs get() = state.remoteCatalogs
+  val languageChoices get() = state.languageChoices
+  val selectedLanguage get() = state.selectedLanguage
+  val installSteps get() = state.installSteps
+  val refreshingCatalogs get() = state.refreshingCatalogs
+  val searchQuery get() = state.searchQuery
 
   init {
-    getCatalogs()
-  }
-
-  private fun getCatalogs() {
     scope.launch {
       getCatalogsByType.subscribe(excludeRemoteInstalled = true)
         .collect { (upToDate, updatable, remote) ->
-          localCatalogs = upToDate
-          updatableCatalogs = updatable
-          unfilteredRemoteCatalogs = remote
-          remoteCatalogs = getRemoteCatalogsForLanguageChoice(remote, selectedLanguage)
-          languageChoices = getLanguageChoices(remote, upToDate + updatable)
+          state.unfilteredUpdatedCatalogs = upToDate
+          state.unfilteredUpdatableCatalogs = updatable
+          state.unfilteredRemoteCatalogs = remote
+
+          state.remoteCatalogs = getRemoteCatalogsForLanguageChoice(remote, selectedLanguage)
+          state.languageChoices = getLanguageChoices(remote, upToDate + updatable)
         }
+    }
+
+    snapshotFlow { state.unfilteredUpdatedCatalogs.filteredByQuery(searchQuery) }
+      .onEach { state.localCatalogs = it }
+      .launchIn(scope)
+
+    snapshotFlow { state.unfilteredUpdatableCatalogs.filteredByQuery(searchQuery) }
+      .onEach { state.updatableCatalogs = it }
+      .launchIn(scope)
+
+    snapshotFlow { state.unfilteredRemoteCatalogs.filteredByQuery(searchQuery) }
+      .onEach { state.remoteCatalogs = it }
+      .launchIn(scope)
+  }
+
+  private fun <T : Catalog> List<T>.filteredByQuery(query: String?): List<T> {
+    return if (query == null) {
+      this
+    } else {
+      filter { it.name.contains(query, true) }
     }
   }
 
@@ -81,7 +91,7 @@ class CatalogsViewModel @Inject constructor(
         catalog.pkgName to installCatalog.await(catalog)
       }
       flow.collect { step ->
-        installSteps = if (step != InstallStep.Completed) {
+        state.installSteps = if (step != InstallStep.Completed) {
           installSteps + (pkgName to step)
         } else {
           installSteps - pkgName
@@ -103,16 +113,27 @@ class CatalogsViewModel @Inject constructor(
   }
 
   fun setLanguageChoice(choice: LanguageChoice) {
-    selectedLanguage = choice
-    remoteCatalogs = getRemoteCatalogsForLanguageChoice(unfilteredRemoteCatalogs, selectedLanguage)
+    state.selectedLanguage = choice
+    state.remoteCatalogs = getRemoteCatalogsForLanguageChoice(
+      state.unfilteredRemoteCatalogs,
+      selectedLanguage
+    )
   }
 
   fun refreshCatalogs() {
     scope.launch {
-      refreshingCatalogs = true
+      state.refreshingCatalogs = true
       syncRemoteCatalogs.await(true)
-      refreshingCatalogs = false
+      state.refreshingCatalogs = false
     }
+  }
+
+  fun closeSearch() {
+    state.searchQuery = null
+  }
+
+  fun updateQuery(query: String) {
+    state.searchQuery = query
   }
 
   private fun getLanguageChoices(
