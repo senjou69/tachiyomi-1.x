@@ -25,6 +25,9 @@ interface CatalogsState {
   val remoteCatalogs: List<CatalogRemote>
   val languageChoices: List<LanguageChoice>
   val selectedLanguage: LanguageChoice
+  var expandPinned: Boolean
+  var expandInstalled: Boolean
+  var expandAvailable: Boolean
   val installSteps: Map<String, InstallStep>
   val isRefreshing: Boolean
   val searchQuery: String?
@@ -40,6 +43,9 @@ class CatalogsStateImpl : CatalogsState {
   override var remoteCatalogs by mutableStateOf(emptyList<CatalogRemote>())
   override var languageChoices by mutableStateOf(emptyList<LanguageChoice>())
   override var selectedLanguage by mutableStateOf<LanguageChoice>(LanguageChoice.All)
+  override var expandPinned by mutableStateOf(true)
+  override var expandInstalled by mutableStateOf(true)
+  override var expandAvailable by mutableStateOf(true)
   override var installSteps by mutableStateOf(emptyMap<String, InstallStep>())
   override var isRefreshing by mutableStateOf(false)
   override var searchQuery by mutableStateOf<String?>(null)

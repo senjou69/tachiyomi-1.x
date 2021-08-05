@@ -32,84 +32,102 @@ fun CatalogsContent(
     LazyColumn {
       if (vm.localCatalogs.any { it.isPinned } || vm.updatableCatalogs.any { it.isPinned }) {
         item(key = "h1") {
-          CatalogsHeader(text = "Pinned")
+          CatalogsSection(
+            text = "Pinned",
+            isExpanded = vm.expandPinned,
+            onClick = { vm.expandPinned = !vm.expandPinned }
+          )
         }
-        for (catalog in vm.updatableCatalogs) {
-          if (catalog.isPinned) {
-            item(key = catalog.sourceId) {
-              CatalogItem(
-                catalog = catalog,
-                installStep = vm.installSteps[catalog.pkgName],
-                onClick = { onClickCatalog(catalog) },
-                onInstall = { vm.installCatalog(catalog) },
-                onUninstall = { vm.uninstallCatalog(catalog) },
-                onPinToggle = { vm.togglePinnedCatalog(catalog) }
-              )
+        if (vm.expandPinned) {
+          for (catalog in vm.updatableCatalogs) {
+            if (catalog.isPinned) {
+              item(key = catalog.sourceId) {
+                CatalogItem(
+                  catalog = catalog,
+                  installStep = vm.installSteps[catalog.pkgName],
+                  onClick = { onClickCatalog(catalog) },
+                  onInstall = { vm.installCatalog(catalog) },
+                  onUninstall = { vm.uninstallCatalog(catalog) },
+                  onPinToggle = { vm.togglePinnedCatalog(catalog) }
+                )
+              }
             }
           }
-        }
-        for (catalog in vm.localCatalogs) {
-          if (catalog.isPinned) {
-            item(key = catalog.sourceId) {
-              CatalogItem(
-                catalog = catalog,
-                onClick = { onClickCatalog(catalog) },
-                onUninstall = { vm.uninstallCatalog(catalog) }.takeIf { catalog !is CatalogBundled },
-                onPinToggle = { vm.togglePinnedCatalog(catalog) }
-              )
+          for (catalog in vm.localCatalogs) {
+            if (catalog.isPinned) {
+              item(key = catalog.sourceId) {
+                CatalogItem(
+                  catalog = catalog,
+                  onClick = { onClickCatalog(catalog) },
+                  onUninstall = { vm.uninstallCatalog(catalog) }.takeIf { catalog !is CatalogBundled },
+                  onPinToggle = { vm.togglePinnedCatalog(catalog) }
+                )
+              }
             }
           }
         }
       }
       if (vm.localCatalogs.any { !it.isPinned } || vm.updatableCatalogs.any { !it.isPinned }) {
         item(key = "h2") {
-          CatalogsHeader(text = "Installed")
+          CatalogsSection(
+            text = "Installed",
+            isExpanded = vm.expandInstalled,
+            onClick = { vm.expandInstalled = !vm.expandInstalled }
+          )
         }
-        for (catalog in vm.updatableCatalogs) {
-          if (!catalog.isPinned) {
-            item(key = catalog.sourceId) {
-              CatalogItem(
-                catalog = catalog,
-                installStep = vm.installSteps[catalog.pkgName],
-                onClick = { onClickCatalog(catalog) },
-                onInstall = { vm.installCatalog(catalog) },
-                onUninstall = { vm.uninstallCatalog(catalog) },
-                onPinToggle = { vm.togglePinnedCatalog(catalog) }
-              )
+        if (vm.expandInstalled) {
+          for (catalog in vm.updatableCatalogs) {
+            if (!catalog.isPinned) {
+              item(key = catalog.sourceId) {
+                CatalogItem(
+                  catalog = catalog,
+                  installStep = vm.installSteps[catalog.pkgName],
+                  onClick = { onClickCatalog(catalog) },
+                  onInstall = { vm.installCatalog(catalog) },
+                  onUninstall = { vm.uninstallCatalog(catalog) },
+                  onPinToggle = { vm.togglePinnedCatalog(catalog) }
+                )
+              }
             }
           }
-        }
-        for (catalog in vm.localCatalogs) {
-          if (!catalog.isPinned) {
-            item(key = catalog.sourceId) {
-              CatalogItem(
-                catalog = catalog,
-                onClick = { onClickCatalog(catalog) },
-                onUninstall = { vm.uninstallCatalog(catalog) }.takeIf { catalog !is CatalogBundled },
-                onPinToggle = { vm.togglePinnedCatalog(catalog) }
-              )
+          for (catalog in vm.localCatalogs) {
+            if (!catalog.isPinned) {
+              item(key = catalog.sourceId) {
+                CatalogItem(
+                  catalog = catalog,
+                  onClick = { onClickCatalog(catalog) },
+                  onUninstall = { vm.uninstallCatalog(catalog) }.takeIf { catalog !is CatalogBundled },
+                  onPinToggle = { vm.togglePinnedCatalog(catalog) }
+                )
+              }
             }
           }
         }
       }
       if (vm.remoteCatalogs.isNotEmpty()) {
         item(key = "h3") {
-          CatalogsHeader("Available")
-        }
-        item(key = "langs") {
-          LanguageChipGroup(
-            choices = vm.languageChoices,
-            selected = vm.selectedLanguage,
-            onClick = { vm.setLanguageChoice(it) },
-            modifier = Modifier.padding(8.dp)
+          CatalogsSection(
+            text = "Available",
+            isExpanded = vm.expandAvailable,
+            onClick = { vm.expandAvailable = !vm.expandAvailable }
           )
         }
-        items(vm.remoteCatalogs, key = { it.sourceId }) { catalog ->
-          CatalogItem(
-            catalog = catalog,
-            installStep = vm.installSteps[catalog.pkgName],
-            onInstall = { vm.installCatalog(catalog) }
-          )
+        if (vm.expandAvailable) {
+          item(key = "langs") {
+            LanguageChipGroup(
+              choices = vm.languageChoices,
+              selected = vm.selectedLanguage,
+              onClick = { vm.setLanguageChoice(it) },
+              modifier = Modifier.padding(8.dp)
+            )
+          }
+          items(vm.remoteCatalogs, key = { it.sourceId }) { catalog ->
+            CatalogItem(
+              catalog = catalog,
+              installStep = vm.installSteps[catalog.pkgName],
+              onInstall = { vm.installCatalog(catalog) }
+            )
+          }
         }
       }
     }
