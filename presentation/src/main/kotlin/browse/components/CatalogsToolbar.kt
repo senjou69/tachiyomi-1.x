@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.TravelExplore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -57,6 +58,9 @@ private fun CatalogsRegularToolbar(
     actions = {
       IconButton(onClick = onClickSearch) {
         Icon(Icons.Default.Search, contentDescription = null)
+      }
+      IconButton(onClick = { /*TODO*/ }) {
+        Icon(Icons.Default.TravelExplore, contentDescription = null)
       }
       IconButton(onClick = { /*TODO*/ }) {
         Icon(Icons.Default.MoreVert, contentDescription = null)
