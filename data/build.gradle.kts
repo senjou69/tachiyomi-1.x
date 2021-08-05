@@ -2,7 +2,7 @@ plugins {
   id("com.android.library")
   id("kotlin-android")
   id("kotlin-kapt")
-  id("com.google.devtools.ksp") version "1.5.10-1.0.0-beta02"
+  id("com.google.devtools.ksp") version "1.5.21-1.0.0-beta06"
 }
 
 val removeDomainClasses by tasks.registering(Delete::class) {
