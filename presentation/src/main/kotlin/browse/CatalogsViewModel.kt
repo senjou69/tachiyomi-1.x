@@ -28,56 +28,39 @@ import tachiyomi.ui.core.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 class CatalogsViewModel @Inject constructor(
-  private val state: CatalogsState,
+  private val state: CatalogsStateImpl,
   private val getCatalogsByType: GetCatalogsByType,
   private val installCatalog: InstallCatalog,
   private val uninstallCatalog: UninstallCatalog,
   private val updateCatalog: UpdateCatalog,
   private val syncRemoteCatalogs: SyncRemoteCatalogs,
   private val togglePinnedCatalog: TogglePinnedCatalog
-) : BaseViewModel() {
-
-  val localCatalogs get() = state.localCatalogs
-  val updatableCatalogs get() = state.updatableCatalogs
-  val remoteCatalogs get() = state.remoteCatalogs
-  val languageChoices get() = state.languageChoices
-  val selectedLanguage get() = state.selectedLanguage
-  val installSteps get() = state.installSteps
-  val refreshingCatalogs get() = state.refreshingCatalogs
-  val searchQuery get() = state.searchQuery
+) : BaseViewModel(), CatalogsState by state {
 
   init {
     scope.launch {
       getCatalogsByType.subscribe(excludeRemoteInstalled = true)
         .collect { (upToDate, updatable, remote) ->
-          state.unfilteredUpdatedCatalogs = upToDate
-          state.unfilteredUpdatableCatalogs = updatable
-          state.unfilteredRemoteCatalogs = remote
+          state.allUpdatedCatalogs = upToDate
+          state.allUpdatableCatalogs = updatable
+          state.allRemoteCatalogs = remote
 
-          state.remoteCatalogs = getRemoteCatalogsForLanguageChoice(remote, selectedLanguage)
           state.languageChoices = getLanguageChoices(remote, upToDate + updatable)
         }
     }
 
-    snapshotFlow { state.unfilteredUpdatedCatalogs.filteredByQuery(searchQuery) }
+    // Update catalogs whenever the query changes or there's a new update from the backend
+    snapshotFlow { state.allUpdatedCatalogs.filteredByQuery(searchQuery) }
       .onEach { state.localCatalogs = it }
       .launchIn(scope)
-
-    snapshotFlow { state.unfilteredUpdatableCatalogs.filteredByQuery(searchQuery) }
+    snapshotFlow { state.allUpdatableCatalogs.filteredByQuery(searchQuery) }
       .onEach { state.updatableCatalogs = it }
       .launchIn(scope)
-
-    snapshotFlow { state.unfilteredRemoteCatalogs.filteredByQuery(searchQuery) }
+    snapshotFlow {
+      state.allRemoteCatalogs.filteredByQuery(searchQuery).filteredByChoice(selectedLanguage)
+    }
       .onEach { state.remoteCatalogs = it }
       .launchIn(scope)
-  }
-
-  private fun <T : Catalog> List<T>.filteredByQuery(query: String?): List<T> {
-    return if (query == null) {
-      this
-    } else {
-      filter { it.name.contains(query, true) }
-    }
   }
 
   fun installCatalog(catalog: Catalog) {
@@ -114,17 +97,13 @@ class CatalogsViewModel @Inject constructor(
 
   fun setLanguageChoice(choice: LanguageChoice) {
     state.selectedLanguage = choice
-    state.remoteCatalogs = getRemoteCatalogsForLanguageChoice(
-      state.unfilteredRemoteCatalogs,
-      selectedLanguage
-    )
   }
 
   fun refreshCatalogs() {
     scope.launch {
-      state.refreshingCatalogs = true
+      state.isRefreshing = true
       syncRemoteCatalogs.await(true)
-      state.refreshingCatalogs = false
+      state.isRefreshing = false
     }
   }
 
@@ -169,16 +148,21 @@ class CatalogsViewModel @Inject constructor(
     return languages
   }
 
-  private fun getRemoteCatalogsForLanguageChoice(
-    catalogs: List<CatalogRemote>,
-    choice: LanguageChoice
-  ): List<CatalogRemote> {
+  private fun <T : Catalog> List<T>.filteredByQuery(query: String?): List<T> {
+    return if (query == null) {
+      this
+    } else {
+      filter { it.name.contains(query, true) }
+    }
+  }
+
+  private fun List<CatalogRemote>.filteredByChoice(choice: LanguageChoice): List<CatalogRemote> {
     return when (choice) {
-      LanguageChoice.All -> catalogs
-      is LanguageChoice.One -> catalogs.filter { choice.language.code == it.lang }
+      LanguageChoice.All -> this
+      is LanguageChoice.One -> filter { choice.language.code == it.lang }
       is LanguageChoice.Others -> {
         val codes = choice.languages.map { it.code }
-        catalogs.filter { it.lang in codes }
+        filter { it.lang in codes }
       }
     }
   }

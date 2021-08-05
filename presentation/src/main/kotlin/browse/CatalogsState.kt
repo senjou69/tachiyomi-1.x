@@ -8,6 +8,7 @@
 
 package tachiyomi.ui.browse
 
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.referentialEqualityPolicy
@@ -17,30 +18,42 @@ import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
 
-class CatalogsState {
+@Stable
+interface CatalogsState {
+  val localCatalogs: List<CatalogLocal>
+  val updatableCatalogs: List<CatalogInstalled>
+  val remoteCatalogs: List<CatalogRemote>
+  val languageChoices: List<LanguageChoice>
+  val selectedLanguage: LanguageChoice
+  val installSteps: Map<String, InstallStep>
+  val isRefreshing: Boolean
+  val searchQuery: String?
+}
 
-  var localCatalogs by mutableStateOf(emptyList<CatalogLocal>())
-  var updatableCatalogs by mutableStateOf(emptyList<CatalogInstalled>())
-  var remoteCatalogs by mutableStateOf(emptyList<CatalogRemote>())
-  var languageChoices by mutableStateOf(emptyList<LanguageChoice>())
-  var selectedLanguage by mutableStateOf<LanguageChoice>(LanguageChoice.All)
-  var installSteps by mutableStateOf(emptyMap<String, InstallStep>())
-  var refreshingCatalogs by mutableStateOf(false)
-  var searchQuery by mutableStateOf<String?>(null)
+fun CatalogsState(): CatalogsState {
+  return CatalogsStateImpl()
+}
 
-  var unfilteredUpdatedCatalogs by mutableStateOf(
+class CatalogsStateImpl : CatalogsState {
+  override var localCatalogs by mutableStateOf(emptyList<CatalogLocal>())
+  override var updatableCatalogs by mutableStateOf(emptyList<CatalogInstalled>())
+  override var remoteCatalogs by mutableStateOf(emptyList<CatalogRemote>())
+  override var languageChoices by mutableStateOf(emptyList<LanguageChoice>())
+  override var selectedLanguage by mutableStateOf<LanguageChoice>(LanguageChoice.All)
+  override var installSteps by mutableStateOf(emptyMap<String, InstallStep>())
+  override var isRefreshing by mutableStateOf(false)
+  override var searchQuery by mutableStateOf<String?>(null)
+
+  var allUpdatedCatalogs by mutableStateOf(
     emptyList<CatalogLocal>(),
     referentialEqualityPolicy()
   )
-
-  var unfilteredUpdatableCatalogs by mutableStateOf(
+  var allUpdatableCatalogs by mutableStateOf(
     emptyList<CatalogInstalled>(),
     referentialEqualityPolicy()
   )
-
-  var unfilteredRemoteCatalogs by mutableStateOf(
+  var allRemoteCatalogs by mutableStateOf(
     emptyList<CatalogRemote>(),
     referentialEqualityPolicy()
   )
-
 }
