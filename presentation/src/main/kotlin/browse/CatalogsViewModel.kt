@@ -40,21 +40,21 @@ class CatalogsViewModel @Inject constructor(
   init {
     scope.launch {
       getCatalogsByType.subscribe(excludeRemoteInstalled = true)
-        .collect { (upToDate, updatable, remote) ->
-          state.allUpdatedCatalogs = upToDate
-          state.allUpdatableCatalogs = updatable
+        .collect { (pinned, unpinned, remote) ->
+          state.allPinnedCatalogs = pinned
+          state.allUnpinnedCatalogs = unpinned
           state.allRemoteCatalogs = remote
 
-          state.languageChoices = getLanguageChoices(remote, upToDate + updatable)
+          state.languageChoices = getLanguageChoices(remote, pinned + unpinned)
         }
     }
 
     // Update catalogs whenever the query changes or there's a new update from the backend
-    snapshotFlow { state.allUpdatedCatalogs.filteredByQuery(searchQuery) }
-      .onEach { state.updatedCatalogs = it }
+    snapshotFlow { state.allPinnedCatalogs.filteredByQuery(searchQuery) }
+      .onEach { state.pinnedCatalogs = it }
       .launchIn(scope)
-    snapshotFlow { state.allUpdatableCatalogs.filteredByQuery(searchQuery) }
-      .onEach { state.updatableCatalogs = it }
+    snapshotFlow { state.allUnpinnedCatalogs.filteredByQuery(searchQuery) }
+      .onEach { state.unpinnedCatalogs = it }
       .launchIn(scope)
     snapshotFlow {
       state.allRemoteCatalogs.filteredByQuery(searchQuery).filteredByChoice(selectedLanguage)
@@ -65,7 +65,7 @@ class CatalogsViewModel @Inject constructor(
 
   fun installCatalog(catalog: Catalog) {
     scope.launch {
-      val isUpdate = catalog in updatableCatalogs
+      val isUpdate = catalog is CatalogInstalled
       val (pkgName, flow) = if (isUpdate) {
         catalog as CatalogInstalled
         catalog.pkgName to updateCatalog.await(catalog)

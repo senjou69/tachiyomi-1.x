@@ -9,20 +9,18 @@
 package tachiyomi.ui.browse
 
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.referentialEqualityPolicy
 import androidx.compose.runtime.setValue
-import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
 
 @Stable
 interface CatalogsState {
-  val updatedCatalogs: List<CatalogLocal>
-  val updatableCatalogs: List<CatalogInstalled>
+  val pinnedCatalogs: List<CatalogLocal>
+  val unpinnedCatalogs: List<CatalogLocal>
   val remoteCatalogs: List<CatalogRemote>
   val languageChoices: List<LanguageChoice>
   var selectedLanguage: LanguageChoice
@@ -32,8 +30,6 @@ interface CatalogsState {
   val installSteps: Map<String, InstallStep>
   val isRefreshing: Boolean
   var searchQuery: String?
-  val hasPinnedCatalogs: Boolean
-  val hasInstalledCatalogs: Boolean
 }
 
 fun CatalogsState(): CatalogsState {
@@ -41,8 +37,8 @@ fun CatalogsState(): CatalogsState {
 }
 
 class CatalogsStateImpl : CatalogsState {
-  override var updatedCatalogs by mutableStateOf(emptyList<CatalogLocal>())
-  override var updatableCatalogs by mutableStateOf(emptyList<CatalogInstalled>())
+  override var pinnedCatalogs by mutableStateOf(emptyList<CatalogLocal>())
+  override var unpinnedCatalogs by mutableStateOf(emptyList<CatalogLocal>())
   override var remoteCatalogs by mutableStateOf(emptyList<CatalogRemote>())
   override var languageChoices by mutableStateOf(emptyList<LanguageChoice>())
   override var selectedLanguage by mutableStateOf<LanguageChoice>(LanguageChoice.All)
@@ -53,20 +49,12 @@ class CatalogsStateImpl : CatalogsState {
   override var isRefreshing by mutableStateOf(false)
   override var searchQuery by mutableStateOf<String?>(null)
 
-  override val hasPinnedCatalogs by derivedStateOf {
-    updatedCatalogs.any { it.isPinned } || updatableCatalogs.any { it.isPinned }
-  }
-
-  override val hasInstalledCatalogs by derivedStateOf {
-    updatedCatalogs.any { !it.isPinned } || updatableCatalogs.any { !it.isPinned }
-  }
-
-  var allUpdatedCatalogs by mutableStateOf(
+  var allPinnedCatalogs by mutableStateOf(
     emptyList<CatalogLocal>(),
     referentialEqualityPolicy()
   )
-  var allUpdatableCatalogs by mutableStateOf(
-    emptyList<CatalogInstalled>(),
+  var allUnpinnedCatalogs by mutableStateOf(
+    emptyList<CatalogLocal>(),
     referentialEqualityPolicy()
   )
   var allRemoteCatalogs by mutableStateOf(

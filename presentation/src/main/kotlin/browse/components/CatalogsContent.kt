@@ -10,6 +10,7 @@ package tachiyomi.ui.browse.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import tachiyomi.domain.catalog.model.Catalog
-import tachiyomi.domain.catalog.model.CatalogBundled
+import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.ui.browse.CatalogsState
 
@@ -31,9 +32,23 @@ fun CatalogsContent(
   onClickTogglePinned: (CatalogLocal) -> Unit
 ) {
   val swipeState = rememberSwipeRefreshState(state.isRefreshing)
+
+  val catalogLocalItem: LazyListScope.(CatalogLocal) -> Unit = { catalog ->
+    item(key = catalog.sourceId) {
+      CatalogItem(
+        catalog = catalog,
+        installStep = if (catalog is CatalogInstalled) state.installSteps[catalog.pkgName] else null,
+        onClick = { onClickCatalog(catalog) },
+        onInstall = { onClickInstall(catalog) }.takeIf { catalog.hasUpdate },
+        onUninstall = { onClickUninstall(catalog) }.takeIf { catalog is CatalogInstalled },
+        onPinToggle = { onClickTogglePinned(catalog) }
+      )
+    }
+  }
+
   SwipeRefresh(state = swipeState, onRefresh = onRefreshCatalogs) {
     LazyColumn {
-      if (state.hasPinnedCatalogs) {
+      if (state.pinnedCatalogs.isNotEmpty()) {
         item(key = "h1") {
           CatalogsSection(
             text = "Pinned",
@@ -42,35 +57,12 @@ fun CatalogsContent(
           )
         }
         if (state.expandPinned) {
-          for (catalog in state.updatableCatalogs) {
-            if (catalog.isPinned) {
-              item(key = catalog.sourceId) {
-                CatalogItem(
-                  catalog = catalog,
-                  installStep = state.installSteps[catalog.pkgName],
-                  onClick = { onClickCatalog(catalog) },
-                  onInstall = { onClickInstall(catalog) },
-                  onUninstall = { onClickUninstall(catalog) },
-                  onPinToggle = { onClickTogglePinned(catalog) }
-                )
-              }
-            }
-          }
-          for (catalog in state.updatedCatalogs) {
-            if (catalog.isPinned) {
-              item(key = catalog.sourceId) {
-                CatalogItem(
-                  catalog = catalog,
-                  onClick = { onClickCatalog(catalog) },
-                  onUninstall = { onClickUninstall(catalog) }.takeIf { catalog !is CatalogBundled },
-                  onPinToggle = { onClickTogglePinned(catalog) }
-                )
-              }
-            }
+          for (catalog in state.pinnedCatalogs) {
+            catalogLocalItem(catalog)
           }
         }
       }
-      if (state.hasInstalledCatalogs) {
+      if (state.unpinnedCatalogs.isNotEmpty()) {
         item(key = "h2") {
           CatalogsSection(
             text = "Installed",
@@ -79,31 +71,8 @@ fun CatalogsContent(
           )
         }
         if (state.expandInstalled) {
-          for (catalog in state.updatableCatalogs) {
-            if (!catalog.isPinned) {
-              item(key = catalog.sourceId) {
-                CatalogItem(
-                  catalog = catalog,
-                  installStep = state.installSteps[catalog.pkgName],
-                  onClick = { onClickCatalog(catalog) },
-                  onInstall = { onClickInstall(catalog) },
-                  onUninstall = { onClickUninstall(catalog) },
-                  onPinToggle = { onClickTogglePinned(catalog) }
-                )
-              }
-            }
-          }
-          for (catalog in state.updatedCatalogs) {
-            if (!catalog.isPinned) {
-              item(key = catalog.sourceId) {
-                CatalogItem(
-                  catalog = catalog,
-                  onClick = { onClickCatalog(catalog) },
-                  onUninstall = { onClickUninstall(catalog) }.takeIf { catalog !is CatalogBundled },
-                  onPinToggle = { onClickTogglePinned(catalog) }
-                )
-              }
-            }
+          for (catalog in state.unpinnedCatalogs) {
+            catalogLocalItem(catalog)
           }
         }
       }
