@@ -22,6 +22,7 @@ sealed class CatalogLocal : Catalog() {
   override val sourceId get() = source.id
   abstract val nsfw: Boolean
   abstract val isPinned: Boolean
+  open val hasUpdate: Boolean = false
 }
 
 data class CatalogBundled(
@@ -45,7 +46,8 @@ sealed class CatalogInstalled : CatalogLocal() {
     override val versionName: String,
     override val versionCode: Int,
     override val nsfw: Boolean,
-    override val isPinned: Boolean
+    override val isPinned: Boolean = false,
+    override val hasUpdate: Boolean = false
   ) : CatalogInstalled()
 
   data class Locally(
@@ -56,8 +58,9 @@ sealed class CatalogInstalled : CatalogLocal() {
     override val versionName: String,
     override val versionCode: Int,
     override val nsfw: Boolean,
-    override val isPinned: Boolean,
-    val installDir: File
+    val installDir: File,
+    override val isPinned: Boolean = false,
+    override val hasUpdate: Boolean = false
   ) : CatalogInstalled()
 }
 

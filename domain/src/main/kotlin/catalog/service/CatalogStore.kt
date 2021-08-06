@@ -38,7 +38,10 @@ class CatalogStore @Inject constructor(
   var catalogs = emptyList<CatalogLocal>()
     private set(value) {
       field = value
-      updatableCatalogs = field.filterUpdatable()
+      updatableCatalogs = field.asSequence()
+        .filterIsInstance<CatalogInstalled>()
+        .filter { it.hasUpdate }
+        .toList()
       catalogsBySource = field.associateBy { it.sourceId }
       catalogsFlow.value = field
     }
@@ -80,7 +83,15 @@ class CatalogStore @Inject constructor(
       .onEach {
         remoteCatalogs = it
         synchronized(this@CatalogStore) {
-          catalogs = catalogs // Force an update check
+          catalogs = catalogs.map { catalog ->
+            if (catalog is CatalogInstalled) {
+              val hasUpdate = catalog.checkHasUpdate()
+              if (catalog.hasUpdate != hasUpdate) {
+                return@map catalog.copy(hasUpdate = hasUpdate)
+              }
+            }
+            catalog
+          }
         }
       }
       .launchIn(scope)
@@ -113,23 +124,6 @@ class CatalogStore @Inject constructor(
     }
   }
 
-  private fun List<CatalogLocal>.filterUpdatable(): List<CatalogInstalled> {
-    val catalogs = mutableListOf<CatalogInstalled>()
-    val remoteCatalogs = remoteCatalogs
-    for (installedCatalog in this) {
-      if (installedCatalog !is CatalogInstalled) continue
-
-      val pkgName = installedCatalog.pkgName
-      val remoteCatalog = remoteCatalogs.find { it.pkgName == pkgName } ?: continue
-
-      val hasUpdate = remoteCatalog.versionCode > installedCatalog.versionCode
-      if (hasUpdate) {
-        catalogs.add(installedCatalog)
-      }
-    }
-    return catalogs
-  }
-
   private fun onInstalled(pkgName: String, isLocalInstall: Boolean) {
     scope.launch(Dispatchers.Default) {
       synchronized(this@CatalogStore) {
@@ -146,8 +140,9 @@ class CatalogStore @Inject constructor(
           loader.loadSystemCatalog(pkgName)
         }?.let { catalog ->
           val isPinned = catalog.sourceId.toString() in pinnedCatalogsPreference.get()
-          if (isPinned) {
-            catalog.copy(isPinned = isPinned)
+          val hasUpdate = catalog.checkHasUpdate()
+          if (isPinned || hasUpdate) {
+            catalog.copy(isPinned = isPinned, hasUpdate = hasUpdate)
           } else {
             catalog
           }
@@ -176,11 +171,19 @@ class CatalogStore @Inject constructor(
     }
   }
 
-  private fun CatalogLocal.copy(isPinned: Boolean): CatalogLocal {
+  private fun CatalogInstalled.checkHasUpdate(): Boolean {
+    val remoteCatalog = remoteCatalogs.find { it.pkgName == pkgName } ?: return false
+    return remoteCatalog.versionCode > versionCode
+  }
+
+  private fun CatalogLocal.copy(
+    isPinned: Boolean = this.isPinned,
+    hasUpdate: Boolean = this.hasUpdate
+  ): CatalogLocal {
     return when (this) {
       is CatalogBundled -> copy(isPinned = isPinned)
-      is CatalogInstalled.Locally -> copy(isPinned = isPinned)
-      is CatalogInstalled.SystemWide -> copy(isPinned = isPinned)
+      is CatalogInstalled.Locally -> copy(isPinned = isPinned, hasUpdate = hasUpdate)
+      is CatalogInstalled.SystemWide -> copy(isPinned = isPinned, hasUpdate = hasUpdate)
     }
   }
 

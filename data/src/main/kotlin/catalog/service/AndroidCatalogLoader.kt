@@ -139,7 +139,6 @@ internal class AndroidCatalogLoader @Inject constructor(
       versionName = data.versionName,
       versionCode = data.versionCode,
       nsfw = data.nsfw,
-      isPinned = false, // This value is set by the store
       installDir = file.parentFile!!
     )
   }
@@ -165,8 +164,7 @@ internal class AndroidCatalogLoader @Inject constructor(
       pkgName = pkgName,
       versionName = data.versionName,
       versionCode = data.versionCode,
-      nsfw = data.nsfw,
-      isPinned = false // This value is set by the store
+      nsfw = data.nsfw
     )
   }
 
