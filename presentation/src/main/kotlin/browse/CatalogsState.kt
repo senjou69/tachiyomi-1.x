@@ -9,6 +9,7 @@
 package tachiyomi.ui.browse
 
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.referentialEqualityPolicy
@@ -20,17 +21,19 @@ import tachiyomi.domain.catalog.model.InstallStep
 
 @Stable
 interface CatalogsState {
-  val localCatalogs: List<CatalogLocal>
+  val updatedCatalogs: List<CatalogLocal>
   val updatableCatalogs: List<CatalogInstalled>
   val remoteCatalogs: List<CatalogRemote>
   val languageChoices: List<LanguageChoice>
-  val selectedLanguage: LanguageChoice
+  var selectedLanguage: LanguageChoice
   var expandPinned: Boolean
   var expandInstalled: Boolean
   var expandAvailable: Boolean
   val installSteps: Map<String, InstallStep>
   val isRefreshing: Boolean
-  val searchQuery: String?
+  var searchQuery: String?
+  val hasPinnedCatalogs: Boolean
+  val hasInstalledCatalogs: Boolean
 }
 
 fun CatalogsState(): CatalogsState {
@@ -38,7 +41,7 @@ fun CatalogsState(): CatalogsState {
 }
 
 class CatalogsStateImpl : CatalogsState {
-  override var localCatalogs by mutableStateOf(emptyList<CatalogLocal>())
+  override var updatedCatalogs by mutableStateOf(emptyList<CatalogLocal>())
   override var updatableCatalogs by mutableStateOf(emptyList<CatalogInstalled>())
   override var remoteCatalogs by mutableStateOf(emptyList<CatalogRemote>())
   override var languageChoices by mutableStateOf(emptyList<LanguageChoice>())
@@ -49,6 +52,14 @@ class CatalogsStateImpl : CatalogsState {
   override var installSteps by mutableStateOf(emptyMap<String, InstallStep>())
   override var isRefreshing by mutableStateOf(false)
   override var searchQuery by mutableStateOf<String?>(null)
+
+  override val hasPinnedCatalogs by derivedStateOf {
+    updatedCatalogs.any { it.isPinned } || updatableCatalogs.any { it.isPinned }
+  }
+
+  override val hasInstalledCatalogs by derivedStateOf {
+    updatedCatalogs.any { !it.isPinned } || updatableCatalogs.any { !it.isPinned }
+  }
 
   var allUpdatedCatalogs by mutableStateOf(
     emptyList<CatalogLocal>(),

@@ -26,14 +26,18 @@ fun CatalogsScreen(navController: NavController) {
     topBar = {
       CatalogsToolbar(
         searchQuery = vm.searchQuery,
-        onClickCloseSearch = { vm.closeSearch() },
-        onChangeSearchQuery = { vm.updateQuery(it) }
+        onClickCloseSearch = { vm.searchQuery = null },
+        onChangeSearchQuery = { vm.searchQuery = it }
       )
     }
   ) {
     CatalogsContent(
-      vm = vm,
-      onClickCatalog = { navController.navigate("${Route.BrowseCatalog.id}/${it.sourceId}") }
+      state = vm,
+      onRefreshCatalogs = { vm.refreshCatalogs() },
+      onClickCatalog = { navController.navigate("${Route.BrowseCatalog.id}/${it.sourceId}") },
+      onClickInstall = { vm.installCatalog(it) },
+      onClickUninstall = { vm.uninstallCatalog(it) },
+      onClickTogglePinned = { vm.togglePinnedCatalog(it) }
     )
   }
 }

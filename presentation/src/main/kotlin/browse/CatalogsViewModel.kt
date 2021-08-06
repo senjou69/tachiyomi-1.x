@@ -51,7 +51,7 @@ class CatalogsViewModel @Inject constructor(
 
     // Update catalogs whenever the query changes or there's a new update from the backend
     snapshotFlow { state.allUpdatedCatalogs.filteredByQuery(searchQuery) }
-      .onEach { state.localCatalogs = it }
+      .onEach { state.updatedCatalogs = it }
       .launchIn(scope)
     snapshotFlow { state.allUpdatableCatalogs.filteredByQuery(searchQuery) }
       .onEach { state.updatableCatalogs = it }
@@ -95,24 +95,12 @@ class CatalogsViewModel @Inject constructor(
     }
   }
 
-  fun setLanguageChoice(choice: LanguageChoice) {
-    state.selectedLanguage = choice
-  }
-
   fun refreshCatalogs() {
     scope.launch {
       state.isRefreshing = true
       syncRemoteCatalogs.await(true)
       state.isRefreshing = false
     }
-  }
-
-  fun closeSearch() {
-    state.searchQuery = null
-  }
-
-  fun updateQuery(query: String) {
-    state.searchQuery = query
   }
 
   private fun getLanguageChoices(
