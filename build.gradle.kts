@@ -42,13 +42,12 @@ subprojects {
     useJUnitPlatform()
   }
 
-  @Suppress("DEPRECATION")
   plugins.withType<com.android.build.gradle.BasePlugin> {
     configure<com.android.build.gradle.BaseExtension> {
       compileSdkVersion(Config.compileSdk)
       defaultConfig {
-        minSdkVersion(Config.minSdk)
-        targetSdkVersion(Config.targetSdk)
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
         versionCode(Config.versionCode)
         versionName(Config.versionName)
         ndk {

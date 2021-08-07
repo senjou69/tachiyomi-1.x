@@ -60,7 +60,7 @@ abstract class AppDatabase : RoomDatabase() {
       return Room.databaseBuilder(context, AppDatabase::class.java, "tachiyomi")
         .openHelperFactory(
           // Support database inspector
-          if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= 26) {
+          if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             FrameworkSQLiteOpenHelperFactory()
           } else {
             RequerySQLiteOpenHelperFactory()
