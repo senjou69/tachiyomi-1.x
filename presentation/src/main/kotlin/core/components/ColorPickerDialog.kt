@@ -65,9 +65,11 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.PointerInputScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import tachiyomi.ui.R
 import kotlin.math.round
 
 @Composable
@@ -107,13 +109,18 @@ fun ColorPickerDialog(
         TextButton(onClick = {
           showPresets = !showPresets
         }) {
-          Text(if (showPresets) "Custom" else "Presets")
+          Text(
+            stringResource(
+              if (showPresets) R.string.color_picker_custom else R.string
+                .color_picker_presets
+            )
+          )
         }
         Spacer(Modifier.weight(1f))
         TextButton(onClick = {
           onSelected(currentColor)
         }) {
-          Text("Select")
+          Text(stringResource(R.string.action_select))
         }
       }
     }

@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -55,6 +56,7 @@ import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
+import tachiyomi.ui.R
 import tachiyomi.ui.browse.Language
 import tachiyomi.ui.core.components.EmojiText
 import tachiyomi.ui.core.theme.RandomColors
@@ -245,16 +247,21 @@ private fun CatalogMenuButton(
     }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
       DropdownMenuItem(onClick = { /*TODO*/ }) {
-        Text("Details")
+        Text(stringResource(R.string.catalog_details))
       }
       if (onPinToggle != null && catalog is CatalogLocal) {
         DropdownMenuItem(onClick = onPinToggle) {
-          Text(if (!catalog.isPinned) "Pin" else "Unpin")
+          Text(
+            stringResource(
+              if (!catalog.isPinned) R.string.catalog_pin else R.string
+                .catalog_unpin
+            )
+          )
         }
       }
       if (onUninstall != null) {
         DropdownMenuItem(onClick = onUninstall) {
-          Text("Uninstall")
+          Text(stringResource(R.string.catalog_uninstall))
         }
       }
     }

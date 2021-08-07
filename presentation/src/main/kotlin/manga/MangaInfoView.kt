@@ -53,12 +53,14 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowRow
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.source.Source
+import tachiyomi.ui.R
 import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
@@ -181,7 +183,7 @@ fun MangaInfoHeader(
     ) {
       Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(imageVector = Icons.Default.Sync, contentDescription = null)
-        Text("Tracking")
+        Text(stringResource(R.string.tracking_label))
       }
     }
     TextButton(
@@ -191,7 +193,7 @@ fun MangaInfoHeader(
     ) {
       Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Icon(imageVector = Icons.Default.Public, contentDescription = null)
-        Text("WebView")
+        Text(stringResource(R.string.webview_label))
       }
     }
   }
@@ -224,7 +226,7 @@ private fun CollapsedSummary(
         maxLines = 2
       )
       TextButton(onClick = onToggleClick) {
-        Text("More")
+        Text(stringResource(R.string.action_more))
       }
     }
     LazyRow(
@@ -255,7 +257,7 @@ private fun ExpandedSummary(
       onClick = onToggleClick,
       modifier = Modifier.align(Alignment.End)
     ) {
-      Text("Less")
+      Text(stringResource(R.string.action_less))
     }
     FlowRow(
       modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),

@@ -21,8 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import tachiyomi.domain.library.model.Category
+import tachiyomi.ui.R
 
 @Composable
 fun CreateCategoryDialog(
@@ -32,20 +34,20 @@ fun CreateCategoryDialog(
   val (categoryName, setCategoryName) = remember { mutableStateOf("") }
   AlertDialog(
     onDismissRequest = onDismissRequest,
-    title = { Text("Create category") },
+    title = { Text(stringResource(R.string.create_category)) },
     text = {
       OutlinedTextField(value = categoryName, onValueChange = setCategoryName)
     },
     buttons = {
       ButtonsRow {
         TextButton(onClick = onDismissRequest) {
-          Text("Cancel")
+          Text(stringResource(R.string.action_cancel))
         }
         TextButton(onClick = {
           onCreate(categoryName)
           onDismissRequest()
         }) {
-          Text("Create")
+          Text(stringResource(R.string.action_add))
         }
       }
     }
@@ -61,20 +63,20 @@ fun RenameCategoryDialog(
   val (categoryName, setCategoryName) = remember { mutableStateOf(category.name) }
   AlertDialog(
     onDismissRequest = onDismissRequest,
-    title = { Text("Rename category") },
+    title = { Text(stringResource(R.string.rename_category)) },
     text = {
       OutlinedTextField(value = categoryName, onValueChange = setCategoryName)
     },
     buttons = {
       ButtonsRow {
         TextButton(onClick = onDismissRequest) {
-          Text("Cancel")
+          Text(stringResource(R.string.action_cancel))
         }
         TextButton(onClick = {
           onRename(categoryName)
           onDismissRequest()
         }) {
-          Text("Rename")
+          Text(stringResource(R.string.action_edit))
         }
       }
     }
@@ -89,20 +91,20 @@ fun DeleteCategoryDialog(
 ) {
   AlertDialog(
     onDismissRequest = onDismissRequest,
-    title = { Text("Delete category") },
+    title = { Text(stringResource(R.string.delete_category)) },
     text = {
-      Text("Do you wish to delete the category ${category.name}?")
+      Text(stringResource(R.string.delete_category_confirmation, category.name))
     },
     buttons = {
       ButtonsRow {
         TextButton(onClick = onDismissRequest) {
-          Text("No")
+          Text(stringResource(R.string.action_yes))
         }
         TextButton(onClick = {
           onDelete()
           onDismissRequest()
         }) {
-          Text("Yes")
+          Text(stringResource(R.string.action_no))
         }
       }
     }
@@ -112,7 +114,9 @@ fun DeleteCategoryDialog(
 @Composable
 private fun ButtonsRow(buttons: @Composable RowScope.() -> Unit) {
   Row(
-    modifier = Modifier.fillMaxWidth().padding(8.dp),
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(8.dp),
     horizontalArrangement = Arrangement.End,
     content = buttons
   )

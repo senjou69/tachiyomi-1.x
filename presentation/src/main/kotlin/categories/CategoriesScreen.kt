@@ -37,10 +37,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import tachiyomi.domain.library.model.Category
+import tachiyomi.ui.R
 import tachiyomi.ui.categories.CategoriesViewModel.Dialog
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
@@ -53,7 +55,7 @@ fun CategoriesScreen(navController: NavHostController) {
   Scaffold(
     topBar = {
       Toolbar(
-        title = { Text("Categories") },
+        title = { Text(stringResource(R.string.categories_label)) },
         navigationIcon = { BackIconButton(navController) }
       )
     }
@@ -73,9 +75,11 @@ fun CategoriesScreen(navController: NavHostController) {
         }
       }
       ExtendedFloatingActionButton(
-        text = { Text(text = "Add") },
+        text = { Text(stringResource(R.string.action_add)) },
         icon = { Icon(imageVector = Icons.Default.Add, contentDescription = null) },
-        modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+        modifier = Modifier
+          .align(Alignment.BottomEnd)
+          .padding(16.dp),
         onClick = { vm.showCreateDialog() }
       )
     }
@@ -128,7 +132,9 @@ private fun CategoryRow(
         )
         Text(
           text = category.name,
-          modifier = Modifier.weight(1f).padding(end = 16.dp)
+          modifier = Modifier
+            .weight(1f)
+            .padding(end = 16.dp)
         )
       }
       Row(verticalAlignment = Alignment.CenterVertically) {
@@ -157,12 +163,16 @@ private fun CategoryRow(
           }
           Spacer(modifier = Modifier.weight(1f))
           IconButton(onClick = onRename) {
-            Icon(imageVector = Icons.Default.Edit,
-              contentDescription = null)
+            Icon(
+              imageVector = Icons.Default.Edit,
+              contentDescription = null
+            )
           }
           IconButton(onClick = onDelete) {
-            Icon(imageVector = Icons.Default.Delete,
-              contentDescription = null)
+            Icon(
+              imageVector = Icons.Default.Delete,
+              contentDescription = null
+            )
           }
         }
       }

@@ -106,14 +106,14 @@ fun MoreScreen(navController: NavController) {
       }
       item {
         PreferenceRow(
-          title = R.string.download_queue,
+          title = R.string.download_queue_label,
           icon = Icons.Default.GetApp,
           onClick = { navController.navigate(Route.DownloadQueue.id) }
         )
       }
       item {
         PreferenceRow(
-          title = R.string.categories,
+          title = R.string.categories_label,
           icon = Icons.Default.Label,
           onClick = { navController.navigate(Route.Categories.id) }
         )
