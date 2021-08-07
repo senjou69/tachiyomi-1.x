@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -75,7 +76,7 @@ import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainNavHost(startRoute: Route) {
+fun MainNavHost(startRoute: Route): NavHostController {
   val navController = rememberNavController()
   val currentScreen by navController.currentBackStackEntryAsState()
   val currentRoute = currentScreen?.destination?.route
@@ -209,6 +210,8 @@ fun MainNavHost(startRoute: Route) {
       }
     }
   )
+
+  return navController
 }
 
 private enum class TopLevelRoutes(
