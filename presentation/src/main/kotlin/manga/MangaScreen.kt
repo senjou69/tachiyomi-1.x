@@ -99,7 +99,13 @@ fun MangaScreen(
         }
 
         items(vm.chapters) { chapter ->
-          ChapterRow(chapter, false, {})
+          ChapterRow(
+            chapter = chapter,
+            isDownloaded = false,
+            onClick = { navController.navigate("${Route.Reader.id}/${chapter.id}") },
+            onDownloadClick = {},
+            onDeleteClick = {},
+          )
         }
       }
     }

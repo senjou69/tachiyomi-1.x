@@ -75,7 +75,7 @@ fun ChapterRow(
   isDownloaded: Boolean,
   onClick: () -> Unit,
   onDownloadClick: () -> Unit = {},
-  onDeleteClick: () -> Unit = {}
+  onDeleteClick: () -> Unit = {},
 ) {
   Row(
     modifier = Modifier

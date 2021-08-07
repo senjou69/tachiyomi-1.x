@@ -64,6 +64,7 @@ import tachiyomi.ui.more.settings.SettingsReaderScreen
 import tachiyomi.ui.more.settings.SettingsScreen
 import tachiyomi.ui.more.settings.SettingsSecurityScreen
 import tachiyomi.ui.more.settings.SettingsTrackingScreen
+import tachiyomi.ui.reader.ReaderScreen
 import tachiyomi.ui.updates.UpdatesScreen
 import tachiyomi.ui.webview.WebViewScreen
 import java.net.URLDecoder
@@ -98,6 +99,14 @@ fun MainNavHost(startRoute: Route) {
           ) { backStackEntry ->
             val mangaId = backStackEntry.arguments?.getLong("id") as Long
             MangaScreen(navController, mangaId)
+          }
+
+          composable(
+            "${Route.Reader.id}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.LongType })
+          ) { backStackEntry ->
+            val chapterId = backStackEntry.arguments?.getLong("id") as Long
+            ReaderScreen(navController, chapterId)
           }
 
           composable(Route.Updates.id) { UpdatesScreen(navController) }

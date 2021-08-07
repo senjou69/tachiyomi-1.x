@@ -12,6 +12,8 @@ sealed class Route(val id: String) {
   object Library : Route("library")
   object LibraryManga : Route("library/manga")
 
+  object Reader : Route("reader")
+
   object Updates : Route("updates")
 
   object History : Route("history")
