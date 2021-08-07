@@ -19,6 +19,9 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CollectionsBookmark
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material.icons.outlined.CollectionsBookmark
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.History
@@ -182,12 +185,18 @@ fun MainNavHost(startRoute: Route) {
           contentColor = CustomColors.current.onBars,
         ) {
           TopLevelRoutes.values.forEach {
+            val isSelected = currentRoute == it.route.id
             BottomNavigationItem(
-              icon = { Icon(it.icon, contentDescription = null) },
+              icon = {
+                Icon(
+                  if (isSelected) it.selectedIcon else it.unselectedIcon,
+                  contentDescription = null
+                )
+              },
               label = {
                 Text(stringResource(it.text), maxLines = 1, overflow = TextOverflow.Ellipsis)
               },
-              selected = currentRoute == it.route.id,
+              selected = isSelected,
               onClick = {
                 if (currentRoute != it.route.id) {
                   navController.popBackStack(navController.graph.startDestinationId, false)
@@ -202,14 +211,29 @@ fun MainNavHost(startRoute: Route) {
   )
 }
 
-private enum class TopLevelRoutes(val route: Route, val text: Int, val icon: ImageVector) {
-  Library(Route.Library, R.string.library_label, Icons.Outlined.CollectionsBookmark),
-  Updates(Route.Updates, R.string.updates_label, Icons.Outlined.NewReleases),
+private enum class TopLevelRoutes(
+  val route: Route,
+  val text: Int,
+  val selectedIcon: ImageVector,
+  val unselectedIcon: ImageVector = selectedIcon,
+) {
+
+  Library(
+    Route.Library, R.string.library_label, Icons.Default.CollectionsBookmark, Icons
+      .Outlined.CollectionsBookmark
+  ),
+  Updates(
+    Route.Updates,
+    R.string.updates_label,
+    Icons.Default.NewReleases,
+    Icons.Outlined.NewReleases
+  ),
   History(Route.History, R.string.history_label, Icons.Outlined.History),
-  Browse(Route.Browse, R.string.browse_label, Icons.Outlined.Explore),
+  Browse(Route.Browse, R.string.browse_label, Icons.Default.Explore, Icons.Outlined.Explore),
   More(Route.More, R.string.more_label, Icons.Outlined.MoreHoriz);
 
   companion object {
+
     val values = values().toList()
     fun isTopLevelRoute(route: String?): Boolean {
       return route != null && values.any { it.route.id == route }
