@@ -25,7 +25,9 @@ sealed class Route(val id: String) {
   object More : Route("more")
   object Categories : Route("categories")
   object DownloadQueue : Route("download_queue")
+
   object About : Route("about")
+  object Licenses : Route("licenses")
 
   object Settings : Route("settings")
   object SettingsGeneral : Route("settings/general")

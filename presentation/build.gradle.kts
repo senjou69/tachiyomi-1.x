@@ -1,5 +1,6 @@
 plugins {
   id("com.android.library")
+  id("com.mikepenz.aboutlibraries.plugin")
   id("kotlin-android")
   id("kotlin-kapt")
 }
@@ -46,4 +47,6 @@ dependencies {
   implementation(Deps.toothpick.runtime)
   implementation(Deps.toothpick.ktp)
   kapt(Deps.toothpick.compiler)
+
+  implementation(Deps.aboutLibraries.core)
 }

@@ -49,8 +49,9 @@ import tachiyomi.ui.downloads.DownloadQueueScreen
 import tachiyomi.ui.history.HistoryScreen
 import tachiyomi.ui.library.LibraryScreen
 import tachiyomi.ui.manga.MangaScreen
-import tachiyomi.ui.more.AboutScreen
 import tachiyomi.ui.more.MoreScreen
+import tachiyomi.ui.more.about.AboutScreen
+import tachiyomi.ui.more.about.LicensesScreen
 import tachiyomi.ui.more.settings.SettingsAdvancedScreen
 import tachiyomi.ui.more.settings.SettingsAppearance
 import tachiyomi.ui.more.settings.SettingsBackupScreen
@@ -138,7 +139,9 @@ fun MainNavHost(startRoute: Route) {
           composable(Route.More.id) { MoreScreen(navController) }
           composable(Route.Categories.id) { CategoriesScreen(navController) }
           composable(Route.DownloadQueue.id) { DownloadQueueScreen(navController) }
+
           composable(Route.About.id) { AboutScreen(navController) }
+          composable(Route.Licenses.id) { LicensesScreen(navController) }
 
           composable(Route.Settings.id) { SettingsScreen(navController) }
           composable(Route.SettingsGeneral.id) { SettingsGeneralScreen(navController) }

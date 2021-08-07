@@ -24,8 +24,11 @@
   <string name="download_queue">Download queue</string>
   <string name="categories">Categories</string>
   <string name="settings_label">Settings</string>
-  <string name="about_label">About</string>
   <string name="help_label">Help</string>
+
+  <!-- More screen -->
+  <string name="about_label">About</string>
+  <string name="licenses_label">Open source licenses</string>
 
   <!-- Settings screen -->
   <string name="general_label">General</string>

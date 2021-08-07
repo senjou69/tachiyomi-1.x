@@ -97,6 +97,12 @@ object Deps {
     const val compose = "io.coil-kt:coil-compose:$version"
   }
 
+  object aboutLibraries {
+    private const val version = "8.9.1"
+    const val plugin = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$version"
+    const val core = "com.mikepenz:aboutlibraries-core:$version"
+  }
+
   const val mockk = "io.mockk:mockk:1.12.0"
 
   object kotest {

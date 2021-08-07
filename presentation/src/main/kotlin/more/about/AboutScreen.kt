@@ -6,8 +6,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.more
+package tachiyomi.ui.more.about
 
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,8 @@ import androidx.navigation.NavHostController
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.core.prefs.PreferenceRow
+import tachiyomi.ui.main.Route
 
 @Composable
 fun AboutScreen(navController: NavHostController) {
@@ -27,5 +30,13 @@ fun AboutScreen(navController: NavHostController) {
       )
     }
   ) {
+    LazyColumn {
+      item {
+        PreferenceRow(
+          title = R.string.licenses_label,
+          onClick = { navController.navigate(Route.Licenses.id) }
+        )
+      }
+    }
   }
 }
