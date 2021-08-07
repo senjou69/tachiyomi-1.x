@@ -18,6 +18,7 @@
   <string name="lang_all">All</string>
   <string name="lang_others">Others</string>
 
+  <!-- Library -->
   <string name="all_category">All</string>
   <string name="uncategorized_category">Uncategorized</string>
 
@@ -28,7 +29,7 @@
   <string name="unread_label">Unread</string>
   <string name="downloaded_label">Downloaded</string>
   <string name="display_category_tabs">Show category tabs</string>
-  <string name="display_all_category">Show "All" category</string>
+  <string name="display_all_category">Show \"All\" category</string>
   <string name="display_category_numbers">Show number of items</string>
 
   <!-- Manga info screen -->
