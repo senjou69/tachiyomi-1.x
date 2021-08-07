@@ -30,8 +30,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Label
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -164,14 +164,14 @@ private fun CategoryRow(
           Spacer(modifier = Modifier.weight(1f))
           IconButton(onClick = onRename) {
             Icon(
-              imageVector = Icons.Default.Edit,
-              contentDescription = null
+              imageVector = Icons.Outlined.Edit,
+              contentDescription = stringResource(R.string.action_edit),
             )
           }
           IconButton(onClick = onDelete) {
             Icon(
-              imageVector = Icons.Default.Delete,
-              contentDescription = null
+              imageVector = Icons.Outlined.Delete,
+              contentDescription = stringResource(R.string.action_delete),
             )
           }
         }

@@ -19,11 +19,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Book
-import androidx.compose.material.icons.filled.Explore
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.NewReleases
+import androidx.compose.material.icons.outlined.CollectionsBookmark
+import androidx.compose.material.icons.outlined.Explore
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.MoreHoriz
+import androidx.compose.material.icons.outlined.NewReleases
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -203,11 +203,11 @@ fun MainNavHost(startRoute: Route) {
 }
 
 private enum class TopLevelRoutes(val route: Route, val text: Int, val icon: ImageVector) {
-  Library(Route.Library, R.string.library_label, Icons.Default.Book),
-  Updates(Route.Updates, R.string.updates_label, Icons.Default.NewReleases),
-  History(Route.History, R.string.history_label, Icons.Default.History),
-  Browse(Route.Browse, R.string.browse_label, Icons.Default.Explore),
-  More(Route.More, R.string.more_label, Icons.Default.MoreHoriz);
+  Library(Route.Library, R.string.library_label, Icons.Outlined.CollectionsBookmark),
+  Updates(Route.Updates, R.string.updates_label, Icons.Outlined.NewReleases),
+  History(Route.History, R.string.history_label, Icons.Outlined.History),
+  Browse(Route.Browse, R.string.browse_label, Icons.Outlined.Explore),
+  More(Route.More, R.string.more_label, Icons.Outlined.MoreHoriz);
 
   companion object {
     val values = values().toList()

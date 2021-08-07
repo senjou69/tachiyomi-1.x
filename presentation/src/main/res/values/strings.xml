@@ -10,8 +10,9 @@
   <!-- Common actions -->
   <string name="action_add">Add</string>
   <string name="action_select">Select</string>
-  <string name="action_cancel">Cancel</string>
   <string name="action_edit">Edit</string>
+  <string name="action_cancel">Cancel</string>
+  <string name="action_delete">Delete</string>
   <string name="action_yes">Yes</string>
   <string name="action_no">No</string>
 
