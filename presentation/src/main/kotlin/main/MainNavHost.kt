@@ -37,7 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,6 +51,8 @@ import tachiyomi.ui.browse.CatalogsScreen
 import tachiyomi.ui.browse.catalog.CatalogScreen
 import tachiyomi.ui.categories.CategoriesScreen
 import tachiyomi.ui.core.theme.CustomColors
+import tachiyomi.ui.deeplink.DeepLinkScreen
+import tachiyomi.ui.deeplink.handleDeepLinkIntent
 import tachiyomi.ui.downloads.DownloadQueueScreen
 import tachiyomi.ui.history.HistoryScreen
 import tachiyomi.ui.library.LibraryScreen
@@ -78,7 +80,7 @@ import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainNavHost(startRoute: Route): NavHostController {
+fun MainNavHost(startRoute: Route) {
   val navController = rememberNavController()
   val currentScreen by navController.currentBackStackEntryAsState()
   val currentRoute = currentScreen?.destination?.route
@@ -97,6 +99,22 @@ fun MainNavHost(startRoute: Route): NavHostController {
       Box {
         NavHost(navController, startDestination = startRoute.id) {
           // TODO: Have a NavHost per individual top-level route?
+
+          composable(
+            "${Route.DeepLink.id}/{referrer}?data={data}",
+            arguments = listOf(
+              navArgument("referrer") { type = NavType.StringType },
+              navArgument("data") { type = NavType.StringType },
+            ),
+            deepLinks = listOf(navDeepLink {
+              uriPattern = "tachiyomi://deeplink/{referrer}?data={data}"
+            }),
+          ) { backStackEntry ->
+            val referrer = backStackEntry.arguments?.getString("referrer") as String
+            val data = backStackEntry.arguments?.getString("data") as String
+
+            DeepLinkScreen(referrer, data)
+          }
 
           composable(Route.Library.id) { LibraryScreen(navController, requestHideBottomNav) }
           composable(
@@ -220,8 +238,6 @@ fun MainNavHost(startRoute: Route): NavHostController {
       }
     }
   )
-
-  return navController
 }
 
 private enum class TopLevelRoutes(

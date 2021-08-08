@@ -9,6 +9,8 @@
 package tachiyomi.ui.main
 
 sealed class Route(val id: String) {
+  object DeepLink : Route("deeplink")
+
   object Library : Route("library")
   object LibraryManga : Route("library/manga")
 
