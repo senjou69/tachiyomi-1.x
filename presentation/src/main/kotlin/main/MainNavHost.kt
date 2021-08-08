@@ -8,6 +8,7 @@
 
 package tachiyomi.ui.main
 
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
@@ -43,6 +44,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.google.accompanist.insets.navigationBarsPadding
 import tachiyomi.ui.R
 import tachiyomi.ui.browse.CatalogsScreen
@@ -99,7 +101,11 @@ fun MainNavHost(startRoute: Route): NavHostController {
           composable(Route.Library.id) { LibraryScreen(navController, requestHideBottomNav) }
           composable(
             "${Route.LibraryManga.id}/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.LongType })
+            arguments = listOf(navArgument("id") { type = NavType.LongType }),
+            deepLinks = listOf(navDeepLink {
+              action = Intent.ACTION_VIEW
+              uriPattern = "tachiyomi://manga/{id}"
+            }),
           ) { backStackEntry ->
             val mangaId = backStackEntry.arguments?.getLong("id") as Long
             MangaScreen(navController, mangaId)
@@ -107,7 +113,11 @@ fun MainNavHost(startRoute: Route): NavHostController {
 
           composable(
             "${Route.Reader.id}/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.LongType })
+            arguments = listOf(navArgument("id") { type = NavType.LongType }),
+            deepLinks = listOf(navDeepLink {
+              action = Intent.ACTION_VIEW
+              uriPattern = "tachiyomi://chapter/{id}"
+            }),
           ) { backStackEntry ->
             val chapterId = backStackEntry.arguments?.getLong("id") as Long
             ReaderScreen(navController, chapterId)
