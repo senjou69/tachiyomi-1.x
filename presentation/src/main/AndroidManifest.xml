@@ -16,14 +16,6 @@
 
       <intent-filter>
         <action android:name="android.intent.action.VIEW"/>
-
-        <data
-          android:host="manga"
-          android:scheme="tachiyomi" />
-
-        <data
-          android:host="chapter"
-          android:scheme="tachiyomi" />
       </intent-filter>
     </activity>
 
