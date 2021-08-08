@@ -37,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,8 +50,7 @@ import tachiyomi.ui.browse.CatalogsScreen
 import tachiyomi.ui.browse.catalog.CatalogScreen
 import tachiyomi.ui.categories.CategoriesScreen
 import tachiyomi.ui.core.theme.CustomColors
-import tachiyomi.ui.deeplink.DeepLinkScreen
-import tachiyomi.ui.deeplink.handleDeepLinkIntent
+import tachiyomi.ui.deeplink.DeepLinkHandlerScreen
 import tachiyomi.ui.downloads.DownloadQueueScreen
 import tachiyomi.ui.history.HistoryScreen
 import tachiyomi.ui.library.LibraryScreen
@@ -101,19 +99,19 @@ fun MainNavHost(startRoute: Route) {
           // TODO: Have a NavHost per individual top-level route?
 
           composable(
-            "${Route.DeepLink.id}/{referrer}?data={data}",
+            "${Route.DeepLink.id}/{referrer}?url={url}",
             arguments = listOf(
               navArgument("referrer") { type = NavType.StringType },
-              navArgument("data") { type = NavType.StringType },
+              navArgument("url") { type = NavType.StringType },
             ),
             deepLinks = listOf(navDeepLink {
-              uriPattern = "tachiyomi://deeplink/{referrer}?data={data}"
+              uriPattern = "tachiyomi://deeplink/{referrer}?url={url}"
             }),
           ) { backStackEntry ->
             val referrer = backStackEntry.arguments?.getString("referrer") as String
-            val data = backStackEntry.arguments?.getString("data") as String
+            val url = backStackEntry.arguments?.getString("url") as String
 
-            DeepLinkScreen(referrer, data)
+            DeepLinkHandlerScreen(navController, referrer, url)
           }
 
           composable(Route.Library.id) { LibraryScreen(navController, requestHideBottomNav) }

@@ -10,14 +10,14 @@ package tachiyomi.ui.browse
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import tachiyomi.ui.browse.components.CatalogsContent
 import tachiyomi.ui.browse.components.CatalogsToolbar
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.main.Route
 
 @Composable
-fun CatalogsScreen(navController: NavController) {
+fun CatalogsScreen(navController: NavHostController) {
   val vm = viewModel<CatalogsViewModel, CatalogsState>(
     initialState = { CatalogsState() }
   )
