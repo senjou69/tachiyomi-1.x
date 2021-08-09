@@ -26,17 +26,19 @@ import tachiyomi.data.library.db.LibraryDao
 import tachiyomi.data.library.db.MangaCategoryDao
 import tachiyomi.data.manga.db.ChapterDao
 import tachiyomi.data.manga.db.MangaDao
+import tachiyomi.data.updates.db.UpdatesDao
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.library.model.Category
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.domain.library.model.MangaCategory
 import tachiyomi.domain.manga.model.Chapter
 import tachiyomi.domain.manga.model.Manga
+import tachiyomi.domain.updates.model.UpdatesManga
 
 @Database(
   entities = [Manga::class, Chapter::class, Category::class, MangaCategory::class,
     CatalogRemote::class, Download::class],
-  views = [LibraryManga::class],
+  views = [LibraryManga::class, UpdatesManga::class],
   version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -54,6 +56,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract val catalogRemote: CatalogRemoteDao
 
   abstract val download: DownloadDao
+
+  abstract val updates: UpdatesDao
 
   companion object {
     fun build(context: Context): AppDatabase {

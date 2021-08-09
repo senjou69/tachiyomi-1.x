@@ -8,7 +8,6 @@
 
 package tachiyomi.ui.library.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.LocalWindowInsets
@@ -29,6 +27,7 @@ import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.components.MangaListItem
 import tachiyomi.ui.core.components.MangaListItemImage
 import tachiyomi.ui.core.components.MangaListItemTitle
+import tachiyomi.ui.core.components.selectedBackground
 
 @Composable
 fun LibraryMangaList(
@@ -69,7 +68,7 @@ private fun LibraryMangaListItem(
   MangaListItem(
     modifier = Modifier
       .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-      .selectionBackground(isSelected)
+      .selectedBackground(isSelected)
       .requiredHeight(56.dp)
       .padding(horizontal = 16.dp),
   ) {
@@ -86,13 +85,5 @@ private fun LibraryMangaListItem(
       text = manga.title,
     )
     LibraryMangaBadges(unread, downloaded)
-  }
-}
-
-private fun Modifier.selectionBackground(isSelected: Boolean): Modifier = composed {
-  if (isSelected) {
-    background(MaterialTheme.colors.onBackground.copy(alpha = 0.2f))
-  } else {
-    this
   }
 }

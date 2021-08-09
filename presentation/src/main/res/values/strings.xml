@@ -43,6 +43,9 @@
   </plurals>
   <string name="page_progress_num">Page %d</string>
 
+  <!-- Updates screen -->
+  <string name="updates_subtitle">Ch. %1$.1f - %2$s</string>
+
   <!-- History screen -->
   <string name="clear_history">Clear history</string>
 

@@ -26,6 +26,7 @@ import tachiyomi.data.library.service.MangaCategoryRepositoryImpl
 import tachiyomi.data.manga.service.ChapterRepositoryImpl
 import tachiyomi.data.manga.service.MangaRepositoryImpl
 import tachiyomi.data.sync.api.SyncDeviceAndroid
+import tachiyomi.data.updates.service.UpdatesRepositoryImpl
 import tachiyomi.domain.catalog.service.CatalogInstallationChanges
 import tachiyomi.domain.catalog.service.CatalogInstaller
 import tachiyomi.domain.catalog.service.CatalogLoader
@@ -46,6 +47,7 @@ import tachiyomi.domain.manga.service.MangaRepository
 import tachiyomi.domain.sync.api.SyncDevice
 import tachiyomi.domain.sync.service.SyncPreferences
 import tachiyomi.domain.ui.UiPreferences
+import tachiyomi.domain.updates.service.UpdatesRepository
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
 import java.io.File
@@ -106,6 +108,7 @@ fun DataModule(context: Application) = module {
     .toProviderInstance { UiPreferences(AndroidPreferenceStore(context, "ui")) }
     .providesSingleton()
 
+  bind<UpdatesRepository>().toClass<UpdatesRepositoryImpl>().singleton()
 }
 
 private class RoomTransactions @Inject constructor(private val db: AppDatabase) : Transactions {
