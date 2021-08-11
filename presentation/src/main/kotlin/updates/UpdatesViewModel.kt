@@ -1,56 +1,59 @@
 package tachiyomi.ui.updates
 
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import tachiyomi.domain.updates.interactor.GetUpdatesGroupByDate
-import tachiyomi.domain.updates.model.UpdatesManga
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import java.util.Date
 import javax.inject.Inject
+import tachiyomi.domain.updates.model.UpdatesManga as Manga
 
-typealias UpdateMangaByDate = Map.Entry<Date, List<UpdatesManga>>
+typealias UpdateMangaByDate = Map.Entry<Date, List<Manga>>
 
 class UpdatesViewModel @Inject constructor(
+  private val state: UpdatesStateImpl,
   getUpdatesGroupByDate: GetUpdatesGroupByDate
-) : BaseViewModel() {
+) : BaseViewModel(), UpdatesState by state {
 
-  val updatesMap by getUpdatesGroupByDate.subscribeAll().asState(emptyMap())
-
-  var selectedManga = mutableStateListOf<Long>()
-    private set
-  val selectionMode by derivedStateOf { selectedManga.isNotEmpty() }
+  init {
+    scope.launch {
+      getUpdatesGroupByDate
+        .subscribeAll()
+        .collect {
+          state.updates = it
+        }
+    }
+  }
 
   fun unselectAll() {
-    selectedManga.clear()
+    state.selection.clear()
   }
 
   fun selectAll() {
-    val allChapterIds = updatesMap
+    val allChapterIds = state.updates
       .flatMap(UpdateMangaByDate::value)
-      .map(UpdatesManga::chapterId)
-    selectedManga.clear()
-    selectedManga.addAll(allChapterIds)
+      .map(Manga::chapterId)
+    state.selection.clear()
+    state.selection.addAll(allChapterIds)
   }
 
   fun flipSelection() {
-    val notSelectedIds = updatesMap
+    val notSelectedIds = state.updates
       .flatMap(UpdateMangaByDate::value)
-      .map(UpdatesManga::chapterId)
-      .filterNot { id -> id in selectedManga }
-    selectedManga.clear()
-    selectedManga.addAll(notSelectedIds)
+      .map(Manga::chapterId)
+      .filterNot { id -> id in state.selection }
+    state.selection.clear()
+    state.selection.addAll(notSelectedIds)
   }
 
   fun updateLibrary() {
     // TODO
   }
 
-  fun toggleManga(id: Long) {
-    if (id in selectedManga) {
-      selectedManga.remove(id)
-    } else {
-      selectedManga.add(id)
+  fun toggleManga(manga: Manga) {
+    when (val id = manga.chapterId) {
+      in state.selection -> state.selection.remove(id)
+      else -> state.selection.add(id)
     }
   }
 }

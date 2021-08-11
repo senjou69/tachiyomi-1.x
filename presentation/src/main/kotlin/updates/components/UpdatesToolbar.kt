@@ -1,4 +1,4 @@
-package tachiyomi.ui.updates
+package tachiyomi.ui.updates.components
 
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -12,20 +12,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.updates.UpdatesState
 
 @Composable
 fun UpdatesToolbar(
-  selectedManga: List<Long>,
-  selectionMode: Boolean,
+  state: UpdatesState,
   onClickCancelSelection: () -> Unit,
   onClickSelectAll: () -> Unit,
   onClickFlipSelection: () -> Unit,
   onClickRefresh: () -> Unit
 ) {
   when {
-    selectionMode -> {
+    state.hasSelection -> {
       UpdatesSelectionToolbar(
-        selectedManga = selectedManga,
+        selectionSize = state.selection.size,
         onClickCancelSelection = onClickCancelSelection,
         onClickSelectAll = onClickSelectAll,
         onClickInvertSelection = onClickFlipSelection
@@ -41,13 +41,13 @@ fun UpdatesToolbar(
 
 @Composable
 private fun UpdatesSelectionToolbar(
-  selectedManga: List<Long>,
+  selectionSize: Int,
   onClickCancelSelection: () -> Unit,
   onClickSelectAll: () -> Unit,
   onClickInvertSelection: () -> Unit
 ) {
   Toolbar(
-    title = { Text("${selectedManga.size}") },
+    title = { Text("$selectionSize") },
     navigationIcon = {
       IconButton(onClick = onClickCancelSelection) {
         Icon(Icons.Default.Close, contentDescription = null)
