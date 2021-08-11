@@ -103,6 +103,8 @@ object Deps {
     const val core = "com.mikepenz:aboutlibraries-core:$version"
   }
 
+  const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
+
   const val mockk = "io.mockk:mockk:1.12.0"
 
   object kotest {

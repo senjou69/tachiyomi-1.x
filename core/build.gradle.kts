@@ -5,6 +5,8 @@ plugins {
 }
 
 dependencies {
+  "coreLibraryDesugaring"(Deps.desugarJdkLibs)
+
   apiProject(Projects.common)
 
   implementation(Deps.kotlin.coroutines.core)

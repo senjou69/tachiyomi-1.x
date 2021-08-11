@@ -21,6 +21,8 @@ ksp {
 }
 
 dependencies {
+  "coreLibraryDesugaring"(Deps.desugarJdkLibs)
+
   implementationProject(Projects.core)
   implementationProject(Projects.domain)
   implementationProject(Projects.sourceApi)
