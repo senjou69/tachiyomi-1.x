@@ -39,7 +39,7 @@ import tachiyomi.domain.updates.model.UpdatesManga
   entities = [Manga::class, Chapter::class, Category::class, MangaCategory::class,
     CatalogRemote::class, Download::class],
   views = [LibraryManga::class, UpdatesManga::class],
-  version = 1
+  version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -90,8 +90,6 @@ abstract class AppDatabase : RoomDatabase() {
         })
         // TODO test transactions with IO dispatchers
         .setQueryExecutor(Dispatchers.IO.asExecutor())
-        // TODO non destructive migrations
-        .fallbackToDestructiveMigration()
         .build()
     }
   }
