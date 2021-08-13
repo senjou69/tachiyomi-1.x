@@ -39,27 +39,19 @@ fun LibraryScreen(
   LibrarySheetLayout(
     showSheet = vm.showSheet,
     currentPage = vm.sheetPage,
-    onSheetDismissed = { vm.setSheetVisibility(false) },
-    onPageChanged = { vm.setSheetPage(it) }
+    onSheetDismissed = { vm.showSheet = false },
+    onPageChanged = { vm.sheetPage = it }
   ) {
     Box {
       Column {
         LibraryToolbar(
-          selectedCategory = vm.selectedCategory,
-          selectedManga = vm.selectedManga,
+          state = vm,
           showCategoryTabs = vm.showCategoryTabs,
           showCountInCategory = vm.showCountInCategory,
-          selectionMode = vm.selectionMode,
-          searchMode = vm.searchMode,
-          searchQuery = vm.searchQuery,
-          onClickSearch = { vm.openSearch() },
-          onClickFilter = { vm.setSheetVisibility(true) },
           onClickRefresh = { vm.updateLibrary() },
           onClickCloseSelection = { vm.unselectAll() },
-          onClickCloseSearch = { vm.closeSearch() },
           onClickSelectAll = { vm.selectAllInCurrentCategory() },
-          onClickUnselectAll = { vm.flipAllInCurrentCategory() },
-          onChangeSearchQuery = { vm.updateQuery(it) }
+          onClickUnselectAll = { vm.flipAllInCurrentCategory() }
         )
         LibraryContent(
           categories = vm.categories,

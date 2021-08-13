@@ -12,7 +12,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -38,21 +37,13 @@ import javax.inject.Inject
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 class LibraryViewModel @Inject constructor(
-  private val state: LibraryState,
+  private val state: LibraryStateImpl,
   private val getUserCategories: GetUserCategories,
   private val getLibraryCategory: GetLibraryCategory,
   private val setCategoriesForMangas: SetCategoriesForMangas,
   private val libraryPreferences: LibraryPreferences,
   private val updateLibraryCategory: UpdateLibraryCategory
-) : BaseViewModel() {
-
-  val categories get() = state.categories
-  val selectedCategoryIndex get() = state.selectedCategoryIndex
-  val selectedManga: List<Long> get() = state.selectedManga
-  val sheetPage get() = state.sheetPage
-  val searchMode get() = state.searchMode
-  val searchQuery get() = state.searchQuery
-  val showSheet get() = state.showSheet
+) : BaseViewModel(), LibraryState by state {
 
   var lastUsedCategory by libraryPreferences.lastUsedCategory().asState()
   val filters by libraryPreferences.filters().asState()
@@ -60,9 +51,6 @@ class LibraryViewModel @Inject constructor(
   val displayMode by libraryPreferences.displayMode().asState()
   val showCategoryTabs by libraryPreferences.showCategoryTabs().asState()
   val showCountInCategory by libraryPreferences.showCountInCategory().asState()
-
-  val selectionMode by derivedStateOf { selectedManga.isNotEmpty() }
-  val selectedCategory by derivedStateOf { categories.getOrNull(selectedCategoryIndex) }
 
   private val loadedManga = mutableMapOf<Long, List<LibraryManga>>()
 
@@ -103,7 +91,7 @@ class LibraryViewModel @Inject constructor(
 
     return remember(sorting, filters, searchQuery) {
       val query = searchQuery
-      if (query.isBlank()) {
+      if (query.isNullOrBlank()) {
         unfiltered
       } else {
         unfiltered.map { mangas ->
@@ -150,20 +138,6 @@ class LibraryViewModel @Inject constructor(
     state.selectedManga.addAll(toAdd)
   }
 
-  fun openSearch() {
-    state.searchMode = true
-    state.searchQuery = ""
-  }
-
-  fun closeSearch() {
-    state.searchMode = false
-    state.searchQuery = ""
-  }
-
-  fun updateQuery(query: String) {
-    state.searchQuery = query
-  }
-
   fun updateLibrary() {
     // TODO(inorichi): For now it only updates the selected category, not the ones selected for
     //  global updates
@@ -185,14 +159,6 @@ class LibraryViewModel @Inject constructor(
 
   fun deleteDownloadsSelectedManga() {
     // TODO
-  }
-
-  fun setSheetPage(page: Int) {
-    state.sheetPage = page
-  }
-
-  fun setSheetVisibility(visible: Boolean) {
-    state.showSheet = visible
   }
 
 }

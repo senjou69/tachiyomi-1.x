@@ -33,43 +33,36 @@ import tachiyomi.ui.R.string
 import tachiyomi.ui.categories.visibleName
 import tachiyomi.ui.core.components.SearchField
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.library.LibraryState
 
 @Composable
 fun LibraryToolbar(
-  selectedCategory: CategoryWithCount?,
-  selectedManga: List<Long>,
+  state: LibraryState,
   showCategoryTabs: Boolean,
   showCountInCategory: Boolean,
-  selectionMode: Boolean,
-  searchMode: Boolean,
-  searchQuery: String,
-  onClickSearch: () -> Unit,
-  onClickFilter: () -> Unit,
   onClickRefresh: () -> Unit,
   onClickCloseSelection: () -> Unit,
-  onClickCloseSearch: () -> Unit,
   onClickSelectAll: () -> Unit,
-  onClickUnselectAll: () -> Unit,
-  onChangeSearchQuery: (String) -> Unit
+  onClickUnselectAll: () -> Unit
 ) = when {
-  searchMode -> LibrarySearchToolbar(
-    searchQuery = searchQuery,
-    onChangeSearchQuery = onChangeSearchQuery,
-    onClickCloseSearch = onClickCloseSearch,
-    onClickFilter = onClickFilter
+  state.searchQuery != null -> LibrarySearchToolbar(
+    searchQuery = state.searchQuery!!,
+    onChangeSearchQuery = { state.searchQuery = it },
+    onClickCloseSearch = { state.searchQuery = null },
+    onClickFilter = { state.showSheet = true }
   )
-  selectionMode -> LibrarySelectionToolbar(
-    selectedManga = selectedManga,
+  state.selectionMode -> LibrarySelectionToolbar(
+    selectedManga = state.selectedManga,
     onClickCloseSelection = onClickCloseSelection,
     onClickSelectAll = onClickSelectAll,
     onClickUnselectAll = onClickUnselectAll
   )
   else -> LibraryRegularToolbar(
-    selectedCategory = selectedCategory,
+    selectedCategory = state.selectedCategory,
     showCategoryTabs = showCategoryTabs,
     showCountInCategory = showCountInCategory,
-    onClickSearch = onClickSearch,
-    onClickFilter = onClickFilter,
+    onClickSearch = { state.searchQuery = "" },
+    onClickFilter = { state.showSheet = true },
     onClickRefresh = onClickRefresh
   )
 }
