@@ -1,4 +1,12 @@
-package tachiyomi.ui.history
+/*
+ * Copyright (C) 2018 The Tachiyomi Open Source Project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+package tachiyomi.ui.history.components
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.material.Icon
@@ -20,28 +28,23 @@ import androidx.compose.ui.res.stringResource
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.SearchField
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.history.HistoryState
 
 @Composable
 fun HistoryToolbar(
-  searchMode: Boolean,
-  searchQuery: String,
-  onChangeSearchQuery: (String) -> Unit,
-  onClickCloseSearch: () -> Unit,
-  onClickSearch: () -> Unit,
+  state: HistoryState,
   onClickDeleteAll: () -> Unit
 ) {
   when {
-    searchMode -> {
+    state.isSearching -> {
       HistorySearchToolbar(
-        searchQuery = searchQuery,
-        onChangeSearchQuery = onChangeSearchQuery,
-        onClickCloseSearch = onClickCloseSearch,
+        state = state,
         onClickDeleteAll = onClickDeleteAll
       )
     }
     else -> {
       HistoryRegularToolbar(
-        onClickSearch = onClickSearch,
+        state = state,
         onClickDeleteAll = onClickDeleteAll
       )
     }
@@ -50,9 +53,7 @@ fun HistoryToolbar(
 
 @Composable
 fun HistorySearchToolbar(
-  searchQuery: String,
-  onChangeSearchQuery: (String) -> Unit,
-  onClickCloseSearch: () -> Unit,
+  state: HistoryState,
   onClickDeleteAll: () -> Unit
 ) {
   val focusRequester = remember { FocusRequester() }
@@ -62,18 +63,18 @@ fun HistorySearchToolbar(
     title = {
       SearchField(
         modifier = Modifier.focusRequester(focusRequester),
-        query = searchQuery,
-        onChangeQuery = onChangeSearchQuery,
+        query = state.query!!,
+        onChangeQuery = { state.query = it },
         onDone = { focusManager.clearFocus() }
       )
     },
     navigationIcon = {
-      IconButton(onClick = onClickCloseSearch) {
+      IconButton(onClick = { state.query = null }) {
         Icon(Icons.Default.ArrowBack, contentDescription = null)
       }
     },
     actions = {
-      IconButton(onClick = { onChangeSearchQuery("") }) {
+      IconButton(onClick = { state.query = "" }) {
         Icon(Icons.Default.Close, contentDescription = null)
       }
       IconButton(onClick = {
@@ -89,19 +90,19 @@ fun HistorySearchToolbar(
   LaunchedEffect(focusRequester) {
     focusRequester.requestFocus()
   }
-  BackHandler(onBack = onClickCloseSearch)
+  BackHandler(onBack = { state.query = null })
 }
 
 @Composable
 fun HistoryRegularToolbar(
-  onClickSearch: () -> Unit,
+  state: HistoryState,
   onClickDeleteAll: () -> Unit
 ) {
 
   Toolbar(
     title = { Text(stringResource(R.string.history_label)) },
     actions = {
-      IconButton(onClick = onClickSearch) {
+      IconButton(onClick = { state.query = "" }) {
         Icon(Icons.Default.Search, contentDescription = null)
       }
       IconButton(onClick = {

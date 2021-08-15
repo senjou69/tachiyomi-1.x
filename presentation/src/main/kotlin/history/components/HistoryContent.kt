@@ -1,4 +1,12 @@
-package tachiyomi.ui.updates.components
+/*
+ * Copyright (C) 2018 The Tachiyomi Open Source Project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+package tachiyomi.ui.history.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,17 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
+import tachiyomi.domain.history.model.History
+import tachiyomi.domain.manga.model.Chapter
+import tachiyomi.domain.manga.model.Manga
 import tachiyomi.ui.core.components.RelativeTimeText
-import tachiyomi.ui.updates.UpdatesState
-import tachiyomi.domain.updates.model.UpdatesManga as Manga
+import tachiyomi.ui.history.HistoryState
 
 @Composable
-fun UpdatesContent(
-  state: UpdatesState,
+fun HistoryContent(
+  state: HistoryState,
   onClickItem: (Manga) -> Unit,
-  onLongClickItem: (Manga) -> Unit,
-  onClickCover: (Manga) -> Unit,
-  onClickDownload: (Manga) -> Unit
+  onClickDelete: (History) -> Unit,
+  onClickPlay: (Chapter) -> Unit
 ) {
   LazyColumn(
     contentPadding = rememberInsetsPaddingValues(
@@ -30,25 +39,23 @@ fun UpdatesContent(
       additionalTop = 8.dp
     )
   ) {
-    state.updates.forEach { (date, updates) ->
+    state.history.forEach { (date, list) ->
       stickyHeader {
         RelativeTimeText(
           date = date,
           modifier = Modifier
             .background(MaterialTheme.colors.background)
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
         )
       }
 
-      items(updates) { manga ->
-        UpdatesItem(
-          manga = manga,
-          isSelected = manga.chapterId in state.selection,
+      items(list) { item ->
+        HistoryItem(
+          history = item,
           onClickItem = onClickItem,
-          onLongClickItem = onLongClickItem,
-          onClickCover = onClickCover,
-          onClickDownload = onClickDownload
+          onClickDelete = onClickDelete,
+          onClickPlay = onClickPlay
         )
       }
     }

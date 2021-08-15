@@ -19,6 +19,7 @@ import tachiyomi.data.catalog.service.AndroidCatalogInstaller
 import tachiyomi.data.catalog.service.AndroidCatalogLoader
 import tachiyomi.data.catalog.service.CatalogRemoteRepositoryImpl
 import tachiyomi.data.download.service.DownloadRepositoryImpl
+import tachiyomi.data.history.service.HistoryRepositoryImpl
 import tachiyomi.data.library.service.CategoryRepositoryImpl
 import tachiyomi.data.library.service.LibraryRepositoryImpl
 import tachiyomi.data.library.service.LibraryUpdateSchedulerImpl
@@ -36,6 +37,7 @@ import tachiyomi.domain.catalog.service.CatalogRemoteRepository
 import tachiyomi.domain.catalog.service.CatalogStore
 import tachiyomi.domain.download.service.DownloadPreferences
 import tachiyomi.domain.download.service.DownloadRepository
+import tachiyomi.domain.history.service.HistoryRepository
 import tachiyomi.domain.library.service.CategoryRepository
 import tachiyomi.domain.library.service.LibraryCovers
 import tachiyomi.domain.library.service.LibraryPreferences
@@ -109,6 +111,8 @@ fun DataModule(context: Application) = module {
     .providesSingleton()
 
   bind<UpdatesRepository>().toClass<UpdatesRepositoryImpl>().singleton()
+
+  bind<HistoryRepository>().toClass<HistoryRepositoryImpl>().singleton()
 }
 
 private class RoomTransactions @Inject constructor(private val db: AppDatabase) : Transactions {
