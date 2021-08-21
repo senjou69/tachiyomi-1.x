@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "6716584f16698a2197565355c0cc9140",
+    "identityHash": "7b8e3b821eacd83ad436d55d8138eb6f",
     "entities": [
       {
         "tableName": "Manga",
@@ -451,6 +451,39 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "History",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`readAt` INTEGER NOT NULL, `mangaId` INTEGER NOT NULL, `chapterId` INTEGER NOT NULL, PRIMARY KEY(`mangaId`, `chapterId`))",
+        "fields": [
+          {
+            "fieldPath": "readAt",
+            "columnName": "readAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mangaId",
+            "columnName": "mangaId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chapterId",
+            "columnName": "chapterId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "mangaId",
+            "chapterId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [
@@ -465,7 +498,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6716584f16698a2197565355c0cc9140')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7b8e3b821eacd83ad436d55d8138eb6f')"
     ]
   }
 }
