@@ -21,6 +21,7 @@ import tachiyomi.domain.history.model.HistoryWithRelations as History
 interface HistoryState {
 
   val isLoading: Boolean
+  val isEmpty: Boolean
   val history: Map<Date, List<History>>
   val isSearching: Boolean
   var query: String?
@@ -32,7 +33,8 @@ fun HistoryState(): HistoryState {
 
 class HistoryStateImpl : HistoryState {
 
-  override val isLoading: Boolean by derivedStateOf { history.isEmpty() }
+  override var isLoading: Boolean by mutableStateOf(true)
+  override val isEmpty: Boolean by derivedStateOf { history.isEmpty() }
   override var history: Map<Date, List<History>> by mutableStateOf(emptyMap())
   override val isSearching: Boolean by derivedStateOf { query != null }
   override var query: String? by mutableStateOf(null)

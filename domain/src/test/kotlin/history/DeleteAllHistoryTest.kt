@@ -41,5 +41,3 @@ class DeleteAllHistoryTest : StringSpec({
     assertEquals(DeleteAllHistory.Result.Success, interactor.await())
   }
 })
-
-private val history = History(1627906952000, 1, 1)

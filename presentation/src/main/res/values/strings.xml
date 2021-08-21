@@ -104,4 +104,8 @@
   <string name="color_picker_presets">Presets</string>
   <string name="color_picker_custom">Custom</string>
 
+  <!-- Information Text -->
+  <string name="information_no_updates">No recent updates</string>
+  <string name="information_no_history">Nothing read recently</string>
+
 </resources>

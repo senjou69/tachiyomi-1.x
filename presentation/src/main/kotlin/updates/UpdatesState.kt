@@ -13,10 +13,11 @@ import java.util.Date
 @Stable
 interface UpdatesState {
 
+  val isLoading: Boolean
+  val isEmpty: Boolean
   val updates: Map<Date, List<UpdatesManga>>
   val selection: List<Long>
   val hasSelection: Boolean
-  val isLoading: Boolean
 }
 
 fun UpdatesState(): UpdatesState {
@@ -25,8 +26,9 @@ fun UpdatesState(): UpdatesState {
 
 class UpdatesStateImpl : UpdatesState {
 
+  override var isLoading: Boolean by mutableStateOf(true)
+  override val isEmpty: Boolean by derivedStateOf { updates.isEmpty() }
   override var updates: Map<Date, List<UpdatesManga>> by mutableStateOf(emptyMap())
   override val selection: SnapshotStateList<Long> = mutableStateListOf()
   override val hasSelection: Boolean by derivedStateOf { selection.isNotEmpty() }
-  override val isLoading: Boolean by derivedStateOf { updates.isEmpty() }
 }

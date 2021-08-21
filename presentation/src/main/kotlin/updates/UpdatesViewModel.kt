@@ -1,6 +1,6 @@
 package tachiyomi.ui.updates
 
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import tachiyomi.domain.updates.interactor.GetUpdatesGroupByDate
 import tachiyomi.ui.core.viewmodel.BaseViewModel
@@ -19,7 +19,8 @@ class UpdatesViewModel @Inject constructor(
     scope.launch {
       getUpdatesGroupByDate
         .subscribeAll()
-        .collect {
+        .collectLatest {
+          state.isLoading = false
           state.updates = it
         }
     }

@@ -11,7 +11,6 @@
 package tachiyomi.domain.history.model
 
 import androidx.room.Entity
-import androidx.room.PrimaryKey
 
 @Entity(primaryKeys = ["mangaId", "chapterId"])
 data class History(

@@ -12,6 +12,8 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import tachiyomi.ui.R
+import tachiyomi.ui.core.components.EmptyScreen
 import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.main.Route
@@ -35,10 +37,11 @@ fun UpdatesScreen(navController: NavController) {
       )
     }
   ) {
-    Crossfade(targetState = vm.isLoading) { isLoading ->
-      when (isLoading) {
-        true -> LoadingScreen()
-        false -> UpdatesContent(
+    Crossfade(targetState = Pair(vm.isLoading, vm.isEmpty)) { (isLoading, isEmpty) ->
+      when {
+        isLoading -> LoadingScreen()
+        isEmpty -> EmptyScreen(R.string.information_no_updates)
+        else -> UpdatesContent(
           state = vm,
           onClickItem = {
             when {

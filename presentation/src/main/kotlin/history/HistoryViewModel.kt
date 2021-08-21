@@ -10,7 +10,6 @@ package tachiyomi.ui.history
 
 import androidx.compose.runtime.snapshotFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,6 +32,7 @@ class HistoryViewModel @Inject constructor(
     scope.launch {
       getHistoryByDate.subscribeAll()
         .collectLatest {
+          state.isLoading = false
           state.allHistory = it
         }
     }
