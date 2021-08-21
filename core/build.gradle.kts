@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-  "coreLibraryDesugaring"(Deps.desugarJdkLibs)
+  coreLibraryDesugaring(Deps.desugarJdkLibs)
 
   apiProject(Projects.common)
 

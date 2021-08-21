@@ -29,13 +29,13 @@ object Deps {
     const val emoji = "androidx.emoji2:emoji2-views:1.0.0-alpha03"
 
     object compose {
-      const val version = "1.0.1"
+      const val version = "1.1.0-alpha02"
       const val compiler = "androidx.compose.compiler:compiler:$version"
       const val ui = "androidx.compose.ui:ui:$version"
       const val material = "androidx.compose.material:material:$version"
       const val icons = "androidx.compose.material:material-icons-extended:$version"
       const val tooling = "androidx.compose.ui:ui-tooling:$version"
-      const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha05"
+      const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha07"
     }
 
     object lifecycle {
@@ -59,7 +59,7 @@ object Deps {
   }
 
   object accompanist {
-    private const val version = "0.16.0"
+    private const val version = "0.17.0"
     const val pager = "com.google.accompanist:accompanist-pager:$version"
     const val pagerIndicator = "com.google.accompanist:accompanist-pager-indicators:$version"
     const val flowlayout = "com.google.accompanist:accompanist-flowlayout:$version"
@@ -81,7 +81,7 @@ object Deps {
 
   const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
   const val quickjs = "app.cash.quickjs:quickjs-android:0.9.1"
-  const val jsoup = "org.jsoup:jsoup:1.13.1"
+  const val jsoup = "org.jsoup:jsoup:1.14.2"
 
   const val flomo = "io.github.erikhuizinga:flomo:0.1.0-beta"
 
