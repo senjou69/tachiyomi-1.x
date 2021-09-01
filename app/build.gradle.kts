@@ -25,6 +25,7 @@ dependencies {
   implementationProject(Projects.data)
   implementationProject(Projects.presentation)
 
+  implementation(Deps.androidx.core)
   implementation(Deps.androidx.emoji)
 
   implementation(Deps.toothpick.runtime)
