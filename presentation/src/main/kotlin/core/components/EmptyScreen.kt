@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -57,7 +58,10 @@ fun EmptyScreen(
       style = MaterialTheme.typography.body2.copy(
         color = LocalContentColor.current.copy(alpha = ContentAlpha.medium)
       ),
-      modifier = Modifier.padding(top = 16.dp)
+      textAlign = TextAlign.Center,
+      modifier = Modifier
+        .padding(top = 16.dp)
+        .padding(horizontal = 16.dp)
     )
   }
 }

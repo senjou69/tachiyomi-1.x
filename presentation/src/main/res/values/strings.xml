@@ -107,5 +107,7 @@
   <!-- Information Text -->
   <string name="information_no_updates">No recent updates</string>
   <string name="information_no_history">Nothing read recently</string>
+  <string name="information_no_categories">You have no categories. Tap the plus button to
+    create one for organizing your library.</string>
 
 </resources>

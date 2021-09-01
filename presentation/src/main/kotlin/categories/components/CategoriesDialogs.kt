@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.categories
+package tachiyomi.ui.categories.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,10 +18,15 @@ import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import tachiyomi.domain.library.model.Category
 import tachiyomi.ui.R
@@ -32,11 +37,17 @@ fun CreateCategoryDialog(
   onCreate: (String) -> Unit
 ) {
   val (categoryName, setCategoryName) = remember { mutableStateOf("") }
+  val focusRequester = remember { FocusRequester() }
   AlertDialog(
     onDismissRequest = onDismissRequest,
     title = { Text(stringResource(R.string.create_category)) },
     text = {
-      OutlinedTextField(value = categoryName, onValueChange = setCategoryName)
+      OutlinedTextField(
+        value = categoryName,
+        onValueChange = setCategoryName,
+        modifier = Modifier
+          .focusRequester(focusRequester)
+      )
     },
     buttons = {
       ButtonsRow {
@@ -52,6 +63,10 @@ fun CreateCategoryDialog(
       }
     }
   )
+  LaunchedEffect(Unit) {
+    // TODO: find a way to also open keyboard
+    focusRequester.requestFocus()
+  }
 }
 
 @Composable
@@ -60,12 +75,26 @@ fun RenameCategoryDialog(
   onDismissRequest: () -> Unit,
   onRename: (String) -> Unit
 ) {
-  val (categoryName, setCategoryName) = remember { mutableStateOf(category.name) }
+  val (textField, setTextField) = remember {
+    mutableStateOf(
+      TextFieldValue(
+        text = category.name, selection =
+        TextRange(category.name.length)
+      )
+    )
+  }
+  val focusRequester = remember { FocusRequester() }
   AlertDialog(
     onDismissRequest = onDismissRequest,
     title = { Text(stringResource(R.string.rename_category)) },
     text = {
-      OutlinedTextField(value = categoryName, onValueChange = setCategoryName)
+      TextFieldValue()
+      OutlinedTextField(
+        value = textField,
+        onValueChange = setTextField,
+        modifier = Modifier
+          .focusRequester(focusRequester)
+      )
     },
     buttons = {
       ButtonsRow {
@@ -73,7 +102,7 @@ fun RenameCategoryDialog(
           Text(stringResource(R.string.action_cancel))
         }
         TextButton(onClick = {
-          onRename(categoryName)
+          onRename(textField.text)
           onDismissRequest()
         }) {
           Text(stringResource(R.string.action_edit))
@@ -81,6 +110,10 @@ fun RenameCategoryDialog(
       }
     }
   )
+  LaunchedEffect(Unit) {
+    // TODO: find a way to also open keyboard
+    focusRequester.requestFocus()
+  }
 }
 
 @Composable
@@ -97,13 +130,13 @@ fun DeleteCategoryDialog(
     },
     buttons = {
       ButtonsRow {
-        TextButton(onClick = onDismissRequest) {
-          Text(stringResource(R.string.action_yes))
-        }
         TextButton(onClick = {
           onDelete()
           onDismissRequest()
         }) {
+          Text(stringResource(R.string.action_yes))
+        }
+        TextButton(onClick = onDismissRequest) {
           Text(stringResource(R.string.action_no))
         }
       }
