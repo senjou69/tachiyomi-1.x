@@ -20,7 +20,7 @@ object Deps {
   }
 
   object androidx {
-    const val core = "androidx.core:core-ktx:1.7.0-alpha01"
+    const val core = "androidx.core:core-ktx:1.7.0-alpha02"
     const val appCompat = "androidx.appcompat:appcompat:1.4.0-alpha03"
     const val browser = "androidx.browser:browser:1.3.0"
     const val webkit = "androidx.webkit:webkit:1.4.0"
@@ -46,7 +46,7 @@ object Deps {
     }
 
     object workManager {
-      private const val version = "2.7.0-alpha05"
+      private const val version = "2.7.0-beta01"
       const val runtime = "androidx.work:work-runtime-ktx:$version"
     }
 
