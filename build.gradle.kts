@@ -4,7 +4,7 @@ buildscript {
     google()
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:7.0.0")
+    classpath("com.android.tools.build:gradle:7.0.1")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Deps.kotlin.version}")
     classpath("org.jetbrains.kotlin:kotlin-serialization:${Deps.kotlin.version}")
     classpath(Deps.aboutLibraries.plugin)
@@ -59,7 +59,6 @@ subprojects {
         sourceCompatibility(JavaVersion.VERSION_1_8)
         targetCompatibility(JavaVersion.VERSION_1_8)
       }
-      sourceSets["main"].java.srcDirs("src/main/kotlin")
     }
   }
 
