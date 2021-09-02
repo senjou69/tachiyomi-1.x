@@ -2,7 +2,7 @@
 object Deps {
 
   object kotlin {
-    const val version = "1.5.21"
+    const val version = "1.5.30"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
 
@@ -29,13 +29,13 @@ object Deps {
     const val emoji = "androidx.emoji2:emoji2-views:1.0.0-alpha03"
 
     object compose {
-      const val version = "1.1.0-alpha02"
+      const val version = "1.1.0-alpha03"
       const val compiler = "androidx.compose.compiler:compiler:$version"
       const val ui = "androidx.compose.ui:ui:$version"
       const val material = "androidx.compose.material:material:$version"
       const val icons = "androidx.compose.material:material-icons-extended:$version"
       const val tooling = "androidx.compose.ui:ui-tooling:$version"
-      const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha07"
+      const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha08"
     }
 
     object lifecycle {
