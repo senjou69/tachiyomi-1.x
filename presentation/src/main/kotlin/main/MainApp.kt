@@ -20,15 +20,15 @@ import javax.inject.Inject
 fun MainApp() {
   val vm = viewModel<MainAppViewModel>()
   AppTheme {
-    MainNavHost(vm.startRoute)
+    MainNavHost(vm.startScreen)
     ConfirmExitBackHandler(vm.confirmExit)
   }
 }
 
-class MainAppViewModel @Inject internal constructor(
+private class MainAppViewModel @Inject constructor(
   uiPrefs: UiPreferences
 ) : BaseViewModel() {
 
-  val startRoute = uiPrefs.startScreen().get()
+  val startScreen = uiPrefs.startScreen().get()
   val confirmExit by uiPrefs.confirmExit().asState()
 }
