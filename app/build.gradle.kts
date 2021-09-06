@@ -15,6 +15,12 @@ android {
       proguardFile(file("proguard-rules.pro"))
     }
   }
+  buildFeatures {
+    compose = true
+  }
+  composeOptions {
+    kotlinCompilerExtensionVersion = Deps.androidx.compose.version
+  }
 }
 
 dependencies {
@@ -27,6 +33,8 @@ dependencies {
 
   implementation(Deps.androidx.core)
   implementation(Deps.androidx.emoji)
+  implementation(Deps.androidx.appCompat)
+  implementation(Deps.androidx.compose.activity)
 
   implementation(Deps.toothpick.runtime)
   implementation(Deps.toothpick.smoothie)

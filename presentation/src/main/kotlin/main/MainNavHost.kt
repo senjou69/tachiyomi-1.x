@@ -45,6 +45,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.google.accompanist.insets.navigationBarsPadding
+import tachiyomi.domain.ui.model.StartScreen
 import tachiyomi.ui.R
 import tachiyomi.ui.browse.CatalogsScreen
 import tachiyomi.ui.browse.catalog.CatalogScreen
@@ -78,7 +79,8 @@ import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainNavHost(startRoute: Route) {
+fun MainNavHost(startScreen: StartScreen) {
+  val startRoute = startScreen.toRoute()
   val navController = rememberNavController()
   val currentScreen by navController.currentBackStackEntryAsState()
   val currentRoute = currentScreen?.destination?.route
@@ -265,5 +267,15 @@ private enum class TopLevelRoutes(
     fun isTopLevelRoute(route: String?): Boolean {
       return route != null && values.any { it.route.id == route }
     }
+  }
+}
+
+private fun StartScreen.toRoute(): Route {
+  return when (this) {
+    StartScreen.Library -> Route.Library
+    StartScreen.Updates -> Route.Updates
+    StartScreen.History -> Route.History
+    StartScreen.Browse -> Route.Browse
+    StartScreen.More -> Route.More
   }
 }

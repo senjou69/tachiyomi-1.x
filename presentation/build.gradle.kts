@@ -24,7 +24,6 @@ dependencies {
   implementationProject(Projects.sourceApi)
   implementationProject(Projects.domain)
 
-  implementation(Deps.androidx.appCompat)
   implementation(Deps.androidx.browser)
   implementation(Deps.androidx.webkit)
   implementation(Deps.androidx.emoji)

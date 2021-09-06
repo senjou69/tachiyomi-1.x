@@ -19,19 +19,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.ui.R
-import tachiyomi.ui.core.prefs.asStateIn
 import tachiyomi.ui.core.util.toast
 
 @Composable
-fun ConfirmExitBackHandler(uiPreferences: UiPreferences) {
+fun ConfirmExitBackHandler(confirmExit: Boolean) {
   val scope = rememberCoroutineScope()
   val context = LocalContext.current
 
-  val confirmExit by uiPreferences.confirmExit().asStateIn(scope)
   var isConfirmingExit by remember { mutableStateOf(false) }
 
+  // Always install the back handler even if the preference is not active because the order of
+  // installation matters and when the setting is enabled it'd be placed at the top, overriding
+  // the navigation back handler.
   BackHandler(enabled = confirmExit && !isConfirmingExit) {
     isConfirmingExit = true
     context.toast(R.string.confirm_exit_message, Toast.LENGTH_LONG)
