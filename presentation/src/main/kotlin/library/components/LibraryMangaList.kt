@@ -39,7 +39,7 @@ fun LibraryMangaList(
   LazyColumn(
     contentPadding = rememberInsetsPaddingValues(
       insets = LocalWindowInsets.current.navigationBars,
-      additionalBottom = 8.dp
+      additionalBottom = 64.dp
     ),
     modifier = Modifier.fillMaxSize()
   ) {

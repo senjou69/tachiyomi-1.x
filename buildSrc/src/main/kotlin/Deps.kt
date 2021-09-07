@@ -60,13 +60,14 @@ object Deps {
   }
 
   object accompanist {
-    private const val version = "0.17.0"
+    private const val version = "0.18.0"
     const val pager = "com.google.accompanist:accompanist-pager:$version"
     const val pagerIndicator = "com.google.accompanist:accompanist-pager-indicators:$version"
     const val flowlayout = "com.google.accompanist:accompanist-flowlayout:$version"
     const val insets = "com.google.accompanist:accompanist-insets:$version"
     const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
+    const val navAnimation = "com.google.accompanist:accompanist-navigation-animation:$version"
   }
 
   const val sqlite = "com.github.requery:sqlite-android:3.36.0"

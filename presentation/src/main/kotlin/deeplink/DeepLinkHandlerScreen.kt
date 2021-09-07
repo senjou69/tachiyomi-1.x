@@ -11,27 +11,35 @@ package tachiyomi.ui.deeplink
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
+import androidx.compose.runtime.LaunchedEffect
 import tachiyomi.source.DeepLink
+import tachiyomi.ui.core.components.BackIconButton
+import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.viewmodel.viewModel
 
 @Composable
 fun DeepLinkHandlerScreen(
-  navController: NavHostController,
   referrer: String,
   url: String,
+  navigateUp: () -> Unit
 ) {
   val vm = viewModel<DeepLinkHandlerViewModel> {}
 
   val deeplink = vm.getDeepLinkResult(referrer, url)
   if (deeplink == null) {
-    navController.popBackStack()
+    LaunchedEffect(Unit) {
+      navigateUp()
+    }
     return
   }
 
   // TODO: actually resolve manga or chapter and navigate there
 
   Column {
+    Toolbar(
+      title = {},
+      navigationIcon = { BackIconButton(navigateUp) }
+    )
     Text("Source: ${deeplink.source.id}")
 
     when (deeplink.link) {

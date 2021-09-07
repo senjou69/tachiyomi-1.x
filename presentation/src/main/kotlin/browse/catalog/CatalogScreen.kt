@@ -39,7 +39,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.ui.core.coil.MangaCover
@@ -49,10 +48,13 @@ import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.util.Typefaces
 import tachiyomi.ui.core.viewmodel.viewModel
-import tachiyomi.ui.main.Route
 
 @Composable
-fun CatalogScreen(navController: NavHostController, sourceId: Long) {
+fun CatalogScreen(
+  sourceId: Long,
+  navigateUp: () -> Unit,
+  openManga: (Long) -> Unit
+) {
   val vm = viewModel<CatalogViewModel> {
     CatalogViewModel.Params(sourceId)
   }
@@ -69,7 +71,7 @@ fun CatalogScreen(navController: NavHostController, sourceId: Long) {
       val title = catalog?.name ?: "Catalog not found"
       Toolbar(
         title = { Text(title) },
-        navigationIcon = { BackIconButton(navController) },
+        navigationIcon = { BackIconButton(navigateUp) },
       )
     }
   ) {
@@ -81,9 +83,7 @@ fun CatalogScreen(navController: NavHostController, sourceId: Long) {
         isLoading = vm.isRefreshing,
         hasNextPage = vm.hasNextPage,
         loadNextPage = { vm.getNextPage() },
-        onClickManga = {
-          navController.navigate("${Route.BrowseCatalogManga.id}/$sourceId/${it.id}")
-        },
+        onClickManga = { openManga(it.id) },
       )
     }
   }

@@ -21,15 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.navigation.NavHostController
 import tachiyomi.ui.core.components.CloseIconButton
 import tachiyomi.ui.core.components.Toolbar
 
 @Composable
 fun WebViewScreen(
-  navController: NavHostController,
   sourceId: Long,
   url: String,
+  navigateUp: () -> Unit
 ) {
   val title by remember { mutableStateOf(url) }
   val context = LocalContext.current
@@ -54,7 +53,7 @@ fun WebViewScreen(
       // TODO: browser actions, swipe to refresh
       Toolbar(
         title = { Text(title) },
-        navigationIcon = { CloseIconButton(navController) },
+        navigationIcon = { CloseIconButton(navigateUp) },
       )
     }
   ) { contentPadding ->

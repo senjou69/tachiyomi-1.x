@@ -14,18 +14,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.library.components.LibraryContent
 import tachiyomi.ui.library.components.LibrarySelectionBar
 import tachiyomi.ui.library.components.LibrarySheetLayout
 import tachiyomi.ui.library.components.LibraryToolbar
-import tachiyomi.ui.main.Route
 
 @Composable
 fun LibraryScreen(
-  navController: NavController,
-  requestHideBottomNav: (Boolean) -> Unit
+  requestHideBottomNav: (Boolean) -> Unit,
+  openManga: (Long) -> Unit
 ) {
   val vm = viewModel<LibraryViewModel, LibraryState>(
     initialState = { LibraryState() },
@@ -64,7 +62,7 @@ fun LibraryScreen(
           getLibraryForPage = { vm.getLibraryForCategoryIndex(it) },
           onClickManga = { manga ->
             if (!vm.selectionMode) {
-              navController.navigate("${Route.LibraryManga.id}/${manga.id}")
+              openManga(manga.id)
             } else {
               vm.toggleManga(manga)
             }

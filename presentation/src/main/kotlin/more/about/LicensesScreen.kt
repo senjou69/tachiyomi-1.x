@@ -27,7 +27,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.entity.Library
 import tachiyomi.ui.R
@@ -36,7 +35,7 @@ import tachiyomi.ui.core.components.Toolbar
 
 @Composable
 fun LicensesScreen(
-  navController: NavHostController,
+  navigateUp: () -> Unit
 ) {
   val libraries = Libs(LocalContext.current).libraries.sortedBy { it.libraryName.lowercase() }
 
@@ -44,7 +43,7 @@ fun LicensesScreen(
     topBar = {
       Toolbar(
         title = { Text(stringResource(R.string.licenses_label)) },
-        navigationIcon = { BackIconButton(navController) },
+        navigationIcon = { BackIconButton(navigateUp) },
       )
     },
   ) {

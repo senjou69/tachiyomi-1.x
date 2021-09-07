@@ -13,20 +13,21 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.PreferenceRow
-import tachiyomi.ui.main.Route
 
 @Composable
-fun AboutScreen(navController: NavHostController) {
+fun AboutScreen(
+  openLicenses: () -> Unit,
+  navigateUp: () -> Unit
+) {
   Scaffold(
     topBar = {
       Toolbar(
         title = { Text(stringResource(R.string.about_label)) },
-        navigationIcon = { BackIconButton(navController) },
+        navigationIcon = { BackIconButton(navigateUp) },
       )
     }
   ) {
@@ -34,7 +35,7 @@ fun AboutScreen(navController: NavHostController) {
       item {
         PreferenceRow(
           title = R.string.licenses_label,
-          onClick = { navController.navigate(Route.Licenses.id) }
+          onClick = openLicenses
         )
       }
     }

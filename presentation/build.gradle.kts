@@ -41,6 +41,7 @@ dependencies {
   implementation(Deps.accompanist.insets)
   implementation(Deps.accompanist.systemUiController)
   implementation(Deps.accompanist.swipeRefresh)
+  implementation(Deps.accompanist.navAnimation)
 
   implementation(Deps.coil.core)
   implementation(Deps.coil.compose)

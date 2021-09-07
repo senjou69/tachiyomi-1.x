@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -28,14 +27,15 @@ import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.theme.TransparentStatusBar
 import tachiyomi.ui.core.viewmodel.viewModel
-import tachiyomi.ui.main.Route
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
 fun MangaScreen(
-  navController: NavHostController,
-  mangaId: Long
+  mangaId: Long,
+  navigateUp: () -> Unit,
+  openChapter: (Long) -> Unit,
+  openWebView: (Long, String) -> Unit
 ) {
   val vm = viewModel<MangaViewModel> {
     MangaViewModel.Params(mangaId)
@@ -48,7 +48,7 @@ fun MangaScreen(
       Column {
         Toolbar(
           title = {},
-          navigationIcon = { BackIconButton(navController) },
+          navigationIcon = { BackIconButton(navigateUp) },
           contentColor = MaterialTheme.colors.onBackground,
           backgroundColor = Color.Transparent,
           elevation = 0.dp
@@ -63,7 +63,7 @@ fun MangaScreen(
   val onTracking = {}
   val onWebView = {
     val url = URLEncoder.encode(manga.key, StandardCharsets.UTF_8.toString())
-    navController.navigate("${Route.WebView.id}/${manga.sourceId}/$url")
+    openWebView(manga.sourceId, url)
   }
   val onFavorite = { vm.toggleFavorite() }
   val onToggle = { vm.toggleExpandedSummary() }
@@ -83,10 +83,10 @@ fun MangaScreen(
       LazyColumn(modifier = Modifier.fillMaxSize()) {
         item {
           MangaInfoHeader(
-            navController,
             manga,
             vm.source,
             vm.expandedSummary,
+            navigateUp,
             onFavorite,
             onTracking,
             onWebView,
@@ -102,7 +102,7 @@ fun MangaScreen(
           ChapterRow(
             chapter = chapter,
             isDownloaded = false,
-            onClick = { navController.navigate("${Route.Reader.id}/${chapter.id}") },
+            onClick = { openChapter(chapter.id) },
             onDownloadClick = {},
             onDeleteClick = {},
           )

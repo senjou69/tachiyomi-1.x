@@ -18,7 +18,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.StartScreen
 import tachiyomi.ui.R
@@ -74,13 +73,15 @@ class SettingsGeneralViewModel @Inject constructor(
 }
 
 @Composable
-fun SettingsGeneralScreen(navController: NavHostController) {
+fun SettingsGeneralScreen(
+  navigateUp: () -> Unit
+) {
   val vm = viewModel<SettingsGeneralViewModel>()
   val context = LocalContext.current
   Column {
     Toolbar(
       title = { Text(stringResource(R.string.general_label)) },
-      navigationIcon = { BackIconButton(navController) }
+      navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {
       item {

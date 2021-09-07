@@ -10,11 +10,9 @@ package tachiyomi.ui.reader
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 
 @Composable
 fun ReaderScreen(
-  navController: NavHostController,
   chapterId: Long
 ) {
   Text("Chapter ID: $chapterId")

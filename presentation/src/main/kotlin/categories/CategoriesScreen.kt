@@ -13,7 +13,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import tachiyomi.ui.R
 import tachiyomi.ui.categories.CategoriesViewModel.Dialog
 import tachiyomi.ui.categories.components.CategoriesContent
@@ -27,7 +26,9 @@ import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.viewmodel.viewModel
 
 @Composable
-fun CategoriesScreen(navController: NavHostController) {
+fun CategoriesScreen(
+  navigateUp: () -> Unit
+) {
   val vm = viewModel<CategoriesViewModel, CategoriesState>(
     initialState = {
       CategoriesState()
@@ -38,7 +39,7 @@ fun CategoriesScreen(navController: NavHostController) {
     topBar = {
       Toolbar(
         title = { Text(stringResource(R.string.categories_label)) },
-        navigationIcon = { BackIconButton(navController) }
+        navigationIcon = { BackIconButton(navigateUp) }
       )
     }
   ) {

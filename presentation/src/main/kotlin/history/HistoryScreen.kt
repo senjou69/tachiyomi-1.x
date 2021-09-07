@@ -11,17 +11,18 @@ package tachiyomi.ui.history
 import androidx.compose.animation.Crossfade
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.EmptyScreen
 import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.history.components.HistoryContent
 import tachiyomi.ui.history.components.HistoryToolbar
-import tachiyomi.ui.main.Route
 
 @Composable
-fun HistoryScreen(navController: NavController) {
+fun HistoryScreen(
+  openChapter: (Long) -> Unit,
+  openManga: (Long) -> Unit
+) {
   val vm = viewModel<HistoryViewModel, HistoryState>(
     initialState = { HistoryState() }
   )
@@ -40,9 +41,9 @@ fun HistoryScreen(navController: NavController) {
         isEmpty -> EmptyScreen(R.string.information_no_history)
         else -> HistoryContent(
           state = vm,
-          onClickItem = { navController.navigate("${Route.LibraryManga.id}/${it.id}") },
+          onClickItem = { openManga(it.id) },
           onClickDelete = { vm.delete(it) },
-          onClickPlay = { navController.navigate("${Route.Reader.id}/${it.id}") }
+          onClickPlay = { openChapter(it.id) }
         )
       }
     }

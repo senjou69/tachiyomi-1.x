@@ -13,17 +13,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 
 @Composable
-fun SettingsBackupScreen(navController: NavHostController) {
+fun SettingsBackupScreen(
+  navigateUp: () -> Unit
+) {
   Column {
     Toolbar(
       title = { Text(stringResource(R.string.backup_label)) },
-      navigationIcon = { BackIconButton(navController) }
+      navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {
     }

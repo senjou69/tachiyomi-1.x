@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import tachiyomi.domain.library.service.LibraryPreferences
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
@@ -31,13 +30,15 @@ class SettingsLibraryViewModel @Inject constructor(
 }
 
 @Composable
-fun SettingsLibraryScreen(navController: NavHostController) {
+fun SettingsLibraryScreen(
+  navigateUp: () -> Unit
+) {
   val vm = viewModel<SettingsLibraryViewModel>()
 
   Column {
     Toolbar(
       title = { Text(stringResource(R.string.library_label)) },
-      navigationIcon = { BackIconButton(navController) }
+      navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {
       item {

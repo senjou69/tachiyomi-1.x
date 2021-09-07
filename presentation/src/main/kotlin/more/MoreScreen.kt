@@ -34,7 +34,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import androidx.navigation.NavController
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.NoElevationOverlay
@@ -44,7 +43,6 @@ import tachiyomi.ui.core.prefs.SwitchPreference
 import tachiyomi.ui.core.theme.CustomColors
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import tachiyomi.ui.core.viewmodel.viewModel
-import tachiyomi.ui.main.Route
 import javax.inject.Inject
 
 class MoreViewModel @Inject constructor(
@@ -56,7 +54,12 @@ class MoreViewModel @Inject constructor(
 }
 
 @Composable
-fun MoreScreen(navController: NavController) {
+fun MoreScreen(
+  openDownloads: () -> Unit,
+  openCategories: () -> Unit,
+  openSettings: () -> Unit,
+  openAbout: () -> Unit
+) {
   val vm = viewModel<MoreViewModel>()
   val uriHandler = LocalUriHandler.current
 
@@ -108,14 +111,14 @@ fun MoreScreen(navController: NavController) {
         PreferenceRow(
           title = R.string.download_queue_label,
           icon = Icons.Outlined.GetApp,
-          onClick = { navController.navigate(Route.DownloadQueue.id) },
+          onClick = openDownloads,
         )
       }
       item {
         PreferenceRow(
           title = R.string.categories_label,
           icon = Icons.Outlined.Label,
-          onClick = { navController.navigate(Route.Categories.id) },
+          onClick = openCategories,
         )
       }
       item {
@@ -125,14 +128,14 @@ fun MoreScreen(navController: NavController) {
         PreferenceRow(
           title = R.string.settings_label,
           icon = Icons.Outlined.Settings,
-          onClick = { navController.navigate(Route.Settings.id) },
+          onClick = openSettings,
         )
       }
       item {
         PreferenceRow(
           title = R.string.about_label,
           icon = Icons.Outlined.Info,
-          onClick = { navController.navigate(Route.About.id) },
+          onClick = openAbout,
         )
       }
       item {

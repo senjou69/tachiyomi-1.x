@@ -58,7 +58,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowRow
 import tachiyomi.domain.manga.model.Manga
@@ -71,10 +70,10 @@ import tachiyomi.ui.core.components.Toolbar
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MangaInfoHeader(
-  navController: NavHostController,
   manga: Manga,
   source: Source?,
   expandedSummary: Boolean,
+  navigateUp: () -> Unit,
   onFavorite: () -> Unit,
   onTracking: () -> Unit,
   onWebView: () -> Unit,
@@ -122,7 +121,7 @@ fun MangaInfoHeader(
     Column {
       Toolbar(
         title = {},
-        navigationIcon = { BackIconButton(navController) },
+        navigationIcon = { BackIconButton(navigateUp) },
         contentColor = MaterialTheme.colors.onBackground,
         backgroundColor = Color.Transparent,
         elevation = 0.dp

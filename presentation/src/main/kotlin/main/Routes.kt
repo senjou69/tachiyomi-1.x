@@ -8,41 +8,60 @@
 
 package tachiyomi.ui.main
 
-sealed class Route(val id: String) {
-  object DeepLink : Route("deeplink")
+sealed class TopScreen(val route: String) {
+  object Library : TopScreen("library")
+  object Updates : TopScreen("updates")
+  object History : TopScreen("history")
+  object Browse : TopScreen("browse")
+  object More : TopScreen("more")
+}
 
-  object Library : Route("library")
-  object LibraryManga : Route("library/manga")
+sealed class LeafScreen(val route: String) {
+  fun createRoute(root: TopScreen) = "${root.route}/$route"
 
-  object Reader : Route("reader")
+  object DeepLink : LeafScreen("deeplink/{referrer}?url={url}")
 
-  object Updates : Route("updates")
+  object Library : LeafScreen("library")
 
-  object History : Route("history")
+  object Manga : LeafScreen("manga/{mangaId}") {
+    fun createRoute(root: TopScreen, mangaId: Long) = "${root.route}/manga/$mangaId"
+  }
 
-  object Browse : Route("browse")
-  object BrowseCatalog : Route("browse/catalog")
-  object BrowseCatalogManga : Route("browse/catalog/manga")
+  object Reader : LeafScreen("reader/{chapterId}") {
+    fun createRoute(root: TopScreen, chapterId: Long) = "${root.route}/reader/$chapterId"
+  }
 
-  object WebView : Route("webview")
+  object Updates : LeafScreen("updates")
 
-  object More : Route("more")
-  object Categories : Route("categories")
-  object DownloadQueue : Route("download_queue")
+  object History : LeafScreen("history")
 
-  object About : Route("about")
-  object Licenses : Route("licenses")
+  object Browse : LeafScreen("browse")
+  object BrowseCatalog : LeafScreen("browse/{sourceId}") {
+    fun createRoute(root: TopScreen, sourceId: Long) = "${root.route}/browse/$sourceId"
+  }
 
-  object Settings : Route("settings")
-  object SettingsGeneral : Route("settings/general")
-  object SettingsAppearance : Route("settings/appearance")
-  object SettingsLibrary : Route("settings/library")
-  object SettingsReader : Route("settings/reader")
-  object SettingsDownloads : Route("settings/downloads")
-  object SettingsTracking : Route("settings/tracking")
-  object SettingsBrowse : Route("settings/browse")
-  object SettingsBackup : Route("settings/backup")
-  object SettingsSecurity : Route("settings/security")
-  object SettingsParentalControls : Route("settings/parental_controls")
-  object SettingsAdvanced : Route("settings/advanced")
+  object WebView : LeafScreen("webview/{sourceId}/{encodedUrl}") {
+    fun createRoute(root: TopScreen, sourceId: Long, encodedUrl: String) =
+      "${root.route}/webview/$sourceId/$encodedUrl"
+  }
+
+  object More : LeafScreen("more")
+  object Categories : LeafScreen("categories")
+  object DownloadQueue : LeafScreen("download_queue")
+
+  object About : LeafScreen("about")
+  object Licenses : LeafScreen("licenses")
+
+  object Settings : LeafScreen("settings")
+  object SettingsGeneral : LeafScreen("settings/general")
+  object SettingsAppearance : LeafScreen("settings/appearance")
+  object SettingsLibrary : LeafScreen("settings/library")
+  object SettingsReader : LeafScreen("settings/reader")
+  object SettingsDownloads : LeafScreen("settings/downloads")
+  object SettingsTracking : LeafScreen("settings/tracking")
+  object SettingsBrowse : LeafScreen("settings/browse")
+  object SettingsBackup : LeafScreen("settings/backup")
+  object SettingsSecurity : LeafScreen("settings/security")
+  object SettingsParentalControls : LeafScreen("settings/parental_controls")
+  object SettingsAdvanced : LeafScreen("settings/advanced")
 }

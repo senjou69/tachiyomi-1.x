@@ -11,17 +11,18 @@ package tachiyomi.ui.updates
 import androidx.compose.animation.Crossfade
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.EmptyScreen
 import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.viewmodel.viewModel
-import tachiyomi.ui.main.Route
 import tachiyomi.ui.updates.components.UpdatesContent
 import tachiyomi.ui.updates.components.UpdatesToolbar
 
 @Composable
-fun UpdatesScreen(navController: NavController) {
+fun UpdatesScreen(
+  openChapter: (Long) -> Unit,
+  openManga: (Long) -> Unit
+) {
   val vm = viewModel<UpdatesViewModel, UpdatesState>(
     initialState = { UpdatesState() }
   )
@@ -46,11 +47,11 @@ fun UpdatesScreen(navController: NavController) {
           onClickItem = {
             when {
               vm.hasSelection -> vm.toggleManga(it)
-              else -> navController.navigate("${Route.Reader.id}/${it.chapterId}")
+              else -> openChapter(it.chapterId)
             }
           },
           onLongClickItem = { vm.toggleManga(it) },
-          onClickCover = { navController.navigate("${Route.LibraryManga.id}/${it.id}") },
+          onClickCover = { openManga(it.id) },
           onClickDownload = { /* TOOD */ }
         )
       }

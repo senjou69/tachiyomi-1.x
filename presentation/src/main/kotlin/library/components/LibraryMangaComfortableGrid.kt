@@ -55,7 +55,7 @@ fun LibraryMangaComfortableGrid(
   LazyVerticalGrid(
     contentPadding = rememberInsetsPaddingValues(
       insets = LocalWindowInsets.current.navigationBars,
-      additionalBottom = 8.dp
+      additionalBottom = 64.dp
     ),
     cells = cells,
     modifier = Modifier

@@ -35,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.ThemeMode
 import tachiyomi.ui.R
@@ -71,7 +70,9 @@ class ThemesViewModel @Inject constructor(
 }
 
 @Composable
-fun SettingsAppearance(navController: NavHostController) {
+fun SettingsAppearance(
+  navigateUp: () -> Unit
+) {
   val vm = viewModel<ThemesViewModel>()
 
   val activeColors = vm.getActiveColors()
@@ -83,7 +84,7 @@ fun SettingsAppearance(navController: NavHostController) {
   Column {
     Toolbar(
       title = { Text(stringResource(R.string.appearance_label)) },
-      navigationIcon = { BackIconButton(navController) },
+      navigationIcon = { BackIconButton(navigateUp) },
     )
     LazyColumn {
       item {

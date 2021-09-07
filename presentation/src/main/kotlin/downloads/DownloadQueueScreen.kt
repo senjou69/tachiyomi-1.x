@@ -12,18 +12,19 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 
 @Composable
-fun DownloadQueueScreen(navController: NavHostController) {
+fun DownloadQueueScreen(
+  navigateUp: () -> Unit
+) {
   Scaffold(
     topBar = {
       Toolbar(
         title = { Text(stringResource(R.string.download_queue_label)) },
-        navigationIcon = { BackIconButton(navController) },
+        navigationIcon = { BackIconButton(navigateUp) },
       )
     }
   ) {
