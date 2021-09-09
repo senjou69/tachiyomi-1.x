@@ -38,7 +38,7 @@ inline fun <reified VM : BaseViewModel> viewModel(
   crossinline binding: @DisallowComposableCalls () -> Any,
 ): VM {
   val state = remember { binding() }
-  val factory = remember { ViewModelWithStateFactory(state) }
+  val factory = ViewModelWithStateFactory(state)
   return viewModel(VM::class.java, factory)
 }
 
