@@ -33,13 +33,13 @@ fun LibrarySheetLayout(
   LaunchedEffect(showSheet) {
     if (showSheet) {
       sheetState.show()
-    } else if (sheetState.currentValue != Hidden) {
+    } else if (sheetState.isVisible) {
       sheetState.hide()
     }
   }
   // Notify when the sheet has been dismissed
   LaunchedEffect(sheetState) {
-    snapshotFlow { sheetState.currentValue == Hidden }
+    snapshotFlow { !sheetState.isVisible }
       .collect { hide -> if (hide) onSheetDismissed() }
   }
 
