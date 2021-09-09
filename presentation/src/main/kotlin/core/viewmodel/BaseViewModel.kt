@@ -10,8 +10,8 @@ package tachiyomi.ui.core.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -19,12 +19,12 @@ import kotlinx.coroutines.launch
 import tachiyomi.core.prefs.Preference
 import tachiyomi.ui.core.prefs.PreferenceMutableState
 
-abstract class BaseViewModel {
+abstract class BaseViewModel : ViewModel() {
 
-  protected val scope = MainScope()
+  protected val scope
+    get() = viewModelScope
 
-  fun destroy() {
-    scope.cancel()
+  final override fun onCleared() {
     onDestroy()
   }
 
