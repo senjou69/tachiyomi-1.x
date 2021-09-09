@@ -54,6 +54,7 @@ import java.nio.charset.StandardCharsets
 internal fun Navigation(
   navController: NavHostController,
   startScreen: TopScreen,
+  requestHideNavigator: (Boolean) -> Unit,
   modifier: Modifier = Modifier
 ) {
   AnimatedNavHost(
@@ -61,7 +62,7 @@ internal fun Navigation(
     startDestination = startScreen.route,
     modifier = modifier
   ) {
-    addLibraryTopLevel(navController)
+    addLibraryTopLevel(navController, requestHideNavigator)
     addUpdatesTopLevel(navController)
     addHistoryTopLevel(navController)
     addBrowseTopLevel(navController)
@@ -72,14 +73,15 @@ internal fun Navigation(
 
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addLibraryTopLevel(
-  navController: NavController
+  navController: NavController,
+  requestHideNavigator: (Boolean) -> Unit
 ) {
   val topScreen = TopScreen.Library
   navigation(
     route = topScreen.route,
     startDestination = LeafScreen.Library.createRoute(topScreen)
   ) {
-    addLibrary(navController, topScreen)
+    addLibrary(navController, topScreen, requestHideNavigator)
     addManga(navController, topScreen)
     addReader(navController, topScreen)
     addWebView(navController, topScreen)
@@ -167,11 +169,12 @@ private fun NavGraphBuilder.addMoreTopLevel(
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addLibrary(
   navController: NavController,
-  root: TopScreen
+  root: TopScreen,
+  requestHideNavigator: (Boolean) -> Unit
 ) {
   composable(LeafScreen.Library.createRoute(root)) {
     LibraryScreen(
-      requestHideBottomNav = { /* TODO */ },
+      requestHideBottomNav = requestHideNavigator,
       openManga = { mangaId ->
         navController.navigate(LeafScreen.Manga.createRoute(root, mangaId))
       }

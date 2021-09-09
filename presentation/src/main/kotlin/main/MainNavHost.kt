@@ -36,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
@@ -65,7 +66,8 @@ fun MainNavHost(startScreen: StartScreen) {
       Box {
         Navigation(
           navController = navController,
-          startScreen = startRoute
+          startScreen = startRoute,
+          requestHideNavigator = requestHideBottomNav
         )
       }
     },
@@ -94,9 +96,12 @@ fun MainNavHost(startScreen: StartScreen) {
               },
               selected = isSelected,
               onClick = {
-                if (currentRoute != it.screen.route) {
-                  navController.popBackStack(navController.graph.startDestinationId, false)
-                  navController.navigate(it.screen.route)
+                navController.navigate(it.screen.route) {
+                  launchSingleTop = true
+                  restoreState = true
+                  popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                  }
                 }
               },
             )
