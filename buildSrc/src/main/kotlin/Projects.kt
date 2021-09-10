@@ -10,6 +10,7 @@ enum class Projects(val path: String) {
 
   // Core Android modules
   core(":core"),
+  uiCore(":ui-core"),
 
   // Tachiyomi specific Android modules
   `data`(":data"),

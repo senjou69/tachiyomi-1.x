@@ -23,6 +23,7 @@ dependencies {
   implementationProject(Projects.core)
   implementationProject(Projects.sourceApi)
   implementationProject(Projects.domain)
+  implementationProject(Projects.uiCore)
 
   implementation(Deps.androidx.browser)
   implementation(Deps.androidx.webkit)

@@ -118,21 +118,33 @@ fun SettingsAppearance(
       }
       item {
         ColorPreference(
-          preference = activeColors.primaryState, title = "Color primary",
+          preference = activeColors.primaryState,
+          title = "Color primary",
           subtitle = "Displayed most frequently across your app",
+          customText = stringResource(R.string.color_picker_custom),
+          presetsText = stringResource(R.string.color_picker_presets),
+          selectText = stringResource(R.string.action_select),
           unsetColor = MaterialTheme.colors.primary
         )
       }
       item {
         ColorPreference(
-          preference = activeColors.secondaryState, title = "Color secondary",
+          preference = activeColors.secondaryState,
+          title = "Color secondary",
           subtitle = "Accents select parts of the UI",
+          customText = stringResource(R.string.color_picker_custom),
+          presetsText = stringResource(R.string.color_picker_presets),
+          selectText = stringResource(R.string.action_select),
           unsetColor = MaterialTheme.colors.secondary
         )
       }
       item {
         ColorPreference(
-          preference = activeColors.barsState, title = "Toolbar color",
+          preference = activeColors.barsState,
+          title = "Toolbar color",
+          customText = stringResource(R.string.color_picker_custom),
+          presetsText = stringResource(R.string.color_picker_presets),
+          selectText = stringResource(R.string.action_select),
           unsetColor = CustomColors.current.bars
         )
       }

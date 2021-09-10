@@ -209,6 +209,9 @@ fun <Key> ChoicePreference(
 fun ColorPreference(
   preference: PreferenceMutableState<Color>,
   title: String,
+  customText: String,
+  presetsText: String,
+  selectText: String,
   subtitle: String? = null,
   unsetColor: Color = Color.Unspecified
 ) {
@@ -243,6 +246,9 @@ fun ColorPreference(
         preference.value = it
         showDialog = false
       },
+      customText = customText,
+      presetsText = presetsText,
+      selectText = selectText,
       initialColor = initialColor
     )
   }
