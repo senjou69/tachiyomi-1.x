@@ -13,7 +13,6 @@ import tachiyomi.app.initializers.AppInitializers
 import tachiyomi.app.modules.SystemModule
 import tachiyomi.core.CoreModule
 import tachiyomi.data.DataModule
-import tachiyomi.ui.core.di.UiModule
 import toothpick.Toothpick
 import toothpick.configuration.Configuration
 import toothpick.ktp.delegate.inject
@@ -48,8 +47,7 @@ class App : Application() {
         SmoothieApplicationModule(this),
         SystemModule(this),
         CoreModule,
-        DataModule(this),
-        UiModule
+        DataModule(this)
       )
       .inject(this)
   }
