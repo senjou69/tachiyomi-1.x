@@ -12,6 +12,7 @@ package tachiyomi.ui.core.viewmodel
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -63,7 +64,14 @@ private fun <VM : BaseViewModel> viewModel(
   factory: ViewModelProvider.Factory,
   viewModelStoreOwner: ViewModelStoreOwner = checkNotNull(LocalViewModelStoreOwner.current)
 ): VM {
-  return ViewModelProvider(viewModelStoreOwner, factory).get(vmClass)
+  val vm = ViewModelProvider(viewModelStoreOwner, factory).get(vmClass)
+  DisposableEffect(vm) {
+    vm.setActive()
+    onDispose {
+      vm.setInactive()
+    }
+  }
+  return vm
 }
 
 internal class ViewModelFactory : ViewModelProvider.Factory {

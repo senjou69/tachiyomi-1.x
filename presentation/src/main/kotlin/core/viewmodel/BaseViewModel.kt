@@ -12,9 +12,18 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import tachiyomi.core.prefs.Preference
 import tachiyomi.ui.core.prefs.PreferenceMutableState
@@ -23,6 +32,8 @@ abstract class BaseViewModel : ViewModel() {
 
   protected val scope
     get() = viewModelScope
+
+  private val activeScope = MutableStateFlow<CoroutineScope?>(null)
 
   final override fun onCleared() {
     onDestroy()
@@ -47,6 +58,25 @@ abstract class BaseViewModel : ViewModel() {
       collect { state.value = it }
     }
     return state
+  }
+
+  fun <T> Flow<T>.launchWhileActive(): Job {
+    return activeScope
+      .filterNotNull()
+      .onEach { launchIn(it) }
+      .launchIn(scope)
+  }
+
+  internal fun setActive() {
+    val currScope = activeScope.value
+    if (currScope != null) return
+    activeScope.value = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
+  }
+
+  internal fun setInactive() {
+    val currScope = activeScope.value
+    currScope?.cancel()
+    activeScope.value = null
   }
 
 }
