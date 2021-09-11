@@ -25,7 +25,7 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.components.Toolbar
-import tachiyomi.ui.core.theme.TransparentStatusBar
+import tachiyomi.ui.core.components.TransparentStatusBar
 import tachiyomi.ui.core.viewmodel.viewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

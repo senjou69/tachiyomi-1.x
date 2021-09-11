@@ -31,6 +31,7 @@ import kotlinx.coroutines.cancelChildren
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.ThemeMode
 import tachiyomi.ui.core.coil.CoilLoaderFactory
+import tachiyomi.ui.core.components.LocalTransparentStatusBar
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import tachiyomi.ui.core.viewmodel.viewModel
 import javax.inject.Inject

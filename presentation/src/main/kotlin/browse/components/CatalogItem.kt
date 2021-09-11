@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.DropdownMenu
@@ -25,7 +23,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.GetApp
@@ -36,9 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.stringResource
@@ -59,7 +54,7 @@ import tachiyomi.domain.catalog.model.InstallStep
 import tachiyomi.ui.R
 import tachiyomi.ui.browse.Language
 import tachiyomi.ui.core.components.EmojiText
-import tachiyomi.ui.core.theme.RandomColors
+import tachiyomi.ui.core.components.LetterIcon
 import kotlin.math.max
 
 @Composable
@@ -173,18 +168,7 @@ fun CatalogItem(
 private fun CatalogPic(catalog: Catalog, modifier: Modifier = Modifier) {
   when (catalog) {
     is CatalogBundled -> {
-      val letter = catalog.name.take(1)
-      Surface(
-        modifier = modifier,
-        shape = CircleShape, color = RandomColors.get(letter)
-      ) {
-        Text(
-          text = letter,
-          color = Color.White,
-          modifier = Modifier.wrapContentSize(Alignment.Center),
-          style = MaterialTheme.typography.h6
-        )
-      }
+      LetterIcon(catalog.name, modifier)
     }
     else -> {
       Image(
