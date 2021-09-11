@@ -37,9 +37,9 @@ fun MangaScreen(
   openChapter: (Long) -> Unit,
   openWebView: (Long, String) -> Unit
 ) {
-  val vm = viewModel<MangaViewModel> {
-    MangaViewModel.Params(mangaId)
-  }
+  val vm = viewModel<MangaViewModel, MangaViewModel.Params>(
+    initialState = { MangaViewModel.Params(mangaId) }
+  )
 
   val manga = vm.manga
   if (manga == null) {

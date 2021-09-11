@@ -8,9 +8,6 @@
 
 package tachiyomi.ui.core.viewmodel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,18 +16,13 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import tachiyomi.core.prefs.Preference
-import tachiyomi.ui.core.prefs.PreferenceMutableState
 
-abstract class BaseViewModel : ViewModel() {
+actual abstract class BaseViewModel : androidx.lifecycle.ViewModel(), ViewModelMixin {
 
-  protected val scope
+  actual override val scope: CoroutineScope
     get() = viewModelScope
 
   private val activeScope = MutableStateFlow<CoroutineScope?>(null)
@@ -39,25 +31,7 @@ abstract class BaseViewModel : ViewModel() {
     onDestroy()
   }
 
-  open fun onDestroy() {
-  }
-
-  fun <T> Preference<T>.asState() = PreferenceMutableState(this, scope)
-
-  fun <T> Flow<T>.asState(initialValue: T): State<T> {
-    val state = mutableStateOf(initialValue)
-    scope.launch {
-      collect { state.value = it }
-    }
-    return state
-  }
-
-  fun <T> StateFlow<T>.asState(): State<T> {
-    val state = mutableStateOf(value)
-    scope.launch {
-      collect { state.value = it }
-    }
-    return state
+  actual open fun onDestroy() {
   }
 
   fun <T> Flow<T>.launchWhileActive(): Job {

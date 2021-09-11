@@ -2,11 +2,13 @@ buildscript {
   repositories {
     mavenCentral()
     google()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:7.0.1")
+    classpath("com.android.tools.build:gradle:7.0.2")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
     classpath("org.jetbrains.kotlin:kotlin-serialization:${Deps.kotlin.version}")
+    classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build331")
     classpath(Deps.aboutLibraries.plugin)
   }
 }
@@ -19,6 +21,7 @@ allprojects {
   repositories {
     mavenCentral()
     google()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     maven { setUrl("https://jitpack.io") }
     maven { setUrl("https://oss.sonatype.org/content/repositories/snapshots/") }
   }

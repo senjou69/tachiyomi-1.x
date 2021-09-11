@@ -11,7 +11,6 @@
 package tachiyomi.ui.core.viewmodel
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
@@ -29,31 +28,26 @@ import tachiyomi.core.di.close
 import toothpick.ktp.binding.module
 
 @Composable
-inline fun <reified VM : BaseViewModel> viewModel(): VM {
+actual inline fun <reified VM : BaseViewModel> viewModel(): VM {
   val factory = ViewModelFactory()
   return viewModel(VM::class.java, factory)
 }
 
 @Composable
-inline fun <reified VM : BaseViewModel> viewModel(
-  crossinline binding: @DisallowComposableCalls () -> Any,
+actual inline fun <reified VM : BaseViewModel, S : Any> viewModel(
+  noinline initialState: () -> S
 ): VM {
-  val state = remember { binding() }
-  val factory = ViewModelWithStateFactory(state)
+  val state = remember(calculation = initialState)
+  val factory = ViewModelWithStateFactory(state = state)
   return viewModel(VM::class.java, factory)
 }
 
 @Composable
-inline fun <reified VM : BaseViewModel, S : Any> viewModel(
+actual inline fun <reified VM : BaseViewModel, S : Any> viewModel(
   noinline initialState: () -> S,
-  saver: Saver<S, Any>? = null
+  saver: Saver<S, Any>
 ): VM {
-  val state = if (saver != null) {
-    rememberSaveable(init = initialState, saver = saver)
-  } else {
-    remember(calculation = initialState)
-  }
-
+  val state = rememberSaveable(init = initialState, saver = saver)
   val factory = ViewModelWithStateFactory(state = state)
   return viewModel(VM::class.java, factory)
 }

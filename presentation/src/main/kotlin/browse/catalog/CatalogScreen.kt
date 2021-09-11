@@ -55,9 +55,9 @@ fun CatalogScreen(
   navigateUp: () -> Unit,
   openManga: (Long) -> Unit
 ) {
-  val vm = viewModel<CatalogViewModel> {
-    CatalogViewModel.Params(sourceId)
-  }
+  val vm = viewModel<CatalogViewModel, CatalogViewModel.Params>(
+    initialState = { CatalogViewModel.Params(sourceId) }
+  )
 
   DisposableEffect(Unit) {
     vm.getNextPage()

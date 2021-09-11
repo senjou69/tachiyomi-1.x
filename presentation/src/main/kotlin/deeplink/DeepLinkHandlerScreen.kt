@@ -23,7 +23,7 @@ fun DeepLinkHandlerScreen(
   url: String,
   navigateUp: () -> Unit
 ) {
-  val vm = viewModel<DeepLinkHandlerViewModel> {}
+  val vm = viewModel<DeepLinkHandlerViewModel>()
 
   val deeplink = vm.getDeepLinkResult(referrer, url)
   if (deeplink == null) {

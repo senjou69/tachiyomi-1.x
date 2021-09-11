@@ -43,7 +43,6 @@ object Deps {
       private const val version = "2.4.0-alpha03"
       const val common = "androidx.lifecycle:lifecycle-common-java8:$version"
       const val process = "androidx.lifecycle:lifecycle-process:$version"
-      const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
       const val extensions = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
     }
 
