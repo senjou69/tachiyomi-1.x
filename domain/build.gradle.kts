@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-  implementationProject(Projects.common)
+  implementationProject(Projects.core)
   implementationProject(Projects.sourceApi)
 
   implementation(Deps.toothpick.runtime)

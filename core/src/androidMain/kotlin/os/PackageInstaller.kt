@@ -21,7 +21,7 @@ import android.os.SystemClock
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import tachiyomi.common.BuildConfig
+import tachiyomi.core.BuildConfig
 import tachiyomi.core.log.Log
 import java.io.File
 import javax.inject.Inject

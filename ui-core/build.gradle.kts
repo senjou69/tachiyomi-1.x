@@ -21,7 +21,7 @@ kotlin {
         implementation(Deps.toothpick.ktp)
       }
       project.dependencies.apply {
-        implementationProject(Projects.common)
+        implementationProject(Projects.core)
       }
     }
   }

@@ -4,7 +4,7 @@ import org.gradle.kotlin.dsl.project
 @Suppress("EnumEntryName")
 enum class Projects(val path: String) {
   // Core modules
-  common(":common"),
+  core(":core"),
   domain(":domain"),
   sourceApi(":source-api"),
   uiCore(":ui-core"),
