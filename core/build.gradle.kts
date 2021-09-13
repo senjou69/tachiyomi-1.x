@@ -16,10 +16,10 @@ kotlin {
       }
     }
     named("jvmMain") {
-      kotlin.srcDir("src/commonJvmMain/kotlin")
+      kotlin.srcDir("src/sharedJvmMain/kotlin")
     }
     named("androidMain") {
-      kotlin.srcDir("src/commonAndroidMain/kotlin")
+      kotlin.srcDir("src/sharedAndroidMain/kotlin")
       dependencies {
         implementation(Deps.androidx.core)
         implementation(Deps.androidx.lifecycle.process)
