@@ -1,33 +1,36 @@
 plugins {
-  kotlin("jvm")
-  id("kotlin-kapt")
+  kotlin("multiplatform")
   `maven-publish`
   signing
 }
 
-dependencies {
-  api(Deps.kotlin.stdlib)
-  api(Deps.kotlin.coroutines.core)
-  api(Deps.kotlin.serialization.json)
-  api(Deps.okhttp)
-  api(Deps.jsoup)
+kotlin {
+  jvm()
+  sourceSets {
+    named("commonMain") {
+    }
+    named("jvmMain") {
+      kotlin.srcDir("src/commonJvmMain/kotlin")
+      dependencies {
+        api(Deps.kotlin.stdlib)
+        api(Deps.kotlin.coroutines.core)
+        api(Deps.kotlin.serialization.json)
+        api(Deps.okhttp)
+        api(Deps.jsoup)
 
-  implementation(Deps.tinylog.api)
-  implementation(Deps.tinylog.impl)
-  implementation(Deps.toothpick.runtime)
+        implementation(Deps.tinylog.api)
+        implementation(Deps.tinylog.impl)
+        implementation(Deps.toothpick.runtime)
+      }
+    }
+  }
 }
 
 val packageVersion = "1.1"
 
-java {
-  withJavadocJar()
-  withSourcesJar()
-}
-
 publishing {
   publications {
     create<MavenPublication>("publication") {
-      from(components["java"])
       groupId = "org.tachiyomi"
       artifactId = "common"
       version = packageVersion
