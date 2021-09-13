@@ -16,8 +16,10 @@ kotlin {
       }
     }
     named("jvmMain") {
+      kotlin.srcDir("src/commonJvmMain/kotlin")
     }
     named("androidMain") {
+      kotlin.srcDir("src/commonAndroidMain/kotlin")
       dependencies {
         implementation(Deps.androidx.core)
         implementation(Deps.androidx.lifecycle.process)
@@ -30,7 +32,6 @@ kotlin {
     }
     listOf("jvmMain", "androidMain").forEach { name ->
       getByName(name) {
-        kotlin.srcDir("src/commonJvmMain/kotlin")
         dependencies {
           api(Deps.kotlin.stdlib)
           api(Deps.kotlin.coroutines.core)
