@@ -1,26 +1,34 @@
 plugins {
   kotlin("multiplatform")
+  id("com.android.library")
   `maven-publish`
   signing
 }
 
 kotlin {
   jvm()
+  android()
   sourceSets {
     named("commonMain") {
     }
     named("jvmMain") {
-      kotlin.srcDir("src/commonJvmMain/kotlin")
-      dependencies {
-        api(Deps.kotlin.stdlib)
-        api(Deps.kotlin.coroutines.core)
-        api(Deps.kotlin.serialization.json)
-        api(Deps.okhttp)
-        api(Deps.jsoup)
+    }
+    named("androidMain") {
+    }
+    listOf("jvmMain", "androidMain").forEach { name ->
+      getByName(name) {
+        kotlin.srcDir("src/commonJvmMain/kotlin")
+        dependencies {
+          api(Deps.kotlin.stdlib)
+          api(Deps.kotlin.coroutines.core)
+          api(Deps.kotlin.serialization.json)
+          api(Deps.okhttp)
+          api(Deps.jsoup)
 
-        implementation(Deps.tinylog.api)
-        implementation(Deps.tinylog.impl)
-        implementation(Deps.toothpick.runtime)
+          implementation(Deps.tinylog.api)
+          implementation(Deps.tinylog.impl)
+          implementation(Deps.toothpick.runtime)
+        }
       }
     }
   }
