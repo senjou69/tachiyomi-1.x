@@ -3,16 +3,13 @@ import org.gradle.kotlin.dsl.project
 
 @Suppress("EnumEntryName")
 enum class Projects(val path: String) {
-  // Core Java modules
+  // Core modules
   common(":common"),
   domain(":domain"),
   sourceApi(":source-api"),
-
-  // Core Android modules
-  core(":core"),
   uiCore(":ui-core"),
 
-  // Tachiyomi specific Android modules
+  // Tachiyomi specific modules
   `data`(":data"),
   presentation(":presentation"),
   app(":app")

@@ -21,7 +21,7 @@ ksp {
 }
 
 dependencies {
-  implementationProject(Projects.core)
+  implementationProject(Projects.common)
   implementationProject(Projects.domain)
   implementationProject(Projects.sourceApi)
 

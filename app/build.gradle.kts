@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-  implementationProject(Projects.core)
+  implementationProject(Projects.common)
   implementationProject(Projects.domain)
   implementationProject(Projects.data)
   implementationProject(Projects.presentation)

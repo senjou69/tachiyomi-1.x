@@ -1,5 +1,4 @@
 include(":common")
-include(":core")
 include(":domain")
 include(":data")
 include(":ui-core")
