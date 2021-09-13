@@ -62,6 +62,17 @@ subprojects {
         sourceCompatibility(JavaVersion.VERSION_1_8)
         targetCompatibility(JavaVersion.VERSION_1_8)
       }
+      sourceSets {
+        named("main") {
+          val altManifest = file("src/androidMain/AndroidManifest.xml")
+          if (altManifest.exists()) {
+            manifest.srcFile(altManifest.path)
+          }
+        }
+      }
+      dependencies {
+        add("coreLibraryDesugaring", Deps.desugarJdkLibs)
+      }
     }
   }
 

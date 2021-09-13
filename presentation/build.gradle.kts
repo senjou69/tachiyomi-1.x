@@ -18,8 +18,6 @@ android {
 }
 
 dependencies {
-  coreLibraryDesugaring(Deps.desugarJdkLibs)
-
   implementationProject(Projects.core)
   implementationProject(Projects.sourceApi)
   implementationProject(Projects.domain)

@@ -21,17 +21,8 @@ kotlin {
         implementation(Deps.toothpick.ktp)
       }
       project.dependencies.apply {
-        coreLibraryDesugaring(Deps.desugarJdkLibs)
         implementationProject(Projects.core)
       }
-    }
-  }
-}
-
-android {
-  sourceSets {
-    named("main") {
-      manifest.srcFile("src/androidMain/AndroidManifest.xml")
     }
   }
 }
