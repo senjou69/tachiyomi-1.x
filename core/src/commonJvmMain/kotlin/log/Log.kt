@@ -15,7 +15,7 @@ import org.tinylog.format.AdvancedMessageFormatter
 import org.tinylog.provider.ProviderRegistry
 
 @Suppress("unused")
-object Log {
+actual object Log {
 
   private const val STACKTRACE_DEPTH = 2
 
@@ -37,7 +37,7 @@ object Log {
    * @param message
    * Function that produces the message
    */
-  fun verbose(message: () -> String) {
+  actual fun verbose(message: () -> String) {
     if (MINIMUM_LEVEL_COVERS_TRACE) {
       provider.log(STACKTRACE_DEPTH, null, Level.TRACE, null, null, message.asSupplier())
     }
@@ -52,7 +52,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun verbose(message: String, vararg arguments: Any?) {
+  actual fun verbose(message: String, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_TRACE) {
       provider.log(STACKTRACE_DEPTH, null, Level.TRACE, null, formatter, message, *arguments)
     }
@@ -69,7 +69,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun verbose(exception: Throwable, message: String? = null, vararg arguments: Any?) {
+  actual fun verbose(exception: Throwable, message: String?, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_TRACE) {
       provider.log(STACKTRACE_DEPTH, null, Level.TRACE, exception, formatter, message, *arguments)
     }
@@ -82,7 +82,7 @@ object Log {
    * @param message
    * Function that produces the message
    */
-  fun debug(message: () -> String) {
+  actual fun debug(message: () -> String) {
     if (MINIMUM_LEVEL_COVERS_DEBUG) {
       provider.log(STACKTRACE_DEPTH, null, Level.DEBUG, null, null, message.asSupplier())
     }
@@ -97,7 +97,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun debug(message: String, vararg arguments: Any?) {
+  actual fun debug(message: String, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_DEBUG) {
       provider.log(STACKTRACE_DEPTH, null, Level.DEBUG, null, formatter, message, *arguments)
     }
@@ -114,7 +114,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun debug(exception: Throwable, message: String? = null, vararg arguments: Any?) {
+  actual fun debug(exception: Throwable, message: String?, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_DEBUG) {
       provider.log(STACKTRACE_DEPTH, null, Level.DEBUG, exception, formatter, message, *arguments)
     }
@@ -127,7 +127,7 @@ object Log {
    * @param message
    * Function that produces the message
    */
-  fun info(message: () -> String) {
+  actual fun info(message: () -> String) {
     if (MINIMUM_LEVEL_COVERS_INFO) {
       provider.log(STACKTRACE_DEPTH, null, Level.INFO, null, null, message.asSupplier())
     }
@@ -142,7 +142,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun info(message: String, vararg arguments: Any?) {
+  actual fun info(message: String, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_INFO) {
       provider.log(STACKTRACE_DEPTH, null, Level.INFO, null, formatter, message, *arguments)
     }
@@ -159,7 +159,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun info(exception: Throwable, message: String? = null, vararg arguments: Any?) {
+  actual fun info(exception: Throwable, message: String?, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_INFO) {
       provider.log(STACKTRACE_DEPTH, null, Level.INFO, exception, formatter, message, *arguments)
     }
@@ -172,7 +172,7 @@ object Log {
    * @param message
    * Function that produces the message
    */
-  fun warn(message: () -> String) {
+  actual fun warn(message: () -> String) {
     if (MINIMUM_LEVEL_COVERS_WARN) {
       provider.log(STACKTRACE_DEPTH, null, Level.WARN, null, null, message.asSupplier())
     }
@@ -187,7 +187,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun warn(message: String, vararg arguments: Any?) {
+  actual fun warn(message: String, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_WARN) {
       provider.log(STACKTRACE_DEPTH, null, Level.WARN, null, formatter, message, *arguments)
     }
@@ -204,7 +204,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun warn(exception: Throwable, message: String? = null, vararg arguments: Any?) {
+  actual fun warn(exception: Throwable, message: String?, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_WARN) {
       provider.log(STACKTRACE_DEPTH, null, Level.WARN, exception, formatter, message, *arguments)
     }
@@ -217,7 +217,7 @@ object Log {
    * @param message
    * Function that produces the message
    */
-  fun error(message: () -> String) {
+  actual fun error(message: () -> String) {
     if (MINIMUM_LEVEL_COVERS_ERROR) {
       provider.log(STACKTRACE_DEPTH, null, Level.ERROR, null, null, message.asSupplier())
     }
@@ -232,7 +232,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun error(message: String, vararg arguments: Any?) {
+  actual fun error(message: String, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_ERROR) {
       provider.log(STACKTRACE_DEPTH, null, Level.ERROR, null, formatter, message, *arguments)
     }
@@ -249,7 +249,7 @@ object Log {
    * @param arguments
    * Arguments for formatted text message
    */
-  fun error(exception: Throwable, message: String? = null, vararg arguments: Any?) {
+  actual fun error(exception: Throwable, message: String?, vararg arguments: Any?) {
     if (MINIMUM_LEVEL_COVERS_ERROR) {
       provider.log(STACKTRACE_DEPTH, null, Level.ERROR, exception, formatter, message, *arguments)
     }
