@@ -8,5 +8,13 @@
 
 package tachiyomi.core.os
 
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+actual object AppState {
+
+  actual val networkFlow: StateFlow<Boolean> = MutableStateFlow(false)
+
+  actual val foregroundFlow: StateFlow<Boolean> = MutableStateFlow(false)
+
+}

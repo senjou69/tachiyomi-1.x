@@ -21,7 +21,7 @@ import android.os.SystemClock
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import tachiyomi.core.BuildConfig
+import tachiyomi.common.BuildConfig
 import tachiyomi.core.log.Log
 import java.io.File
 import javax.inject.Inject
@@ -32,6 +32,7 @@ class PackageInstaller @Inject constructor(
 
   private val packageInstaller = context.packageManager.packageInstaller
 
+  @Suppress("BlockingMethodInNonBlockingContext")
   suspend fun install(file: File, packageName: String): Boolean {
     return withInstallReceiver { sender ->
       withContext(Dispatchers.IO) {

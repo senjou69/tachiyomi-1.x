@@ -16,7 +16,6 @@ dependencies {
   implementation(Deps.androidx.lifecycle.process)
   implementation(Deps.androidx.lifecycle.extensions)
   implementation(Deps.quickjs)
-  implementation(Deps.flomo)
 
   implementation(Deps.toothpick.runtime)
   implementation(Deps.toothpick.ktp)

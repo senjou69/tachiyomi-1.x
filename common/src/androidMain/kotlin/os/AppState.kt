@@ -8,45 +8,37 @@
 
 package tachiyomi.core.os
 
-import android.app.Application
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import io.github.erikhuizinga.flomo.isNetworkConnectedFlow
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.StateFlow
 import tachiyomi.core.log.Log
-import javax.inject.Inject
 
-class AndroidAppState @Inject constructor(
-  context: Application
-) : AppState, LifecycleObserver {
+@Suppress("ObjectPropertyName")
+actual object AppState : LifecycleObserver {
 
-  override val networkFlow = MutableStateFlow(false)
+  private val _networkFlow = MutableStateFlow(false)
+  actual val networkFlow: StateFlow<Boolean> get() = _networkFlow
 
-  override val foregroundFlow = MutableStateFlow(false)
+  private val _foregroundFlow = MutableStateFlow(false)
+  actual val foregroundFlow: StateFlow<Boolean> get() = _foregroundFlow
 
   init {
     ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-
-    GlobalScope.launch {
-      context.isNetworkConnectedFlow.collect { networkFlow.value = it }
-    }
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_START)
   private fun setForeground() {
     Log.debug("Application now in foreground")
-    foregroundFlow.value = true
+    _foregroundFlow.value = true
   }
 
   @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
   private fun setBackground() {
     Log.debug("Application went to background")
-    foregroundFlow.value = false
+    _foregroundFlow.value = false
   }
 
 }

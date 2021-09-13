@@ -13,7 +13,7 @@ import android.content.SharedPreferences
 /**
  * An implementation of a [CookieStore] backed by a file managed through [SharedPreferences].
  */
-internal class SharedPreferencesCookieStore(
+class SharedPreferencesCookieStore(
   private val sharedPreferences: SharedPreferences
 ) : CookieStore {
 

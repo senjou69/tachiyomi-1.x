@@ -12,7 +12,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import androidx.core.content.FileProvider
-import tachiyomi.core.BuildConfig
+import tachiyomi.common.BuildConfig
 import java.io.File
 
 /**

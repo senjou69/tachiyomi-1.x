@@ -1,6 +1,7 @@
 plugins {
   kotlin("multiplatform")
   id("com.android.library")
+  id("kotlin-kapt")
   `maven-publish`
   signing
 }
@@ -10,10 +11,22 @@ kotlin {
   android()
   sourceSets {
     named("commonMain") {
+      dependencies {
+        implementation(Deps.kotlin.coroutines.core)
+      }
     }
     named("jvmMain") {
     }
     named("androidMain") {
+      dependencies {
+        implementation(Deps.androidx.core)
+        implementation(Deps.androidx.lifecycle.process)
+        implementation(Deps.androidx.dataStore)
+        implementation(Deps.quickjs)
+      }
+      project.dependencies {
+        add("kapt", Deps.toothpick.compiler)
+      }
     }
     listOf("jvmMain", "androidMain").forEach { name ->
       getByName(name) {
@@ -27,7 +40,7 @@ kotlin {
 
           implementation(Deps.tinylog.api)
           implementation(Deps.tinylog.impl)
-          implementation(Deps.toothpick.runtime)
+          implementation(Deps.toothpick.ktp)
         }
       }
     }

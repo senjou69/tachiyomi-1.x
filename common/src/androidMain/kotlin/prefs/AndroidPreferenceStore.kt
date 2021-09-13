@@ -23,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import tachiyomi.core.prefs.AndroidPreference.Object
+import tachiyomi.core.prefs.AndroidPreference.Primitive
 
 /**
  * An implementation of a [PreferenceStore] backed by Androidx [DataStore].
@@ -63,42 +65,42 @@ class AndroidPreferenceStore(
    * Returns a [String] preference for this [key].
    */
   override fun getString(key: String, defaultValue: String): Preference<String> {
-    return AndroidPreference.Primitive(store, scope, stringPreferencesKey(key), defaultValue)
+    return Primitive(store, scope, stringPreferencesKey(key), defaultValue)
   }
 
   /**
    * Returns a [Long] preference for this [key].
    */
   override fun getLong(key: String, defaultValue: Long): Preference<Long> {
-    return AndroidPreference.Primitive(store, scope, longPreferencesKey(key), defaultValue)
+    return Primitive(store, scope, longPreferencesKey(key), defaultValue)
   }
 
   /**
    * Returns an [Int] preference for this [key].
    */
   override fun getInt(key: String, defaultValue: Int): Preference<Int> {
-    return AndroidPreference.Primitive(store, scope, intPreferencesKey(key), defaultValue)
+    return Primitive(store, scope, intPreferencesKey(key), defaultValue)
   }
 
   /**
    * Returns a [Float] preference for this [key].
    */
   override fun getFloat(key: String, defaultValue: Float): Preference<Float> {
-    return AndroidPreference.Primitive(store, scope, floatPreferencesKey(key), defaultValue)
+    return Primitive(store, scope, floatPreferencesKey(key), defaultValue)
   }
 
   /**
    * Returns a [Boolean] preference for this [key].
    */
   override fun getBoolean(key: String, defaultValue: Boolean): Preference<Boolean> {
-    return AndroidPreference.Primitive(store, scope, booleanPreferencesKey(key), defaultValue)
+    return Primitive(store, scope, booleanPreferencesKey(key), defaultValue)
   }
 
   /**
    * Returns a [Set<String>] preference for this [key].
    */
   override fun getStringSet(key: String, defaultValue: Set<String>): Preference<Set<String>> {
-    return AndroidPreference.Primitive(store, scope, stringSetPreferencesKey(key), defaultValue)
+    return Primitive(store, scope, stringSetPreferencesKey(key), defaultValue)
   }
 
   /**
@@ -111,7 +113,7 @@ class AndroidPreferenceStore(
     serializer: (T) -> String,
     deserializer: (String) -> T
   ): Preference<T> {
-    return AndroidPreference.Object(
+    return Object(
       store, scope, stringPreferencesKey(key), defaultValue, serializer, deserializer
     )
   }

@@ -8,18 +8,15 @@
 
 package tachiyomi.core
 
-import tachiyomi.core.http.QuickJSFactory
 import tachiyomi.core.http.Http
 import tachiyomi.core.http.HttpProvider
 import tachiyomi.core.http.JSFactory
-import tachiyomi.core.os.AndroidAppState
-import tachiyomi.core.os.AppState
+import tachiyomi.core.http.QuickJSFactory
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
 
 val CoreModule = module {
 
-  bind<AppState>().toClass<AndroidAppState>().singleton()
   bind<Http>().toProvider(HttpProvider::class).providesSingleton()
   bind<JSFactory>().toClass<QuickJSFactory>().singleton()
 

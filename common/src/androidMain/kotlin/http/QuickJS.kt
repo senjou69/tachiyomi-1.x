@@ -13,7 +13,7 @@ import app.cash.quickjs.QuickJs
 /**
  * An implementation of [JS] to execute JavaScript code backed by the quickjs library.
  */
-internal class QuickJS(private val engine: QuickJs) : JS {
+class QuickJS(private val engine: QuickJs) : JS {
 
   /**
    * Evaluates the given JavaScript [script] and returns its result as [String] or throws an

@@ -16,6 +16,7 @@ import okio.buffer
 import okio.sink
 import java.io.File
 
+@Suppress("BlockingMethodInNonBlockingContext")
 suspend fun Source.saveTo(file: File) {
   withContext(Dispatchers.IO) {
     use { source ->
@@ -24,6 +25,7 @@ suspend fun Source.saveTo(file: File) {
   }
 }
 
+@Suppress("BlockingMethodInNonBlockingContext")
 suspend fun Source.copyTo(sink: BufferedSink) {
   withContext(Dispatchers.IO) {
     use { source ->

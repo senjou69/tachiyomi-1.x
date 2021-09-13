@@ -19,7 +19,7 @@ import javax.inject.Provider
  * Provider to instantiate an [Http] class. The required dependencies to create the instance are
  * also provided through constructor injection.
  */
-internal class HttpProvider @Inject constructor(
+class HttpProvider @Inject constructor(
   private val context: Application,
   private val jsFactory: JSFactory
 ) : Provider<Http> {

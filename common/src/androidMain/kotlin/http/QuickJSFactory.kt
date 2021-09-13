@@ -14,7 +14,7 @@ import javax.inject.Inject
 /**
  * A factory for creating instances of [QuickJS].
  */
-internal class QuickJSFactory @Inject constructor() : JSFactory {
+class QuickJSFactory @Inject constructor() : JSFactory {
 
   /**
    * Returns a new instance of [QuickJS].
