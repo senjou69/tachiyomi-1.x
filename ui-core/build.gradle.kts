@@ -14,7 +14,7 @@ kotlin {
       }
     }
     named("androidMain") {
-      kotlin.srcDir("src/commonJvmMain/kotlin")
+      kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
         implementation(Deps.androidx.compose.navigation)
         implementation(Deps.androidx.emoji)
