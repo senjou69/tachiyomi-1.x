@@ -8,12 +8,13 @@
 
 package tachiyomi.core.util
 
+// TODO probably better to parse headers with the tachiyomi decoder
 object ImageUtil {
 
   private val jpgMagic = charByteArrayOf(0xFF, 0xD8, 0xFF)
   private val pngMagic = charByteArrayOf(0x89, 0x50, 0x4E, 0x47)
-  private val gifMagic = "GIF8".toByteArray()
-  private val webpMagic = "RIFF".toByteArray()
+  private val gifMagic = "GIF8".encodeToByteArray()
+  private val webpMagic = "RIFF".encodeToByteArray()
 
   fun findType(bytes: ByteArray): ImageType? {
     return when {

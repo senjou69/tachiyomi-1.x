@@ -6,7 +6,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.core.os
+package tachiyomi.core.util
 
-import kotlinx.coroutines.flow.StateFlow
+import okio.ByteString.Companion.decodeBase64
+import okio.ByteString.Companion.encodeUtf8
 
+fun String.decodeBase64() = decodeBase64()!!
+
+fun String.md5() = encodeUtf8().md5().hex()

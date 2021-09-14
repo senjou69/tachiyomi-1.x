@@ -9,7 +9,11 @@
 package tachiyomi.core.http
 
 import android.app.Application
-import android.content.Context
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.preferencesDataStoreFile
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.Cache
 import java.io.File
 import javax.inject.Inject
@@ -31,9 +35,13 @@ class HttpProvider @Inject constructor(
     val cacheDir = File(context.cacheDir, "network_cache")
     val cacheSize = 15L * 1024 * 1024
     val cache = Cache(cacheDir, cacheSize)
-    val cookieManager = CookieManager(SharedPreferencesCookieStore(
-      context.getSharedPreferences("cookie_store", Context.MODE_PRIVATE)
-    ))
+    val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    val prefStore = PreferenceDataStoreFactory.create(
+      scope = scope,
+      produceFile = { context.preferencesDataStoreFile("cookie_store") }
+    )
+    val cookieStore = CookiesDataStore(prefStore, scope)
+    val cookieManager = CookieManager(cookieStore)
     return Http(cache, cookieManager, jsFactory)
   }
 }

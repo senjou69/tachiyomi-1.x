@@ -29,10 +29,9 @@ class Http(cache: Cache, cookieManager: CookieManager, jsFactory: JSFactory) {
 
   /**
    * This client should be used for sites that need to bypass Cloudflare.
+   * TODO resolve challenge through WebView
    */
-  val cloudflareClient = defaultClient.newBuilder()
-    .addInterceptor(CloudflareInterceptor(jsFactory))
-    .build()
+  val cloudflareClient get() = defaultClient
 
   /**
    * Cache control used to not store the response in the cache.

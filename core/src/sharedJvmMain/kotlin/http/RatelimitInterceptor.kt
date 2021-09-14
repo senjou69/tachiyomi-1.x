@@ -21,8 +21,7 @@ class RatelimitInterceptor(
 
   @Synchronized
   override fun intercept(chain: Interceptor.Chain): Response {
-    val preferences = RateBucketPreferences(prefStore)
-    val prefBucket = preferences.getBucket(id, capacity, refillRate)
+    val prefBucket = prefStore.getRateBucket(id, capacity, refillRate)
     val rateBucket = prefBucket.get()
     
     if (rateBucket.capacity != capacity || rateBucket.refillRate != refillRate) {

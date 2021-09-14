@@ -13,6 +13,7 @@ kotlin {
     named("commonMain") {
       dependencies {
         implementation(Deps.kotlin.coroutines.core)
+        implementation(Deps.okio)
       }
     }
     named("jvmMain") {

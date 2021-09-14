@@ -11,14 +11,11 @@ package tachiyomi.core.http
 import tachiyomi.core.prefs.Preference
 import tachiyomi.core.prefs.PreferenceStore
 
-class RateBucketPreferences(private val preferenceStore: PreferenceStore) {
-  fun getBucket(sourceName: String, capacity: Int, rate: Long): Preference<RateBucket> {
-    return preferenceStore.getObject(
-      key = sourceName,
-      defaultValue = RateBucket(capacity, rate),
-      serializer = { it.serialize() },
-      deserializer = { RateBucket.deserialize(it) }
-    )
-  }
-
+fun PreferenceStore.getRateBucket(key: String, capacity: Int, rate: Long): Preference<RateBucket> {
+  return getObject(
+    key = key,
+    defaultValue = RateBucket(capacity, rate),
+    serializer = { it.serialize() },
+    deserializer = { RateBucket.deserialize(it) }
+  )
 }
