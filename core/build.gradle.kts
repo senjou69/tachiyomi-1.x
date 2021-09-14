@@ -2,6 +2,7 @@ plugins {
   kotlin("multiplatform")
   id("com.android.library")
   id("kotlin-kapt")
+  id("org.jetbrains.gradle.plugin.idea-ext")
   `maven-publish`
   signing
 }
@@ -98,4 +99,20 @@ publishing {
 
 signing {
   sign(publishing.publications["publication"])
+}
+
+idea {
+  module {
+    (this as ExtensionAware).configure<org.jetbrains.gradle.ext.ModuleSettings> {
+      (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
+        arrayOf(
+          "src/commonMain/kotlin",
+          "src/androidMain/kotlin",
+          "src/jvmMain/kotlin",
+          "src/sharedJvmMain/kotlin",
+          "src/sharedAndroidMain/kotlin"
+        ).forEach { put(it, "tachiyomi.core") }
+      }
+    }
+  }
 }

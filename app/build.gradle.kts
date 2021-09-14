@@ -2,6 +2,7 @@ plugins {
   id("com.android.application")
   id("kotlin-android")
   id("kotlin-kapt")
+  id("org.jetbrains.gradle.plugin.idea-ext")
 }
 
 android {
@@ -40,4 +41,14 @@ dependencies {
   kapt(Deps.toothpick.compiler)
 
   implementation(Deps.tinylog.impl)
+}
+
+idea {
+  module {
+    (this as ExtensionAware).configure<org.jetbrains.gradle.ext.ModuleSettings> {
+      (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
+        put("src/main/kotlin", "tachiyomi.app")
+      }
+    }
+  }
 }

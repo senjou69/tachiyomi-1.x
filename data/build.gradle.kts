@@ -3,6 +3,7 @@ plugins {
   id("kotlin-android")
   id("kotlin-kapt")
   id("com.google.devtools.ksp") version "1.5.30-1.0.0-beta08"
+  id("org.jetbrains.gradle.plugin.idea-ext")
 }
 
 val removeDomainClasses by tasks.registering(Delete::class) {
@@ -37,4 +38,14 @@ dependencies {
   implementation(Deps.toothpick.smoothie)
   implementation(Deps.toothpick.ktp)
   kapt(Deps.toothpick.compiler)
+}
+
+idea {
+  module {
+    (this as ExtensionAware).configure<org.jetbrains.gradle.ext.ModuleSettings> {
+      (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
+        put("src/main/kotlin", "tachiyomi.data")
+      }
+    }
+  }
 }
