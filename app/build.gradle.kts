@@ -1,8 +1,43 @@
 plugins {
+  kotlin("multiplatform")
   id("com.android.application")
-  id("kotlin-android")
   id("kotlin-kapt")
+  id("org.jetbrains.compose")
   id("org.jetbrains.gradle.plugin.idea-ext")
+}
+
+kotlin {
+  android()
+  sourceSets {
+    named("commonMain") {
+      dependencies {
+        implementation(Deps.androidx.compose.material)
+        implementation(Deps.androidx.compose.tooling)
+      }
+    }
+    named("androidMain") {
+      kotlin.srcDir("src/sharedJvmMain/kotlin")
+      dependencies {
+        implementation(Deps.androidx.core)
+        implementation(Deps.androidx.emoji)
+        implementation(Deps.androidx.appCompat)
+        implementation(Deps.androidx.compose.activity)
+
+        implementation(Deps.toothpick.runtime)
+        implementation(Deps.toothpick.smoothie)
+        implementation(Deps.toothpick.ktp)
+
+        implementation(Deps.tinylog.impl)
+      }
+      project.dependencies.apply {
+        implementationProject(Projects.core)
+        implementationProject(Projects.domain)
+        implementationProject(Projects.data)
+        implementationProject(Projects.presentation)
+        add("kapt", Deps.toothpick.compiler)
+      }
+    }
+  }
 }
 
 android {
@@ -16,31 +51,6 @@ android {
       proguardFile(file("proguard-rules.pro"))
     }
   }
-  buildFeatures {
-    compose = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = Deps.androidx.compose.version
-  }
-}
-
-dependencies {
-  implementationProject(Projects.core)
-  implementationProject(Projects.domain)
-  implementationProject(Projects.data)
-  implementationProject(Projects.presentation)
-
-  implementation(Deps.androidx.core)
-  implementation(Deps.androidx.emoji)
-  implementation(Deps.androidx.appCompat)
-  implementation(Deps.androidx.compose.activity)
-
-  implementation(Deps.toothpick.runtime)
-  implementation(Deps.toothpick.smoothie)
-  implementation(Deps.toothpick.ktp)
-  kapt(Deps.toothpick.compiler)
-
-  implementation(Deps.tinylog.impl)
 }
 
 idea {
