@@ -9,11 +9,18 @@ plugins {
 
 kotlin {
   android()
+  jvm()
   sourceSets {
     named("commonMain") {
       dependencies {
         implementation(Deps.androidx.compose.material)
         implementation(Deps.androidx.compose.tooling)
+        implementation(project(Module.uiCore))
+      }
+    }
+    named("jvmMain") {
+      dependencies {
+        compileOnly(compose.desktop.currentOs)
       }
     }
     named("androidMain") {
@@ -47,7 +54,6 @@ kotlin {
         implementationProject(Projects.core)
         implementationProject(Projects.sourceApi)
         implementationProject(Projects.domain)
-        implementationProject(Projects.uiCore)
         add("kapt", Deps.toothpick.compiler)
       }
     }

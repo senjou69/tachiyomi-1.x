@@ -7,6 +7,7 @@ plugins {
 
 kotlin {
   android()
+  jvm()
   sourceSets {
     named("commonMain") {
       dependencies {
@@ -14,8 +15,16 @@ kotlin {
         implementation(Deps.androidx.compose.tooling)
       }
     }
-    named("androidMain") {
+    named("jvmMain") {
       kotlin.srcDir("src/sharedJvmMain/kotlin")
+      dependencies {
+        implementation(compose.desktop.currentOs)
+        implementation(compose.preview)
+        implementation(project(":core"))
+      }
+    }
+    named("androidMain") {
+      kotlin.srcDir("src/sharedAndroidMain/kotlin")
       dependencies {
         implementation(Deps.androidx.compose.navigation)
         implementation(Deps.androidx.emoji)

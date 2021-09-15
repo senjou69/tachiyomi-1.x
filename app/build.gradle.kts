@@ -7,12 +7,19 @@ plugins {
 }
 
 kotlin {
+  jvm()
   android()
   sourceSets {
     named("commonMain") {
       dependencies {
-        implementation(Deps.androidx.compose.material)
-        implementation(Deps.androidx.compose.tooling)
+        compileOnly(Deps.androidx.compose.material)
+        compileOnly(Deps.androidx.compose.tooling)
+        implementation(project(Module.presentation))
+      }
+    }
+    named("jvmMain") {
+      dependencies {
+        implementation(compose.desktop.currentOs)
       }
     }
     named("androidMain") {
@@ -33,7 +40,6 @@ kotlin {
         implementationProject(Projects.core)
         implementationProject(Projects.domain)
         implementationProject(Projects.data)
-        implementationProject(Projects.presentation)
         add("kapt", Deps.toothpick.compiler)
       }
     }
@@ -50,6 +56,12 @@ android {
       proguardFile(getDefaultProguardFile("proguard-android.txt"))
       proguardFile(file("proguard-rules.pro"))
     }
+  }
+}
+
+compose.desktop {
+  application {
+    mainClass = "tachiyomi.app.AppKt"
   }
 }
 
