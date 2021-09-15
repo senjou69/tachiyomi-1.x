@@ -58,7 +58,13 @@ idea {
   module {
     (this as ExtensionAware).configure<org.jetbrains.gradle.ext.ModuleSettings> {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
-        put("src/main/kotlin", "tachiyomi.ui")
+        arrayOf(
+          "src/commonMain/kotlin",
+          "src/androidMain/kotlin",
+          "src/jvmMain/kotlin",
+          "src/sharedJvmMain/kotlin",
+          "src/sharedAndroidMain/kotlin"
+        ).forEach { put(it, "tachiyomi.ui") }
       }
     }
   }
