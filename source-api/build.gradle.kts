@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-  implementationProject(Projects.core)
+  implementation(project(Module.core))
 }
 
 val packageVersion = "1.1"

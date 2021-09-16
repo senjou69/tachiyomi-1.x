@@ -6,9 +6,9 @@ buildscript {
   }
   dependencies {
     classpath("com.android.tools.build:gradle:7.0.2")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
-    classpath("org.jetbrains.kotlin:kotlin-serialization:${Deps.kotlin.version}")
-    classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build331")
+    classpath(Deps.kotlin.plugin)
+    classpath(Deps.kotlin.serialization.plugin)
+    classpath(Deps.androidx.compose.plugin)
     classpath(Deps.aboutLibraries.plugin)
     classpath(Deps.moko.plugin)
   }

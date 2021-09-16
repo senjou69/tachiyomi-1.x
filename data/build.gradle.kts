@@ -22,9 +22,9 @@ ksp {
 }
 
 dependencies {
-  implementationProject(Projects.core)
-  implementationProject(Projects.domain)
-  implementationProject(Projects.sourceApi)
+  implementation(project(Module.core))
+  implementation(project(Module.domain))
+  implementation(project(Module.sourceApi))
 
   implementation(Deps.kotlin.coroutines.core)
   implementation(Deps.kotlin.coroutines.android)

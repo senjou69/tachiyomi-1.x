@@ -13,7 +13,7 @@ kotlin {
     named("commonMain") {
       dependencies {
         compileOnly(compose.runtime)
-        implementation(Deps.moko.core)
+        api(Deps.moko.core)
       }
     }
     named("jvmMain") {

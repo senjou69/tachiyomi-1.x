@@ -7,8 +7,8 @@ plugins {
 }
 
 dependencies {
-  implementationProject(Projects.core)
-  implementationProject(Projects.sourceApi)
+  implementation(project(Module.core))
+  implementation(project(Module.sourceApi))
 
   implementation(Deps.toothpick.runtime)
   kapt(Deps.toothpick.compiler)

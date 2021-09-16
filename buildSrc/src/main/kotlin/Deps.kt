@@ -5,6 +5,7 @@ object Deps {
     const val version = "1.5.30"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
+    const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
     object coroutines {
       private const val version = "1.5.1"
@@ -16,6 +17,7 @@ object Deps {
       private const val version = "1.2.2"
       const val json = "org.jetbrains.kotlinx:kotlinx-serialization-json:$version"
       const val protobuf = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$version"
+      const val plugin = "org.jetbrains.kotlin:kotlin-serialization:${kotlin.version}"
     }
   }
 
@@ -29,21 +31,16 @@ object Deps {
     const val emoji = "androidx.emoji2:emoji2-views:1.0.0-alpha03"
 
     object compose {
-      const val version = "1.1.0-alpha03"
-      const val compiler = "androidx.compose.compiler:compiler:$version"
-      const val ui = "androidx.compose.ui:ui:$version"
-      const val material = "androidx.compose.material:material:$version"
-      const val activity = "androidx.activity:activity-compose:$version"
-      const val icons = "androidx.compose.material:material-icons-extended:$version"
-      const val tooling = "androidx.compose.ui:ui-tooling:$version"
+      const val activity = "androidx.activity:activity-compose:1.4.0-alpha02"
       const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha08"
+      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build331"
     }
 
     object lifecycle {
-      private const val version = "2.4.0-alpha03"
+      private const val version = "2.4.0-beta01"
       const val common = "androidx.lifecycle:lifecycle-common-java8:$version"
       const val process = "androidx.lifecycle:lifecycle-process:$version"
-      const val extensions = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
+      const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
     }
 
     object workManager {

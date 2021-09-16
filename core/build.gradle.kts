@@ -10,10 +10,13 @@ plugins {
 kotlin {
   jvm()
   android()
+
   sourceSets {
     named("commonMain") {
       dependencies {
-        implementation(Deps.kotlin.coroutines.core)
+        api(Deps.kotlin.coroutines.core)
+        api(Deps.kotlin.stdlib)
+        api(Deps.kotlin.serialization.json)
         implementation(Deps.okio)
       }
     }
@@ -28,22 +31,18 @@ kotlin {
         implementation(Deps.androidx.dataStore)
         implementation(Deps.quickjs)
       }
-      project.dependencies {
-        add("kapt", Deps.toothpick.compiler)
-      }
     }
     listOf("jvmMain", "androidMain").forEach { name ->
       getByName(name) {
         dependencies {
-          api(Deps.kotlin.stdlib)
-          api(Deps.kotlin.coroutines.core)
-          api(Deps.kotlin.serialization.json)
           api(Deps.okhttp)
           api(Deps.jsoup)
-
           implementation(Deps.tinylog.api)
           implementation(Deps.tinylog.impl)
           implementation(Deps.toothpick.ktp)
+        }
+        project.dependencies {
+          add("kapt", Deps.toothpick.compiler)
         }
       }
     }
@@ -107,8 +106,8 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         arrayOf(
           "src/commonMain/kotlin",
-          "src/androidMain/kotlin",
           "src/jvmMain/kotlin",
+          "src/androidMain/kotlin",
           "src/sharedJvmMain/kotlin",
           "src/sharedAndroidMain/kotlin"
         ).forEach { put(it, "tachiyomi.core") }

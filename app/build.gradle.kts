@@ -9,38 +9,39 @@ plugins {
 kotlin {
   jvm()
   android()
+
   sourceSets {
     named("commonMain") {
       dependencies {
-        compileOnly(Deps.androidx.compose.material)
-        compileOnly(Deps.androidx.compose.tooling)
+        implementation(project(Module.core))
+        implementation(project(Module.uiCore))
         implementation(project(Module.presentation))
       }
     }
     named("jvmMain") {
-      dependencies {
-        implementation(compose.desktop.currentOs)
-      }
     }
     named("androidMain") {
       kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
+        implementation(project(Module.data))
         implementation(Deps.androidx.core)
         implementation(Deps.androidx.emoji)
         implementation(Deps.androidx.appCompat)
         implementation(Deps.androidx.compose.activity)
-
-        implementation(Deps.toothpick.runtime)
         implementation(Deps.toothpick.smoothie)
-        implementation(Deps.toothpick.ktp)
-
-        implementation(Deps.tinylog.impl)
       }
-      project.dependencies.apply {
-        implementationProject(Projects.core)
-        implementationProject(Projects.domain)
-        implementationProject(Projects.data)
-        add("kapt", Deps.toothpick.compiler)
+    }
+    listOf("jvmMain", "androidMain").forEach {
+      getByName(it) {
+        dependencies {
+          implementation(project(Module.domain))
+          implementation(Deps.toothpick.runtime)
+          implementation(Deps.toothpick.ktp)
+          implementation(Deps.tinylog.impl)
+        }
+        project.dependencies.apply {
+          add("kapt", Deps.toothpick.compiler)
+        }
       }
     }
   }
@@ -71,8 +72,8 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         arrayOf(
           "src/commonMain/kotlin",
-          "src/androidMain/kotlin",
           "src/jvmMain/kotlin",
+          "src/androidMain/kotlin",
           "src/sharedJvmMain/kotlin",
           "src/sharedAndroidMain/kotlin"
         ).forEach { put(it, "tachiyomi.app") }

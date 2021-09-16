@@ -6,32 +6,31 @@ plugins {
 }
 
 kotlin {
-  android()
   jvm()
+  android()
+
   sourceSets {
     named("commonMain") {
       dependencies {
-        implementation(Deps.androidx.compose.material)
-        implementation(Deps.androidx.compose.tooling)
+        implementation(project(Module.core))
+        api(project(Module.i18n))
+        api(compose.material)
+        api(compose.materialIconsExtended)
+        compileOnly(compose.preview)
       }
     }
     named("jvmMain") {
       kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
-        implementation(compose.desktop.currentOs)
-        implementation(compose.preview)
-        implementation(project(":core"))
+        api(compose.desktop.currentOs)
       }
     }
     named("androidMain") {
       kotlin.srcDir("src/sharedAndroidMain/kotlin")
       dependencies {
-        implementation(Deps.androidx.compose.navigation)
         implementation(Deps.androidx.emoji)
         implementation(Deps.toothpick.ktp)
-      }
-      project.dependencies.apply {
-        implementationProject(Projects.core)
+        implementation(Deps.androidx.lifecycle.viewModel)
       }
     }
   }
@@ -43,8 +42,8 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         arrayOf(
           "src/commonMain/kotlin",
-          "src/androidMain/kotlin",
           "src/jvmMain/kotlin",
+          "src/androidMain/kotlin",
           "src/sharedJvmMain/kotlin",
           "src/sharedAndroidMain/kotlin"
         ).forEach { put(it, "tachiyomi.ui.core") }
