@@ -10,6 +10,7 @@ buildscript {
     classpath("org.jetbrains.kotlin:kotlin-serialization:${Deps.kotlin.version}")
     classpath("org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build331")
     classpath(Deps.aboutLibraries.plugin)
+    classpath(Deps.moko.plugin)
   }
 }
 

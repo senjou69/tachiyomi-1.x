@@ -6,4 +6,5 @@ object Module {
   const val `data` = ":data"
   const val presentation = ":presentation"
   const val app = ":app"
+  const val i18n = ":i18n"
 }

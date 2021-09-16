@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+  <plural name="chapters_num">
+    <item quantity="zero">No chapters</item>
+    <item quantity="one">%d chapter</item>
+    <item quantity="other">%d chapters</item>
+  </plural>
+</resources>

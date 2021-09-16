@@ -98,6 +98,12 @@ object Deps {
     const val compose = "io.coil-kt:coil-compose:$version"
   }
 
+  object moko {
+    private const val version = "0.17.2"
+    const val core = "dev.icerock.moko:resources:$version"
+    const val plugin = "dev.icerock.moko:resources-generator:$version"
+  }
+
   object aboutLibraries {
     private const val version = "8.9.1"
     const val plugin = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$version"
