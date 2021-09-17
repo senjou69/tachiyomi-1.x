@@ -48,6 +48,19 @@ kotlin {
   }
 }
 
+val jacocoTestReport by tasks.creating(JacocoReport::class.java) {
+  val coverageSourceDirs = arrayOf(
+    "src/commonMain",
+    "src/jvmMain"
+  )
+  val classFiles = File("${buildDir}/classes/kotlin/jvm/")
+    .walkBottomUp()
+    .toSet()
+
+  classDirectories.setFrom(classFiles)
+  sourceDirectories.setFrom(files(coverageSourceDirs))
+}
+
 idea {
   module {
     (this as ExtensionAware).configure<org.jetbrains.gradle.ext.ModuleSettings> {

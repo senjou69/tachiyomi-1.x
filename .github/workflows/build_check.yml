@@ -44,7 +44,7 @@ jobs:
       - name: Build and test app
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: assembleDebug :domain:test :domain:jacocoTestReport
+          arguments: assembleDebug :domain:jvmTest :domain:jacocoTestReport
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
