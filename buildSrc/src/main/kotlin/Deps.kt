@@ -56,6 +56,15 @@ object Deps {
     }
   }
 
+  object sqldelight {
+    private const val version = "1.5.0"
+    const val runtime = "com.squareup.sqldelight:runtime:$version"
+    const val coroutines = "com.squareup.sqldelight:coroutines-extensions:$version"
+    const val jvm = "com.squareup.sqldelight:sqlite-driver:$version"
+    const val android = "com.squareup.sqldelight:android-driver:$version"
+    const val plugin = "com.squareup.sqldelight:gradle-plugin:$version"
+  }
+
   object accompanist {
     private const val version = "0.18.0"
     const val pager = "com.google.accompanist:accompanist-pager:$version"

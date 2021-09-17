@@ -1,7 +1,7 @@
 buildscript {
   repositories {
-    mavenCentral()
     google()
+    mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
   }
   dependencies {
@@ -11,6 +11,7 @@ buildscript {
     classpath(Deps.androidx.compose.plugin)
     classpath(Deps.aboutLibraries.plugin)
     classpath(Deps.moko.plugin)
+    classpath(Deps.sqldelight.plugin)
   }
 }
 
