@@ -55,12 +55,9 @@ val jacocoTestReport by tasks.creating(JacocoReport::class.java) {
     "src/commonMain",
     "src/jvmMain"
   )
-  val classFiles = File("${buildDir}/classes/kotlin/jvm/")
-    .walkBottomUp()
-    .toSet()
 
-  classDirectories.setFrom(classFiles)
   sourceDirectories.setFrom(files(coverageSourceDirs))
+  classDirectories.setFrom(files("${buildDir}/classes/kotlin/jvm/"))
   executionData.setFrom(files("${buildDir}/jacoco/jvmTest.exec"))
 }
 
