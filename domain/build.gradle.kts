@@ -1,26 +1,49 @@
 plugins {
-  kotlin("jvm")
+  kotlin("multiplatform")
   id("kotlin-kapt")
   id("kotlinx-serialization")
+  id("com.android.library")
   jacoco
   id("org.jetbrains.gradle.plugin.idea-ext")
 }
 
-dependencies {
-  implementation(project(Module.core))
-  implementation(project(Module.sourceApi))
+kotlin {
+  jvm()
+  android()
 
-  implementation(Deps.toothpick.runtime)
-  kapt(Deps.toothpick.compiler)
-
-  implementation(Deps.kotlin.serialization.protobuf)
-
-  testImplementation(Deps.kotlin.reflect)
-  testImplementation(Deps.mockk)
-  testImplementation(Deps.toothpick.testing)
-  testImplementation(Deps.kotest.framework)
-  testImplementation(Deps.kotest.assertions)
-  kaptTest(Deps.toothpick.compiler)
+  sourceSets {
+    named("commonMain") {
+    }
+    named("jvmMain") {
+    }
+    named("androidMain") {
+    }
+    listOf("jvmMain", "androidMain").forEach {
+      getByName(it) {
+        dependencies {
+          implementation(project(Module.core))
+          implementation(project(Module.sourceApi))
+          implementation(Deps.toothpick.runtime)
+          implementation(Deps.kotlin.serialization.protobuf)
+        }
+        project.dependencies {
+          add("kapt", Deps.toothpick.compiler)
+        }
+      }
+    }
+    named("jvmTest") {
+      dependencies {
+        implementation(Deps.kotlin.reflect)
+        implementation(Deps.mockk)
+        implementation(Deps.toothpick.testing)
+        implementation(Deps.kotest.framework)
+        implementation(Deps.kotest.assertions)
+      }
+      project.dependencies {
+        add("kapt", Deps.toothpick.compiler)
+      }
+    }
+  }
 }
 
 idea {
@@ -29,6 +52,14 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         put("src/main/kotlin", "tachiyomi.domain")
         put("src/test/kotlin", "tachiyomi.domain")
+        arrayOf(
+          "src/commonMain/kotlin",
+          "src/jvmMain/kotlin",
+          "src/androidMain/kotlin",
+          "src/sharedJvmMain/kotlin",
+          "src/sharedAndroidMain/kotlin",
+          "src/jvmTest/kotlin"
+        ).forEach { put(it, "tachiyomi.domain") }
       }
     }
   }
