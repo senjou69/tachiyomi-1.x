@@ -27,6 +27,7 @@ kotlin {
       dependencies {
         implementation(Deps.sqldelight.android)
         implementation(Deps.toothpick.ktp)
+        implementation(Deps.sqlite)
       }
     }
   }
@@ -35,5 +36,6 @@ kotlin {
 sqldelight {
   database("Database") {
     packageName = "tachiyomi.data"
+    dialect = "sqlite:3.24"
   }
 }

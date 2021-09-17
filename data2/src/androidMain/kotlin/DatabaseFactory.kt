@@ -11,6 +11,7 @@ package tachiyomi.data
 import android.app.Application
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
+import io.requery.android.database.sqlite.RequerySQLiteOpenHelperFactory
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +21,12 @@ actual class DatabaseDriverFactory @Inject constructor(
 ) {
 
   actual fun create(): SqlDriver {
-    return AndroidSqliteDriver(Database.Schema, app, "tachiyomi.db")
+    return AndroidSqliteDriver(
+      schema = Database.Schema,
+      context = app,
+      name = "tachiyomi.db",
+      factory = RequerySQLiteOpenHelperFactory()
+    )
   }
 
 }
