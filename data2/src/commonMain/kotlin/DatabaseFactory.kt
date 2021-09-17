@@ -9,6 +9,7 @@
 package tachiyomi.data
 
 import com.squareup.sqldelight.db.SqlDriver
+import tachiyomi.data.manga.mangaGenresConverter
 
 expect class DatabaseDriverFactory {
   fun create(): SqlDriver
@@ -17,6 +18,9 @@ expect class DatabaseDriverFactory {
 fun createDatabase(factory: DatabaseDriverFactory): Database {
   val driver = factory.create()
   return Database(
-    driver = driver
+    driver = driver,
+    mangaAdapter = Manga.Adapter(
+      genresAdapter = mangaGenresConverter
+    )
   )
 }
