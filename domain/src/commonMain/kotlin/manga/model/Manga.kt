@@ -8,8 +8,6 @@
 
 package tachiyomi.domain.manga.model
 
-import tachiyomi.source.model.MangaInfo
-
 data class Manga(
   override val id: Long = 0,
   override val sourceId: Long,
@@ -19,7 +17,7 @@ data class Manga(
   val author: String = "",
   val description: String = "",
   val genres: List<String> = emptyList(),
-  val status: Int = MangaInfo.UNKNOWN,
+  val status: Int = 0,
   val cover: String = "",
   val customCover: String = "",
   val favorite: Boolean = false,

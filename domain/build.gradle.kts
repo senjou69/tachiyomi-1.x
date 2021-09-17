@@ -13,6 +13,10 @@ kotlin {
 
   sourceSets {
     named("commonMain") {
+      dependencies {
+        implementation(project(Module.core))
+        implementation(Deps.kotlin.serialization.protobuf)
+      }
     }
     named("jvmMain") {
     }
@@ -21,10 +25,8 @@ kotlin {
     listOf("jvmMain", "androidMain").forEach {
       getByName(it) {
         dependencies {
-          implementation(project(Module.core))
           implementation(project(Module.sourceApi))
           implementation(Deps.toothpick.runtime)
-          implementation(Deps.kotlin.serialization.protobuf)
         }
         project.dependencies {
           add("kapt", Deps.toothpick.compiler)

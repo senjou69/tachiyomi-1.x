@@ -26,7 +26,6 @@ import tachiyomi.data.library.service.LibraryUpdateSchedulerImpl
 import tachiyomi.data.library.service.MangaCategoryRepositoryImpl
 import tachiyomi.data.manga.service.ChapterRepositoryImpl
 import tachiyomi.data.manga.service.MangaRepositoryImpl
-import tachiyomi.data.sync.api.SyncDeviceAndroid
 import tachiyomi.data.updates.service.UpdatesRepositoryImpl
 import tachiyomi.domain.catalog.service.CatalogInstallationChanges
 import tachiyomi.domain.catalog.service.CatalogInstaller
@@ -46,8 +45,6 @@ import tachiyomi.domain.library.service.LibraryUpdateScheduler
 import tachiyomi.domain.library.service.MangaCategoryRepository
 import tachiyomi.domain.manga.service.ChapterRepository
 import tachiyomi.domain.manga.service.MangaRepository
-import tachiyomi.domain.sync.api.SyncDevice
-import tachiyomi.domain.sync.service.SyncPreferences
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.updates.service.UpdatesRepository
 import toothpick.ktp.binding.bind
@@ -77,12 +74,6 @@ fun DataModule(context: Application) = module {
     .toProviderInstance { LibraryCovers(File(context.filesDir, "library_covers")) }
     .providesSingleton()
   bind<LibraryUpdateScheduler>().toClass<LibraryUpdateSchedulerImpl>().singleton()
-
-  bind<SyncPreferences>()
-    .toProviderInstance { SyncPreferences(AndroidPreferenceStore(context, "sync")) }
-    .providesSingleton()
-
-  bind<SyncDevice>().toClass<SyncDeviceAndroid>().singleton()
 
   bind<CatalogRemoteRepository>().toClass<CatalogRemoteRepositoryImpl>().singleton()
   bind<CatalogRemoteApi>().toClass<CatalogGithubApi>().singleton()
