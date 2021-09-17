@@ -49,6 +49,8 @@ kotlin {
 }
 
 val jacocoTestReport by tasks.creating(JacocoReport::class.java) {
+  dependsOn("jvmTest")
+
   val coverageSourceDirs = arrayOf(
     "src/commonMain",
     "src/jvmMain"
@@ -59,14 +61,13 @@ val jacocoTestReport by tasks.creating(JacocoReport::class.java) {
 
   classDirectories.setFrom(classFiles)
   sourceDirectories.setFrom(files(coverageSourceDirs))
+  executionData.setFrom(files("${buildDir}/jacoco/jvmTest.exec"))
 }
 
 idea {
   module {
     (this as ExtensionAware).configure<org.jetbrains.gradle.ext.ModuleSettings> {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
-        put("src/main/kotlin", "tachiyomi.domain")
-        put("src/test/kotlin", "tachiyomi.domain")
         arrayOf(
           "src/commonMain/kotlin",
           "src/jvmMain/kotlin",
