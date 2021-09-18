@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
-import tachiyomi.ui.R
+import tachiyomi.i18n.localize
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.SearchField
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.history.HistoryState
@@ -82,7 +82,7 @@ fun HistorySearchToolbar(
       }) {
         Icon(
           Icons.Outlined.DeleteSweep,
-          contentDescription = stringResource(id = R.string.clear_history)
+          contentDescription = localize(MR.strings.clear_history)
         )
       }
     }
@@ -100,7 +100,7 @@ fun HistoryRegularToolbar(
 ) {
 
   Toolbar(
-    title = { Text(stringResource(R.string.history_label)) },
+    title = { Text(localize(MR.strings.history_label)) },
     actions = {
       IconButton(onClick = { state.query = "" }) {
         Icon(Icons.Default.Search, contentDescription = null)
@@ -110,7 +110,7 @@ fun HistoryRegularToolbar(
       }) {
         Icon(
           Icons.Outlined.DeleteSweep,
-          contentDescription = stringResource(id = R.string.clear_history)
+          contentDescription = localize(MR.strings.clear_history)
         )
       }
     }

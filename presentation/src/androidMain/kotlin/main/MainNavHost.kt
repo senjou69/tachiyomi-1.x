@@ -34,14 +34,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import dev.icerock.moko.resources.StringResource
 import tachiyomi.domain.ui.model.StartScreen
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.theme.CustomColors
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -92,7 +93,7 @@ fun MainNavHost(startScreen: StartScreen) {
                 )
               },
               label = {
-                Text(stringResource(it.text), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(localize(it.text), maxLines = 1, overflow = TextOverflow.Ellipsis)
               },
               selected = isSelected,
               onClick = {
@@ -114,24 +115,24 @@ fun MainNavHost(startScreen: StartScreen) {
 
 private enum class TopLevelRoutes(
   val screen: TopScreen,
-  val text: Int,
+  val text: StringResource,
   val selectedIcon: ImageVector,
   val unselectedIcon: ImageVector = selectedIcon,
 ) {
 
   Library(
-    TopScreen.Library, R.string.library_label, Icons.Default.CollectionsBookmark, Icons
+    TopScreen.Library, MR.strings.library_label, Icons.Default.CollectionsBookmark, Icons
       .Outlined.CollectionsBookmark
   ),
   Updates(
     TopScreen.Updates,
-    R.string.updates_label,
+    MR.strings.updates_label,
     Icons.Default.NewReleases,
     Icons.Outlined.NewReleases
   ),
-  History(TopScreen.History, R.string.history_label, Icons.Outlined.History),
-  Browse(TopScreen.Browse, R.string.browse_label, Icons.Default.Explore, Icons.Outlined.Explore),
-  More(TopScreen.More, R.string.more_label, Icons.Outlined.MoreHoriz);
+  History(TopScreen.History, MR.strings.history_label, Icons.Outlined.History),
+  Browse(TopScreen.Browse, MR.strings.browse_label, Icons.Default.Explore, Icons.Outlined.Explore),
+  More(TopScreen.More, MR.strings.more_label, Icons.Outlined.MoreHoriz);
 
   companion object {
 

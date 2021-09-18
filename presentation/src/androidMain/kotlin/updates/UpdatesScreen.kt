@@ -11,7 +11,7 @@ package tachiyomi.ui.updates
 import androidx.compose.animation.Crossfade
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.EmptyScreen
 import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.viewmodel.viewModel
@@ -41,7 +41,7 @@ fun UpdatesScreen(
     Crossfade(targetState = Pair(vm.isLoading, vm.isEmpty)) { (isLoading, isEmpty) ->
       when {
         isLoading -> LoadingScreen()
-        isEmpty -> EmptyScreen(R.string.information_no_updates)
+        isEmpty -> EmptyScreen(MR.strings.information_no_updates)
         else -> UpdatesContent(
           state = vm,
           onClickItem = {

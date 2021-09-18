@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.vectorResource
 import tachiyomi.domain.ui.UiPreferences
+import tachiyomi.i18n.MR
 import tachiyomi.ui.R
 import tachiyomi.ui.core.prefs.PreferenceRow
 import tachiyomi.ui.core.prefs.SwitchPreference
@@ -48,21 +49,21 @@ fun MoreScreen(
   val vm = viewModel<MoreViewModel>()
   val uriHandler = LocalUriHandler.current
 
-  LogoHeaderScaffold(R.string.more_label) {
+  LogoHeaderScaffold(MR.strings.more_label) {
     LazyColumn {
       item {
         SwitchPreference(
           preference = vm.downloadedOnly,
-          title = R.string.downloaded_only,
-          subtitle = R.string.downloaded_only_subtitle,
+          title = MR.strings.downloaded_only,
+          subtitle = MR.strings.downloaded_only_subtitle,
           icon = Icons.Default.CloudOff,
         )
       }
       item {
         SwitchPreference(
           preference = vm.incognitoMode,
-          title = R.string.incognito_mode,
-          subtitle = R.string.incognito_mode_subtitle,
+          title = MR.strings.incognito_mode,
+          subtitle = MR.strings.incognito_mode_subtitle,
           icon = ImageVector.vectorResource(R.drawable.ic_glasses),
         )
       }
@@ -71,14 +72,14 @@ fun MoreScreen(
       }
       item {
         PreferenceRow(
-          title = R.string.download_queue_label,
+          title = MR.strings.download_queue_label,
           icon = Icons.Outlined.GetApp,
           onClick = openDownloads,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.categories_label,
+          title = MR.strings.categories_label,
           icon = Icons.Outlined.Label,
           onClick = openCategories,
         )
@@ -88,21 +89,21 @@ fun MoreScreen(
       }
       item {
         PreferenceRow(
-          title = R.string.settings_label,
+          title = MR.strings.settings_label,
           icon = Icons.Outlined.Settings,
           onClick = openSettings,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.about_label,
+          title = MR.strings.about_label,
           icon = Icons.Outlined.Info,
           onClick = openAbout,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.help_label,
+          title = MR.strings.help_label,
           icon = Icons.Outlined.HelpOutline,
           onClick = { uriHandler.openUri("https://tachiyomi.org/help/") },
         )

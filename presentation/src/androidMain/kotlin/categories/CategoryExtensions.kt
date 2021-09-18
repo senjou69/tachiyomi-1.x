@@ -9,16 +9,16 @@
 package tachiyomi.ui.categories
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import tachiyomi.domain.library.model.Category
 import tachiyomi.domain.library.model.CategoryWithCount
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 
 val Category.visibleName
   @Composable
   get() = when (id) {
-    Category.ALL_ID -> stringResource(R.string.all_category)
-    Category.UNCATEGORIZED_ID -> stringResource(R.string.uncategorized_category)
+    Category.ALL_ID -> localize(MR.strings.all_category)
+    Category.UNCATEGORIZED_ID -> localize(MR.strings.uncategorized_category)
     else -> name
   }
 

@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import tachiyomi.domain.library.service.LibraryPreferences
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.SwitchPreference
@@ -37,7 +37,7 @@ fun SettingsLibraryScreen(
 
   Column {
     Toolbar(
-      title = { Text(stringResource(R.string.library_label)) },
+      title = { Text(localize(MR.strings.library_label)) },
       navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {

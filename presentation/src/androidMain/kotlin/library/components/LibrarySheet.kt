@@ -44,7 +44,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
@@ -60,7 +60,7 @@ import tachiyomi.domain.library.model.LibraryFilter.Value.Excluded
 import tachiyomi.domain.library.model.LibraryFilter.Value.Included
 import tachiyomi.domain.library.model.LibraryFilter.Value.Missing
 import tachiyomi.domain.library.model.LibrarySort
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.ChoiceChip
 import tachiyomi.ui.core.theme.CustomColors
 import tachiyomi.ui.core.viewmodel.viewModel
@@ -209,10 +209,10 @@ private fun LazyListScope.DisplayPage(
         }
       }
       Text(
-        stringResource(
-          R.string.columns_num_label, if (columns > 1) columns.toString() else
-            stringResource(
-              R.string.columns_auto
+        localize(
+          MR.strings.columns_num_label, if (columns > 1) columns.toString() else
+            localize(
+              MR.strings.columns_auto
             )
         ), Modifier.padding(top = 8.dp)
       )
@@ -233,7 +233,7 @@ private fun LazyListScope.DisplayPage(
   item {
     Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
       Text(
-        text = stringResource(R.string.badges_label).uppercase(),
+        text = localize(MR.strings.badges_label).uppercase(),
         modifier = Modifier.padding(bottom = 12.dp),
         style = MaterialTheme.typography.subtitle2,
         color = LocalContentColor.current.copy(alpha = ContentAlpha.medium)
@@ -242,12 +242,12 @@ private fun LazyListScope.DisplayPage(
         ChoiceChip(
           isSelected = unreadBadges,
           onClick = { onClickUnreadBadges() },
-          content = { Text(stringResource(R.string.unread_label)) }
+          content = { Text(localize(MR.strings.unread_label)) }
         )
         ChoiceChip(
           isSelected = downloadBadges,
           onClick = { onClickDownloadBadges() },
-          content = { Text(stringResource(R.string.downloaded_label)) }
+          content = { Text(localize(MR.strings.downloaded_label)) }
         )
       }
     }
@@ -267,7 +267,7 @@ private fun LazyListScope.DisplayPage(
         checked = categoryTabs,
         onCheckedChange = null
       )
-      Text(stringResource(R.string.display_category_tabs))
+      Text(localize(MR.strings.display_category_tabs))
     }
   }
   item {
@@ -277,7 +277,7 @@ private fun LazyListScope.DisplayPage(
         checked = allCategory,
         onCheckedChange = null
       )
-      Text(stringResource(R.string.display_all_category))
+      Text(localize(MR.strings.display_all_category))
     }
   }
   item {
@@ -287,7 +287,7 @@ private fun LazyListScope.DisplayPage(
         checked = countInCategory,
         onCheckedChange = null
       )
-      Text(stringResource(R.string.display_category_numbers))
+      Text(localize(MR.strings.display_category_numbers))
     }
   }
 }

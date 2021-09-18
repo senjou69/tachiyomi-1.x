@@ -32,12 +32,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.ThemeMode
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.ChoicePreference
@@ -83,7 +83,7 @@ fun SettingsAppearance(
 
   Column {
     Toolbar(
-      title = { Text(stringResource(R.string.appearance_label)) },
+      title = { Text(localize(MR.strings.appearance_label)) },
       navigationIcon = { BackIconButton(navigateUp) },
     )
     LazyColumn {
@@ -91,11 +91,11 @@ fun SettingsAppearance(
         ChoicePreference(
           preference = vm.themeMode,
           choices = mapOf(
-            ThemeMode.System to R.string.follow_system_settings,
-            ThemeMode.Light to R.string.light,
-            ThemeMode.Dark to R.string.dark
+            ThemeMode.System to MR.strings.follow_system_settings,
+            ThemeMode.Light to MR.strings.light,
+            ThemeMode.Dark to MR.strings.dark
           ),
-          title = R.string.theme
+          title = MR.strings.theme
         )
       }
       item {
@@ -121,9 +121,9 @@ fun SettingsAppearance(
           preference = activeColors.primaryState,
           title = "Color primary",
           subtitle = "Displayed most frequently across your app",
-          customText = stringResource(R.string.color_picker_custom),
-          presetsText = stringResource(R.string.color_picker_presets),
-          selectText = stringResource(R.string.action_select),
+          customText = localize(MR.strings.color_picker_custom),
+          presetsText = localize(MR.strings.color_picker_presets),
+          selectText = localize(MR.strings.action_select),
           unsetColor = MaterialTheme.colors.primary
         )
       }
@@ -132,9 +132,9 @@ fun SettingsAppearance(
           preference = activeColors.secondaryState,
           title = "Color secondary",
           subtitle = "Accents select parts of the UI",
-          customText = stringResource(R.string.color_picker_custom),
-          presetsText = stringResource(R.string.color_picker_presets),
-          selectText = stringResource(R.string.action_select),
+          customText = localize(MR.strings.color_picker_custom),
+          presetsText = localize(MR.strings.color_picker_presets),
+          selectText = localize(MR.strings.action_select),
           unsetColor = MaterialTheme.colors.secondary
         )
       }
@@ -142,9 +142,9 @@ fun SettingsAppearance(
         ColorPreference(
           preference = activeColors.barsState,
           title = "Toolbar color",
-          customText = stringResource(R.string.color_picker_custom),
-          presetsText = stringResource(R.string.color_picker_presets),
-          selectText = stringResource(R.string.action_select),
+          customText = localize(MR.strings.color_picker_custom),
+          presetsText = localize(MR.strings.color_picker_presets),
+          selectText = localize(MR.strings.action_select),
           unsetColor = CustomColors.current.bars
         )
       }

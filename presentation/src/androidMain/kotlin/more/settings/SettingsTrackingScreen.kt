@@ -13,9 +13,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import tachiyomi.domain.track.sites.TrackServices
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.PreferenceRow
@@ -38,7 +38,7 @@ fun SettingsTrackingScreen(
 
   Column {
     Toolbar(
-      title = { Text(stringResource(R.string.tracking_label)) },
+      title = { Text(localize(MR.strings.tracking_label)) },
       navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {

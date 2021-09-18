@@ -18,14 +18,13 @@ import androidx.compose.material.icons.outlined.CollectionsBookmark
 import androidx.compose.material.icons.outlined.Explore
 import androidx.compose.material.icons.outlined.GetApp
 import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.PeopleOutline
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.PreferenceRow
@@ -46,76 +45,76 @@ fun SettingsScreen(
 ) {
   Column {
     Toolbar(
-      title = { Text(stringResource(R.string.settings_label)) },
+      title = { Text(localize(MR.strings.settings_label)) },
       navigationIcon = { BackIconButton(navigateUp) },
     )
     LazyColumn {
       item {
         PreferenceRow(
-          title = R.string.general_label,
+          title = MR.strings.general_label,
           icon = Icons.Outlined.Tune,
           onClick = openSettingsGeneral,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.appearance_label,
+          title = MR.strings.appearance_label,
           icon = Icons.Outlined.Palette,
           onClick = openSettingsAppearance,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.library_label,
+          title = MR.strings.library_label,
           icon = Icons.Outlined.CollectionsBookmark,
           onClick = openSettingsLibrary,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.reader_label,
+          title = MR.strings.reader_label,
           icon = Icons.Outlined.ChromeReaderMode,
           onClick = openSettingsReader,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.downloads_label,
+          title = MR.strings.downloads_label,
           icon = Icons.Outlined.GetApp,
           onClick = openSettingsDownloads,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.tracking_label,
+          title = MR.strings.tracking_label,
           icon = Icons.Outlined.Sync,
           onClick = openSettingsTracking,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.browse_label,
+          title = MR.strings.browse_label,
           icon = Icons.Outlined.Explore,
           onClick = openSettingsBrowse,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.backup_label,
+          title = MR.strings.backup_label,
           icon = Icons.Outlined.Restore,
           onClick = openSettingsBackup,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.security_label,
+          title = MR.strings.security_label,
           icon = Icons.Outlined.Security,
           onClick = openSettingsSecurity,
         )
       }
       item {
         PreferenceRow(
-          title = R.string.advanced_label,
+          title = MR.strings.advanced_label,
           icon = Icons.Outlined.Code,
           onClick = openSettingsAdvanced,
         )

@@ -19,13 +19,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.util.toast
 
 @Composable
 fun ConfirmExitBackHandler(confirmExit: Boolean) {
   val scope = rememberCoroutineScope()
   val context = LocalContext.current
+  val message = localize(MR.strings.confirm_exit_message)
 
   var isConfirmingExit by remember { mutableStateOf(false) }
 
@@ -34,7 +36,7 @@ fun ConfirmExitBackHandler(confirmExit: Boolean) {
   // the navigation back handler.
   BackHandler(enabled = confirmExit && !isConfirmingExit) {
     isConfirmingExit = true
-    context.toast(R.string.confirm_exit_message, Toast.LENGTH_LONG)
+    context.toast(message, Toast.LENGTH_LONG)
     scope.launch {
       delay(2000)
       isConfirmingExit = false

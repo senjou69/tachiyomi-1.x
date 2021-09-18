@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import tachiyomi.ui.R
+import tachiyomi.i18n.localize
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 
@@ -23,7 +23,7 @@ fun SettingsBrowseScreen(
 ) {
   Column {
     Toolbar(
-      title = { Text(stringResource(R.string.browse_label)) },
+      title = { Text(localize(MR.strings.browse_label)) },
       navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {

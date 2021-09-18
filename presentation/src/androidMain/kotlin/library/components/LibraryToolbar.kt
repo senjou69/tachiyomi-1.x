@@ -27,9 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.stringResource
 import tachiyomi.domain.library.model.CategoryWithCount
-import tachiyomi.ui.R.string
+import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.categories.visibleName
 import tachiyomi.ui.core.components.SearchField
 import tachiyomi.ui.core.components.Toolbar
@@ -79,7 +79,7 @@ private fun LibraryRegularToolbar(
   Toolbar(
     title = {
       val text = when {
-        showCategoryTabs -> stringResource(string.library_label)
+        showCategoryTabs -> localize(MR.strings.library_label)
         selectedCategory != null -> selectedCategory.visibleName + if (!showCountInCategory) {
           ""
         } else {

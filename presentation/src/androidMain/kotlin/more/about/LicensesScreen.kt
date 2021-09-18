@@ -25,11 +25,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.entity.Library
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 
@@ -42,7 +42,7 @@ fun LicensesScreen(
   Scaffold(
     topBar = {
       Toolbar(
-        title = { Text(stringResource(R.string.licenses_label)) },
+        title = { Text(localize(MR.strings.licenses_label)) },
         navigationIcon = { BackIconButton(navigateUp) },
       )
     },

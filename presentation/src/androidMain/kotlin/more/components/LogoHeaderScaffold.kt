@@ -8,7 +8,6 @@
 
 package tachiyomi.ui.more.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,10 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import dev.icerock.moko.resources.StringResource
+import tachiyomi.i18n.localize
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.NoElevationOverlay
 import tachiyomi.ui.core.components.Toolbar
@@ -32,13 +32,13 @@ import tachiyomi.ui.core.theme.CustomColors
 
 @Composable
 fun LogoHeaderScaffold(
-  @StringRes titleResId: Int,
+  titleResId: StringResource,
   navigationIcon: @Composable (() -> Unit)? = null,
   content: @Composable () -> Unit,
 ) {
   Column {
     Toolbar(
-      title = { Text(stringResource(titleResId)) },
+      title = { Text(localize(titleResId)) },
       elevation = 0.dp,
       modifier = Modifier.zIndex(1f),
       navigationIcon = navigationIcon,

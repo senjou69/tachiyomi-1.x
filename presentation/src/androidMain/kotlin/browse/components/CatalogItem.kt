@@ -36,7 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,7 +51,7 @@ import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.browse.Language
 import tachiyomi.ui.core.components.EmojiText
 import tachiyomi.ui.core.components.LetterIcon
@@ -231,13 +231,13 @@ private fun CatalogMenuButton(
     }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
       DropdownMenuItem(onClick = { /*TODO*/ }) {
-        Text(stringResource(R.string.catalog_details))
+        Text(localize(MR.strings.catalog_details))
       }
       if (onPinToggle != null && catalog is CatalogLocal) {
         DropdownMenuItem(onClick = onPinToggle) {
           Text(
-            stringResource(
-              if (!catalog.isPinned) R.string.catalog_pin else R.string
+            localize(
+              if (!catalog.isPinned) MR.strings.catalog_pin else MR.strings
                 .catalog_unpin
             )
           )
@@ -245,7 +245,7 @@ private fun CatalogMenuButton(
       }
       if (onUninstall != null) {
         DropdownMenuItem(onClick = onUninstall) {
-          Text(stringResource(R.string.catalog_uninstall))
+          Text(localize(MR.strings.catalog_uninstall))
         }
       }
     }

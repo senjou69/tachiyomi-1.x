@@ -14,14 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.categories.CategoriesState
 import tachiyomi.ui.core.components.EmptyScreen
 
 @Composable
 fun CategoriesEmptyScreen(state: CategoriesState) {
   Box {
-    EmptyScreen(R.string.information_no_categories)
+    EmptyScreen(MR.strings.information_no_categories)
     CategoriesFloatingActionButton(
       modifier = Modifier
         .align(Alignment.BottomEnd)

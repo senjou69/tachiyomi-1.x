@@ -24,12 +24,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import tachiyomi.domain.library.model.Category
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 
 @Composable
 fun CreateCategoryDialog(
@@ -40,7 +40,7 @@ fun CreateCategoryDialog(
   val focusRequester = remember { FocusRequester() }
   AlertDialog(
     onDismissRequest = onDismissRequest,
-    title = { Text(stringResource(R.string.create_category)) },
+    title = { Text(localize(MR.strings.create_category)) },
     text = {
       OutlinedTextField(
         value = categoryName,
@@ -52,13 +52,13 @@ fun CreateCategoryDialog(
     buttons = {
       ButtonsRow {
         TextButton(onClick = onDismissRequest) {
-          Text(stringResource(R.string.action_cancel))
+          Text(localize(MR.strings.action_cancel))
         }
         TextButton(onClick = {
           onCreate(categoryName)
           onDismissRequest()
         }) {
-          Text(stringResource(R.string.action_add))
+          Text(localize(MR.strings.action_add))
         }
       }
     }
@@ -86,7 +86,7 @@ fun RenameCategoryDialog(
   val focusRequester = remember { FocusRequester() }
   AlertDialog(
     onDismissRequest = onDismissRequest,
-    title = { Text(stringResource(R.string.rename_category)) },
+    title = { Text(localize(MR.strings.rename_category)) },
     text = {
       TextFieldValue()
       OutlinedTextField(
@@ -99,13 +99,13 @@ fun RenameCategoryDialog(
     buttons = {
       ButtonsRow {
         TextButton(onClick = onDismissRequest) {
-          Text(stringResource(R.string.action_cancel))
+          Text(localize(MR.strings.action_cancel))
         }
         TextButton(onClick = {
           onRename(textField.text)
           onDismissRequest()
         }) {
-          Text(stringResource(R.string.action_edit))
+          Text(localize(MR.strings.action_edit))
         }
       }
     }
@@ -124,9 +124,9 @@ fun DeleteCategoryDialog(
 ) {
   AlertDialog(
     onDismissRequest = onDismissRequest,
-    title = { Text(stringResource(R.string.delete_category)) },
+    title = { Text(localize(MR.strings.delete_category)) },
     text = {
-      Text(stringResource(R.string.delete_category_confirmation, category.name))
+      Text(localize(MR.strings.delete_category_confirmation, category.name))
     },
     buttons = {
       ButtonsRow {
@@ -134,10 +134,10 @@ fun DeleteCategoryDialog(
           onDelete()
           onDismissRequest()
         }) {
-          Text(stringResource(R.string.action_yes))
+          Text(localize(MR.strings.action_yes))
         }
         TextButton(onClick = onDismissRequest) {
-          Text(stringResource(R.string.action_no))
+          Text(localize(MR.strings.action_no))
         }
       }
     }

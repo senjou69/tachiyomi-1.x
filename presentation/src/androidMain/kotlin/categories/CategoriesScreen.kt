@@ -12,8 +12,8 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import tachiyomi.ui.R
+import tachiyomi.i18n.localize
+import tachiyomi.i18n.MR
 import tachiyomi.ui.categories.CategoriesViewModel.Dialog
 import tachiyomi.ui.categories.components.CategoriesContent
 import tachiyomi.ui.categories.components.CategoriesEmptyScreen
@@ -38,7 +38,7 @@ fun CategoriesScreen(
   Scaffold(
     topBar = {
       Toolbar(
-        title = { Text(stringResource(R.string.categories_label)) },
+        title = { Text(localize(MR.strings.categories_label)) },
         navigationIcon = { BackIconButton(navigateUp) }
       )
     }

@@ -8,7 +8,6 @@
 
 package tachiyomi.ui.core.prefs
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -47,6 +46,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow.Companion.Ellipsis
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.StringResource
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.ColorPickerDialog
 
 @Composable
@@ -111,14 +112,14 @@ fun PreferenceRow(
 
 @Composable
 fun PreferenceRow(
-  @StringRes title: Int,
+  title: StringResource,
   icon: ImageVector? = null,
   onClick: () -> Unit = {},
   onLongClick: () -> Unit = {},
   subtitle: String? = null,
   action: @Composable (() -> Unit)? = null,
 ) {
-  PreferenceRow(stringResource(title), icon, onClick, onLongClick, subtitle, action)
+  PreferenceRow(localize(title), icon, onClick, onLongClick, subtitle, action)
 }
 
 @Composable
@@ -140,22 +141,22 @@ fun SwitchPreference(
 @Composable
 fun SwitchPreference(
   preference: PreferenceMutableState<Boolean>,
-  @StringRes title: Int,
-  subtitle: Int? = null,
+  title: StringResource,
+  subtitle: StringResource? = null,
   icon: ImageVector? = null,
 ) {
-  SwitchPreference(preference, stringResource(title), subtitle?.let { stringResource(it) }, icon)
+  SwitchPreference(preference, localize(title), subtitle?.let { localize(it) }, icon)
 }
 
 @Composable
 fun <Key> ChoicePreference(
   preference: PreferenceMutableState<Key>,
-  choices: Map<Key, Int>,
-  @StringRes title: Int,
+  choices: Map<Key, StringResource>,
+  title: StringResource,
   subtitle: String? = null
 ) {
   ChoicePreference(
-    preference, choices.mapValues { stringResource(it.value) }, stringResource(title), subtitle
+    preference, choices.mapValues { localize(it.value) }, localize(title), subtitle
   )
 }
 

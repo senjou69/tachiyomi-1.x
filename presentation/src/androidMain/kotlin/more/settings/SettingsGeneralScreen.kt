@@ -17,10 +17,10 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.StartScreen
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.ChoicePreference
@@ -50,14 +50,14 @@ class SettingsGeneralViewModel @Inject constructor(
   fun getLanguageChoices(): Map<String, String> {
     val currentLocaleDisplayName = Locale.getDefault().let { it.getDisplayName(it).capitalize() }
     return mapOf(
-      "" to "${stringResource(R.string.system_default)} ($currentLocaleDisplayName)"
+      "" to "${localize(MR.strings.system_default)} ($currentLocaleDisplayName)"
     )
   }
 
   @Composable
   fun getDateChoices(): Map<String, String> {
     return mapOf(
-      "" to stringResource(R.string.system_default),
+      "" to localize(MR.strings.system_default),
       "MM/dd/yy" to "MM/dd/yy",
       "dd/MM/yy" to "dd/MM/yy",
       "yyyy-MM-dd" to "yyyy-MM-dd"
@@ -80,35 +80,35 @@ fun SettingsGeneralScreen(
   val context = LocalContext.current
   Column {
     Toolbar(
-      title = { Text(stringResource(R.string.general_label)) },
+      title = { Text(localize(MR.strings.general_label)) },
       navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {
       item {
         ChoicePreference(
           preference = vm.startScreen,
-          title = R.string.start_screen,
+          title = MR.strings.start_screen,
           choices = mapOf(
-            StartScreen.Library to R.string.library_label,
-            StartScreen.Updates to R.string.updates_label,
-            StartScreen.History to R.string.history_label,
-            StartScreen.Browse to R.string.browse_label,
-            StartScreen.More to R.string.more_label,
+            StartScreen.Library to MR.strings.library_label,
+            StartScreen.Updates to MR.strings.updates_label,
+            StartScreen.History to MR.strings.history_label,
+            StartScreen.Browse to MR.strings.browse_label,
+            StartScreen.More to MR.strings.more_label,
           )
         )
       }
       item {
-        SwitchPreference(preference = vm.confirmExit, title = R.string.confirm_exit)
+        SwitchPreference(preference = vm.confirmExit, title = MR.strings.confirm_exit)
       }
       item {
         SwitchPreference(
           preference = vm.hideBottomBarOnScroll,
-          title = R.string.hide_bottom_bar_on_scroll
+          title = MR.strings.hide_bottom_bar_on_scroll
         )
       }
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         item {
-          PreferenceRow(title = R.string.manage_notifications, onClick = {
+          PreferenceRow(title = MR.strings.manage_notifications, onClick = {
             val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
               putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
             }
@@ -122,14 +122,14 @@ fun SettingsGeneralScreen(
       item {
         ChoicePreference(
           preference = vm.language,
-          title = stringResource(R.string.language),
+          title = localize(MR.strings.language),
           choices = vm.getLanguageChoices(),
         )
       }
       item {
         ChoicePreference(
           preference = vm.dateFormat,
-          title = stringResource(R.string.date_format),
+          title = localize(MR.strings.date_format),
           choices = vm.getDateChoices()
         )
       }

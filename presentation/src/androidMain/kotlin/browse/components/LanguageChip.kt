@@ -22,9 +22,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import tachiyomi.ui.R.string
+import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.browse.LanguageChoice
 import tachiyomi.ui.browse.LanguageChoice.All
 import tachiyomi.ui.browse.LanguageChoice.One
@@ -47,9 +47,9 @@ fun LanguageChip(choice: LanguageChoice, isSelected: Boolean, onClick: () -> Uni
       .clickable(onClick = onClick)
   ) {
     val text = when (choice) {
-      All -> stringResource(string.lang_all)
+      All -> localize(MR.strings.lang_all)
       is One -> choice.language.toEmoji() ?: ""
-      is Others -> stringResource(string.lang_others)
+      is Others -> localize(MR.strings.lang_others)
     }
     if (choice is One) {
       EmojiText(

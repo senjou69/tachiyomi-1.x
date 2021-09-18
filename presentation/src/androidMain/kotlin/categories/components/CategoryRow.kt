@@ -30,11 +30,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import tachiyomi.i18n.localize
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tachiyomi.domain.library.model.Category
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.categories.CategoriesState
 import tachiyomi.ui.categories.CategoriesViewModel.Dialog
 
@@ -91,13 +91,13 @@ fun CategoryRow(
           IconButton(onClick = { state.dialog = Dialog.Rename(category) }) {
             Icon(
               imageVector = Icons.Outlined.Edit,
-              contentDescription = stringResource(R.string.action_edit),
+              contentDescription = localize(MR.strings.action_edit),
             )
           }
           IconButton(onClick = { state.dialog = Dialog.Delete(category) }) {
             Icon(
               imageVector = Icons.Outlined.Delete,
-              contentDescription = stringResource(R.string.action_delete),
+              contentDescription = localize(MR.strings.action_delete),
             )
           }
         }

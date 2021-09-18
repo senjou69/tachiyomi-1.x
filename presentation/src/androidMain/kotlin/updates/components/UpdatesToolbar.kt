@@ -9,8 +9,8 @@ import androidx.compose.material.icons.filled.FlipToBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SelectAll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import tachiyomi.ui.R
+import tachiyomi.i18n.localize
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.updates.UpdatesState
 
@@ -67,7 +67,7 @@ private fun UpdatesSelectionToolbar(
 @Composable
 fun UpdatesRegularToolbar(onClickRefresh: () -> Unit) {
   Toolbar(
-    title = { Text(stringResource(R.string.updates_label)) },
+    title = { Text(localize(MR.strings.updates_label)) },
     actions = {
       IconButton(onClick = onClickRefresh) {
         Icon(Icons.Default.Refresh, contentDescription = null)

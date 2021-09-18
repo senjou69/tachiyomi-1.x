@@ -17,7 +17,6 @@ import androidx.compose.material.icons.outlined.Public
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalUriHandler
 import tachiyomi.i18n.MR
-import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.prefs.PreferenceRow
 import tachiyomi.ui.more.components.LinkIcon
@@ -31,13 +30,13 @@ fun AboutScreen(
   val uriHandler = LocalUriHandler.current
 
   LogoHeaderScaffold(
-    titleResId = R.string.about_label,
+    titleResId = MR.strings.about_label,
     navigationIcon = { BackIconButton(navigateUp) },
   ) {
     LazyColumn {
       item {
         PreferenceRow(
-          title = R.string.version_label,
+          title = MR.strings.version_label,
           onClick = {
             // TODO
           },
@@ -46,7 +45,7 @@ fun AboutScreen(
 
       item {
         PreferenceRow(
-          title = R.string.whats_new_label,
+          title = MR.strings.whats_new_label,
           onClick = {
             // TODO
           },
@@ -55,14 +54,14 @@ fun AboutScreen(
 
       item {
         PreferenceRow(
-          title = R.string.translate_label,
+          title = MR.strings.translate_label,
           onClick = { uriHandler.openUri("https://tachiyomi.org/help/contribution/#translation") },
         )
       }
 
       item {
         PreferenceRow(
-          title = R.string.licenses_label,
+          title = MR.strings.licenses_label,
           onClick = openLicenses,
         )
       }

@@ -11,7 +11,7 @@ package tachiyomi.ui.history
 import androidx.compose.animation.Crossfade
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import tachiyomi.ui.R
+import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.EmptyScreen
 import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.viewmodel.viewModel
@@ -38,7 +38,7 @@ fun HistoryScreen(
     Crossfade(targetState = Pair(vm.isLoading, vm.isEmpty)) { (isLoading, isEmpty) ->
       when {
         isLoading -> LoadingScreen()
-        isEmpty -> EmptyScreen(R.string.information_no_history)
+        isEmpty -> EmptyScreen(MR.strings.information_no_history)
         else -> HistoryContent(
           state = vm,
           onClickItem = { openManga(it.mangaId) },

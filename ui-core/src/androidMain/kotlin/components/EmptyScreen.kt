@@ -8,7 +8,6 @@
 
 package tachiyomi.ui.core.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,10 +20,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.icerock.moko.resources.StringResource
+import tachiyomi.i18n.localize
 
 private val kaomojis = listOf(
   "(･o･;)",
@@ -37,7 +37,7 @@ private val kaomojis = listOf(
 
 @Composable
 fun EmptyScreen(
-  @StringRes text: Int
+  text: StringResource
 ) {
   val kaomoji = remember { kaomojis.random() }
 
@@ -54,7 +54,7 @@ fun EmptyScreen(
       ),
     )
     Text(
-      text = stringResource(id = text),
+      text = localize(text),
       style = MaterialTheme.typography.body2.copy(
         color = LocalContentColor.current.copy(alpha = ContentAlpha.medium)
       ),
