@@ -10,23 +10,43 @@ package tachiyomi.ui.more.settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import tachiyomi.domain.track.sites.TrackServices
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.core.prefs.PreferenceRow
+import tachiyomi.ui.core.viewmodel.BaseViewModel
+import tachiyomi.ui.core.viewmodel.viewModel
+import javax.inject.Inject
+
+class TrackersViewModel @Inject constructor(
+  trackServices: TrackServices,
+) : BaseViewModel() {
+
+  val trackers = trackServices.trackers
+}
 
 @Composable
 fun SettingsTrackingScreen(
   navigateUp: () -> Unit
 ) {
+  val vm = viewModel<TrackersViewModel>()
+
   Column {
     Toolbar(
       title = { Text(stringResource(R.string.tracking_label)) },
       navigationIcon = { BackIconButton(navigateUp) }
     )
     LazyColumn {
+      items(vm.trackers) { tracker ->
+        PreferenceRow(title = tracker.name, onClick = {
+          // TODO
+        })
+      }
     }
   }
 }

@@ -14,26 +14,23 @@ import tachiyomi.domain.track.sites.myanimelist.MyAnimeList
 import javax.inject.Inject
 
 class TrackServices @Inject constructor(
-  private val http: Http,
-  private val trackPreferences: TrackPreferences
+  http: Http,
+  trackPreferences: TrackPreferences
 ) {
 
-  val myAnimeList = MyAnimeList(http, trackPreferences)
+  val trackers = listOf(
+    MyAnimeList(http, trackPreferences)
+  )
 
   fun get(id: Int): TrackSite? {
-    return when (id) {
-      MYANIMELIST -> myAnimeList
-      ANILIST -> null
-      KITSU -> null
-      SHIKIMORI -> null
-      else -> null
-    }
+    return trackers.find { it.id == id }
   }
 
   companion object {
     const val MYANIMELIST = 1
     const val ANILIST = 2
     const val KITSU = 3
+    const val BANGUMI = 5
     const val SHIKIMORI = 4
   }
 

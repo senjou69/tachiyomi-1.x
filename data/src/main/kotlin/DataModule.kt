@@ -45,6 +45,7 @@ import tachiyomi.domain.library.service.LibraryUpdateScheduler
 import tachiyomi.domain.library.service.MangaCategoryRepository
 import tachiyomi.domain.manga.service.ChapterRepository
 import tachiyomi.domain.manga.service.MangaRepository
+import tachiyomi.domain.track.service.TrackPreferences
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.updates.service.UpdatesRepository
 import toothpick.ktp.binding.bind
@@ -99,6 +100,10 @@ fun DataModule(context: Application) = module {
 
   bind<UiPreferences>()
     .toProviderInstance { UiPreferences(AndroidPreferenceStore(context, "ui")) }
+    .providesSingleton()
+
+  bind<TrackPreferences>()
+    .toProviderInstance { TrackPreferences(AndroidPreferenceStore(context, "track")) }
     .providesSingleton()
 
   bind<UpdatesRepository>().toClass<UpdatesRepositoryImpl>().singleton()

@@ -12,5 +12,4 @@ import tachiyomi.core.prefs.PreferenceStore
 
 class TrackPreferences(private val store: PreferenceStore) {
 
-
 }
