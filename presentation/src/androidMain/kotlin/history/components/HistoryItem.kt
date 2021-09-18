@@ -25,10 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import tachiyomi.domain.history.model.History
 import tachiyomi.domain.history.model.HistoryWithRelations
-import tachiyomi.domain.manga.model.Chapter
-import tachiyomi.domain.manga.model.Manga
 import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.components.MangaListItem
 import tachiyomi.ui.core.components.MangaListItemColumn

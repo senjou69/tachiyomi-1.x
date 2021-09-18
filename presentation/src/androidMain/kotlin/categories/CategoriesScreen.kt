@@ -12,8 +12,8 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import tachiyomi.i18n.localize
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.categories.CategoriesViewModel.Dialog
 import tachiyomi.ui.categories.components.CategoriesContent
 import tachiyomi.ui.categories.components.CategoriesEmptyScreen

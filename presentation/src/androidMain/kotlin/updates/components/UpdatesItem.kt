@@ -16,11 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import tachiyomi.i18n.localize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.components.MangaListItem
 import tachiyomi.ui.core.components.MangaListItemColumn

@@ -56,13 +56,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import tachiyomi.i18n.localize
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.google.accompanist.flowlayout.FlowRow
 import tachiyomi.domain.manga.model.Manga
-import tachiyomi.source.Source
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
+import tachiyomi.source.Source
 import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar

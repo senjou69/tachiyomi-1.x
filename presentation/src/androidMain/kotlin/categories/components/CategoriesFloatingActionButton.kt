@@ -15,8 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import tachiyomi.i18n.localize
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.categories.CategoriesState
 import tachiyomi.ui.categories.CategoriesViewModel
 

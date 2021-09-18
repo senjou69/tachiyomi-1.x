@@ -17,10 +17,10 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import tachiyomi.i18n.localize
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.StartScreen
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.ChoicePreference

@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import tachiyomi.domain.library.model.LibraryUpdaterEvent
 import tachiyomi.domain.library.service.LibraryUpdater
-import tachiyomi.i18n.MR
 import tachiyomi.ui.R
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject

@@ -34,7 +34,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import tachiyomi.i18n.localize
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -43,6 +42,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dev.icerock.moko.resources.StringResource
 import tachiyomi.domain.ui.model.StartScreen
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.theme.CustomColors
 
 @OptIn(ExperimentalAnimationApi::class)

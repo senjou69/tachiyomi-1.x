@@ -19,10 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
-import tachiyomi.domain.history.model.History
 import tachiyomi.domain.history.model.HistoryWithRelations
-import tachiyomi.domain.manga.model.Chapter
-import tachiyomi.domain.manga.model.Manga
 import tachiyomi.ui.core.components.RelativeTimeText
 import tachiyomi.ui.history.HistoryState
 

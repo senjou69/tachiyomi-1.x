@@ -44,7 +44,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import tachiyomi.i18n.localize
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
@@ -61,6 +60,7 @@ import tachiyomi.domain.library.model.LibraryFilter.Value.Included
 import tachiyomi.domain.library.model.LibraryFilter.Value.Missing
 import tachiyomi.domain.library.model.LibrarySort
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.ChoiceChip
 import tachiyomi.ui.core.theme.CustomColors
 import tachiyomi.ui.core.viewmodel.viewModel

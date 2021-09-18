@@ -9,10 +9,10 @@
 package tachiyomi.ui.categories
 
 import androidx.compose.runtime.Composable
-import tachiyomi.i18n.localize
 import tachiyomi.domain.library.model.Category
 import tachiyomi.domain.library.model.CategoryWithCount
 import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 
 val Category.visibleName
   @Composable

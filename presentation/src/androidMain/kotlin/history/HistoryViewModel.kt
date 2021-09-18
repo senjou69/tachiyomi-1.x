@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import tachiyomi.domain.history.interactor.DeleteAllHistory
 import tachiyomi.domain.history.interactor.DeleteHistory
 import tachiyomi.domain.history.interactor.GetHistoryByDate
-import tachiyomi.domain.history.model.History
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import javax.inject.Inject
