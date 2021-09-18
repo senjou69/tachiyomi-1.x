@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS mangacategory (
+  mangaId INTEGER NOT NULL,
+  categoryId INTEGER NOT NULL,
+  PRIMARY KEY (mangaId, categoryId),
+  FOREIGN KEY (mangaId) REFERENCES manga(id) ON DELETE CASCADE,
+  FOREIGN KEY (categoryId) REFERENCES category(id) ON DELETE CASCADE
+);
+
+insert:
+INSERT INTO mangacategory VALUES (?, ?);
+
+deleteForManga:
+DELETE FROM mangacategory WHERE mangaId = ?;

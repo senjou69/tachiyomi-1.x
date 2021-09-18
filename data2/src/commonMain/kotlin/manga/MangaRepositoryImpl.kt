@@ -41,33 +41,6 @@ class MangaRepositoryImpl @Inject constructor(
     }
   }
 
-  override suspend fun insert(manga: Manga): Long {
-    return withContext(DatabaseDispatcher) {
-      db.transactionWithResult {
-        db.mangaQueries.insert(
-          id = null,
-          sourceId = manga.sourceId,
-          key = manga.key,
-          title = manga.title,
-          artist = manga.artist,
-          author = manga.author,
-          description = manga.description,
-          genres = manga.genres,
-          status = manga.status,
-          cover = manga.cover,
-          customCover = manga.customCover,
-          favorite = manga.favorite,
-          lastUpdate = manga.lastUpdate,
-          lastInit = manga.lastInit,
-          dateAdded = manga.dateAdded,
-          viewer = manga.viewer,
-          flags = manga.flags
-        )
-        db.mangaQueries.lastInsertedId().executeAsOne()
-      }
-    }
-  }
-
   override fun subscribe(mangaId: Long): Flow<Manga?> {
     return db.mangaQueries.findById(mangaId, mangaMapper).asFlow()
       .mapToOneOrNull(DatabaseDispatcher)
@@ -78,14 +51,69 @@ class MangaRepositoryImpl @Inject constructor(
       .mapToOneOrNull(DatabaseDispatcher)
   }
 
+  override suspend fun insert(manga: Manga): Long {
+    return withContext(DatabaseDispatcher) {
+      db.transactionWithResult {
+        insertBlocking(manga)
+        db.mangaQueries.lastInsertedId().executeAsOne()
+      }
+    }
+  }
+
   override suspend fun updatePartial(update: MangaUpdate) {
-    TODO("not implemented")
+    withContext(DatabaseDispatcher) {
+      updatePartialBlocking(update)
+    }
   }
 
   override suspend fun deleteNonFavorite() {
     withContext(DatabaseDispatcher) {
       db.mangaQueries.deleteNonFavorite()
     }
+  }
+
+  private fun insertBlocking(manga: Manga) {
+    db.mangaQueries.insert(
+      id = null,
+      sourceId = manga.sourceId,
+      key = manga.key,
+      title = manga.title,
+      artist = manga.artist,
+      author = manga.author,
+      description = manga.description,
+      genres = manga.genres,
+      status = manga.status,
+      cover = manga.cover,
+      customCover = manga.customCover,
+      favorite = manga.favorite,
+      lastUpdate = manga.lastUpdate,
+      lastInit = manga.lastInit,
+      dateAdded = manga.dateAdded,
+      viewer = manga.viewer,
+      flags = manga.flags
+    )
+  }
+
+  private fun updatePartialBlocking(update: MangaUpdate) {
+    db.mangaQueries.update(
+      update.sourceId,
+      update.key,
+      update.title,
+      update.artist,
+      update.author,
+      update.description,
+      update.genres?.let(mangaGenresConverter::encode),
+      update.status?.toLong(),
+      update.cover,
+      update.customCover,
+      update.favorite?.let { if (it) 1 else 0 },
+      update.lastUpdate,
+      update.lastInit,
+      update.dateAdded,
+      update.viewer?.toLong(),
+      update.flags?.toLong(),
+      id = update.id,
+    )
   }
 
 }

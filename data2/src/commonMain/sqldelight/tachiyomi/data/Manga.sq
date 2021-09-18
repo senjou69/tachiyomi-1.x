@@ -35,6 +35,26 @@ SELECT * FROM manga WHERE favorite = 1;
 insert:
 INSERT INTO manga VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
+update:
+UPDATE manga SET
+  sourceId = coalesce(?, sourceId),
+  key = coalesce(?, key),
+  title = coalesce(?, title),
+  artist = coalesce(?, artist),
+  author = coalesce(?, author),
+  description = coalesce(?, description),
+  genres = coalesce(?, genres),
+  status = coalesce(?, status),
+  cover = coalesce(?, cover),
+  customCover = coalesce(?, customCover),
+  favorite = coalesce(?, favorite),
+  lastUpdate = coalesce(?, lastUpdate),
+  lastInit = coalesce(?, lastInit),
+  dateAdded = coalesce(?, dateAdded),
+  viewer = coalesce(?, viewer),
+  flags = coalesce(?, flags)
+WHERE id = ?;
+
 deleteNonFavorite:
 DELETE FROM manga WHERE favorite = 0;
 

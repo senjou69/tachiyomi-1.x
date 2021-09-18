@@ -1,0 +1,2 @@
+CREATE VIEW IF NOT EXISTS library AS
+SELECT id, sourceId, key, title, status, cover, lastUpdate FROM manga WHERE favorite = 1;

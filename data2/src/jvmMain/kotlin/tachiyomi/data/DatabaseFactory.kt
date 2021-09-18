@@ -10,10 +10,16 @@ package tachiyomi.data
 
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
+import java.util.Properties
 
 actual class DatabaseDriverFactory {
   actual fun create(): SqlDriver {
-    val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY + "/tmp/tachiyomi.db")
+    val driver = JdbcSqliteDriver(
+      url = JdbcSqliteDriver.IN_MEMORY + "/tmp/tachiyomi.db",
+      properties = Properties().apply {
+        put("foreign_keys", "true")
+      }
+    )
     Database.Schema.create(driver)
     return driver
   }

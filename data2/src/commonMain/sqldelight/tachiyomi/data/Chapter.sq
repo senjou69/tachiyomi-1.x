@@ -1,0 +1,50 @@
+CREATE TABLE IF NOT EXISTS chapter (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  mangaId INTEGER NOT NULL,
+  key TEXT NOT NULL,
+  name TEXT NOT NULL DEFAULT "",
+  read INTEGER AS Boolean NOT NULL DEFAULT 0,
+  bookmark INTEGER AS Boolean NOT NULL DEFAULT 0,
+  progress INTEGER AS Int NOT NULL DEFAULT 0,
+  dateUpload INTEGER NOT NULL DEFAULT 0,
+  dateFetch INTEGER NOT NULL DEFAULT 0,
+  sourceOrder INTEGER AS Int NOT NULL DEFAULT 0,
+  number REAL AS Float NOT NULL DEFAULT 0,
+  scanlator TEXT NOT NULL DEFAULT "",
+  FOREIGN KEY (mangaId) REFERENCES manga(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS manga_chapters_idx ON chapter(mangaId);
+
+findById:
+SELECT * FROM chapter WHERE id = ?;
+
+findByKey:
+SELECT * FROM chapter WHERE mangaId = ? AND key = ?;
+
+findForManga:
+SELECT * FROM chapter WHERE mangaId = ?;
+
+insert:
+INSERT INTO chapter VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+update:
+UPDATE chapter SET
+  mangaId = coalesce(?, mangaId),
+  key = coalesce(?, key),
+  name = coalesce(?, name),
+  read = coalesce(?, read),
+  bookmark = coalesce(?, bookmark),
+  progress = coalesce(?, progress),
+  dateUpload = coalesce(?, dateUpload),
+  dateFetch = coalesce(?, dateFetch),
+  sourceOrder = coalesce(?, sourceOrder),
+  number = coalesce(?, number),
+  scanlator = coalesce(?, scanlator)
+WHERE id = ?;
+
+updateOrder:
+UPDATE chapter SET sourceOrder = ? WHERE mangaId = ? AND key = ?;
+
+delete:
+DELETE FROM chapter WHERE id = ?;
