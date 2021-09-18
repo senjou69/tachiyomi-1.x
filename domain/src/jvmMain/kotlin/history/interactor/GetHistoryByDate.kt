@@ -19,6 +19,6 @@ class GetHistoryByDate @Inject constructor(
 ) {
 
   fun subscribeAll(): Flow<Map<Date, List<HistoryWithRelations>>> {
-    return historyRepository.getHistoryWithRelationByDate()
+    return historyRepository.subscribeAllWithRelationByDate()
   }
 }

@@ -47,7 +47,7 @@ class HistoryViewModel @Inject constructor(
       .launchIn(scope)
   }
 
-  fun delete(history: History) {
+  fun delete(history: HistoryWithRelations) {
     state.query = null
     scope.launch {
       deleteHistory.await(history)
@@ -66,6 +66,6 @@ private fun <T : HistoryWithRelations> List<T>.filteredByQuery(query: String?): 
   return if (query == null) {
     this
   } else {
-    filter { it.manga.title.contains(query, true) }
+    filter { it.mangaTitle.contains(query, true) }
   }
 }

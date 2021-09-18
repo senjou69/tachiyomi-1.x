@@ -43,13 +43,13 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun HistoryItem(
   history: HistoryWithRelations,
-  onClickItem: (Manga) -> Unit,
-  onClickDelete: (History) -> Unit,
-  onClickPlay: (Chapter) -> Unit
+  onClickItem: (HistoryWithRelations) -> Unit,
+  onClickDelete: (HistoryWithRelations) -> Unit,
+  onClickPlay: (HistoryWithRelations) -> Unit
 ) {
   MangaListItem(
     modifier = Modifier
-      .clickable { onClickItem(history.manga) }
+      .clickable { onClickItem(history) }
       .height(80.dp)
       .fillMaxWidth()
       .padding(end = 4.dp),
@@ -60,7 +60,7 @@ fun HistoryItem(
         .aspectRatio(3f / 4f)
         .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
         .clip(MaterialTheme.shapes.medium),
-      mangaCover = rememberMangaCover(history.manga)
+      mangaCover = rememberMangaCover(history)
     )
     MangaListItemColumn(
       modifier = Modifier
@@ -68,21 +68,21 @@ fun HistoryItem(
         .padding(start = 16.dp, end = 8.dp)
     ) {
       MangaListItemTitle(
-        text = history.manga.title,
+        text = history.mangaTitle,
         maxLines = 2,
         fontWeight = FontWeight.SemiBold
       )
 
       MangaListItemSubtitle(
-        text = "Ch. ${history.chapter.number} - ${
-          history.history.readAt.toLocalDateTime().format(formatter)
+        text = "Ch. ${history.chapterNumber} - ${
+          history.readAt.toLocalDateTime().format(formatter)
         }"
       )
     }
-    IconButton(onClick = { onClickDelete(history.history) }) {
+    IconButton(onClick = { onClickDelete(history) }) {
       Icon(imageVector = Icons.Outlined.Delete, contentDescription = "")
     }
-    IconButton(onClick = { onClickPlay(history.chapter) }) {
+    IconButton(onClick = { onClickPlay(history) }) {
       Icon(imageVector = Icons.Filled.PlayArrow, contentDescription = "")
     }
   }

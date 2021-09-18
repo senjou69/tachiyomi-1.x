@@ -41,12 +41,11 @@ fun HistoryScreen(
         isEmpty -> EmptyScreen(R.string.information_no_history)
         else -> HistoryContent(
           state = vm,
-          onClickItem = { openManga(it.id) },
+          onClickItem = { openManga(it.mangaId) },
           onClickDelete = { vm.delete(it) },
-          onClickPlay = { openChapter(it.id) }
+          onClickPlay = { openChapter(it.chapterId) }
         )
       }
     }
   }
 }
-

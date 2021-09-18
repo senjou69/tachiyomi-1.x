@@ -15,22 +15,22 @@ import java.util.Date
 
 interface HistoryRepository {
 
+  suspend fun find(mangaId: Long, chapterId: Long): History?
+
+  suspend fun findAll(): List<History>
+  
+  fun subscribeAllWithRelationByDate(): Flow<Map<Date, List<HistoryWithRelations>>>
+
   suspend fun insert(history: History)
 
   suspend fun insert(history: List<History>)
 
-  suspend fun delete(history: History): Int
-
-  suspend fun delete(history: List<History>): Int
-
-  suspend fun deleteAll()
-
   suspend fun update(history: History)
 
-  suspend fun find(mangaId: Long, chapterId: Long): History?
+  suspend fun delete(history: History)
 
-  suspend fun getHistory(): List<History>
+  suspend fun delete(history: List<History>)
 
-  fun getHistoryWithRelationByDate(): Flow<Map<Date, List<HistoryWithRelations>>>
+  suspend fun deleteAll()
 
 }

@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS catalogRemote (
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  pkgName TEXT NOT NULL,
+  versionName TEXT NOT NULL,
+  versionCode INTEGER AS Int NOT NULL,
+  lang TEXT NOT NULL,
+  apkUrl TEXT NOT NULL,
+  iconUrl TEXT NOT NULL,
+  nsfw INTEGER AS Boolean NOT NULL
+);
+
+findAll:
+SELECT * FROM catalogRemote ORDER BY lang, name;
+
+deleteAll:
+DELETE FROM catalogRemote;
+
+insert:
+INSERT INTO catalogRemote VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);

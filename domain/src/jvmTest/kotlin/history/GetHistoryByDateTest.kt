@@ -28,12 +28,12 @@ class GetHistoryByDateTest : StringSpec({
   afterTest { clearAllMocks() }
 
   "called function" {
-    every { repository.getHistoryWithRelationByDate() } returns flowOf()
+    every { repository.subscribeAllWithRelationByDate() } returns flowOf()
     interactor.subscribeAll()
-    verify { repository.getHistoryWithRelationByDate() }
+    verify { repository.subscribeAllWithRelationByDate() }
   }
   "sorts by date" {
-    every { repository.getHistoryWithRelationByDate() } returns flowOf(
+    every { repository.subscribeAllWithRelationByDate() } returns flowOf(
       mockkSortedMap(
         mockkUpdates(1627906952000),
         mockkUpdates(1627906952000),
@@ -60,8 +60,8 @@ private fun mockkSortedMap(vararg mockkUpdates: HistoryWithRelations): Map<Date,
 
 private fun mockkUpdates(mockkDateUploaded: Long): HistoryWithRelations {
   return mockk {
-    every { history.readAt } returns mockkDateUploaded
-    every { date } returns formatter.format(Date(history.readAt))
+    every { readAt } returns mockkDateUploaded
+    every { date } returns formatter.format(Date(readAt))
   }
 }
 

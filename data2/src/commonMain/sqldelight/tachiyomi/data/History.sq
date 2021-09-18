@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS history (
+  mangaId INTEGER NOT NULL,
+  chapterId INTEGER NOT NULL,
+  readAt INTEGER NOT NULL,
+  PRIMARY KEY (mangaId, chapterId)
+);
+
+find:
+SELECT * FROM history WHERE mangaId = ? AND chapterId = ?;
+
+findAll:
+SELECT * FROM history;
+
+findAllWithRelations:
+SELECT history.*, manga.title, manga.sourceId, manga.cover, manga.favorite, chapter.number,
+  date(ROUND(readAt / 1000), 'unixepoch', 'localtime') AS date
+FROM history
+JOIN manga ON history.mangaId = manga.id
+JOIN chapter ON history.chapterId = chapter.id;
+
+insert:
+INSERT INTO history VALUES (?, ?, ?);
+
+update:
+UPDATE history SET readAt = ? WHERE mangaId = ? AND chapterId = ?;
+
+deleteById:
+DELETE FROM history WHERE mangaId = ? AND chapterId = ?;
+
+deleteAll:
+DELETE FROM history;

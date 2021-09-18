@@ -9,9 +9,11 @@
 package tachiyomi.domain.history
 
 import io.kotest.core.spec.style.StringSpec
+import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import tachiyomi.domain.history.interactor.DeleteHistory
@@ -24,7 +26,7 @@ class DeleteHistoryTest : StringSpec({
   afterTest { clearAllMocks() }
 
   "called function" {
-    coEvery { repository.delete(history) } returns 1
+    coEvery { repository.delete(history) } just Runs
     interactor.await(history)
     coVerify { repository.delete(history) }
   }
@@ -33,12 +35,8 @@ class DeleteHistoryTest : StringSpec({
     coEvery { repository.delete(history) }.throws(exception)
     assertEquals(DeleteHistory.Result.InternalError(exception), interactor.await(history))
   }
-  "deletes nothing" {
-    coEvery { repository.delete(history) } returns 0
-    assertEquals(DeleteHistory.Result.NothingDeleted, interactor.await(history))
-  }
   "deletes history" {
-    coEvery { repository.delete(history) } returns 1
+    coEvery { repository.delete(history) } just Runs
     assertEquals(DeleteHistory.Result.Success, interactor.await(history))
   }
 })

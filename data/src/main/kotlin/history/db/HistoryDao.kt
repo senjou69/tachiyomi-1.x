@@ -12,16 +12,16 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
-import tachiyomi.domain.history.model.History
-import tachiyomi.domain.history.model.HistoryWithRelations
+import tachiyomi.data.history.model.TmpHistoryWithRelations
 import tachiyomi.data.manga.db.BaseDao
+import tachiyomi.domain.history.model.History
 
 @Dao
 abstract class HistoryDao : BaseDao<History> {
 
   @Transaction
   @Query("SELECT *, date(ROUND(readAt / 1000), 'unixepoch', 'localtime') date FROM history")
-  abstract fun getHistoryWithRelations(): Flow<List<HistoryWithRelations>>
+  abstract fun getHistoryWithRelations(): Flow<List<TmpHistoryWithRelations>>
 
   @Query("SELECT * FROM history")
   abstract suspend fun getHistory(): List<History>

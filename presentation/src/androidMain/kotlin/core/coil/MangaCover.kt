@@ -8,6 +8,7 @@
 
 package tachiyomi.ui.core.coil
 
+import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.updates.model.UpdatesManga
@@ -34,6 +35,10 @@ class MangaCover(
 
     fun from(manga: UpdatesManga): MangaCover {
       return MangaCover(manga.id, manga.sourceId, manga.cover, manga.favorite)
+    }
+
+    fun from(history: HistoryWithRelations): MangaCover {
+      return MangaCover(history.mangaId, history.sourceId, history.cover, history.favorite)
     }
   }
 

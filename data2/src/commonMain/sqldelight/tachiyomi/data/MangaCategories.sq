@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS mangacategory (
   FOREIGN KEY (categoryId) REFERENCES category(id) ON DELETE CASCADE
 );
 
+CREATE INDEX IF NOT EXISTS mangacategory_categories_idx ON mangacategory(categoryId);
+
 insert:
 INSERT INTO mangacategory VALUES (?, ?);
 

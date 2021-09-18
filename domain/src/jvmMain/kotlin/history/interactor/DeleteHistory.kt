@@ -11,6 +11,7 @@ package tachiyomi.domain.history.interactor
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import tachiyomi.domain.history.model.History
+import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.history.service.HistoryRepository
 import javax.inject.Inject
 
@@ -19,22 +20,26 @@ class DeleteHistory @Inject constructor(
 ) {
 
   suspend fun await(history: History) = withContext(NonCancellable) {
-    val deletedRows = try {
+    try {
       historyRepository.delete(history)
     } catch (e: Throwable) {
       return@withContext Result.InternalError(e)
     }
 
-    if (deletedRows == 0) {
-      Result.NothingDeleted
-    } else {
-      Result.Success
-    }
+    Result.Success
+  }
+
+  suspend fun await(history: HistoryWithRelations) {
+    val h = History(
+      mangaId = history.mangaId,
+      chapterId = history.chapterId,
+      readAt = history.readAt
+    )
+    await(h)
   }
 
   sealed class Result {
     object Success : Result()
-    object NothingDeleted : Result()
     data class InternalError(val error: Throwable) : Result()
   }
 }

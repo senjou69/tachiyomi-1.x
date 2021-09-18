@@ -11,6 +11,7 @@ package tachiyomi.data.history.service
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import tachiyomi.data.AppDatabase
+import tachiyomi.data.history.model.TmpHistoryWithRelations
 import tachiyomi.domain.history.model.History
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.history.service.HistoryRepository
@@ -33,16 +34,16 @@ class HistoryRepositoryImpl @Inject constructor(
     db.insert(history)
   }
 
-  override suspend fun delete(history: History): Int {
-    return db.delete(history)
+  override suspend fun delete(history: History) {
+    db.delete(history)
   }
 
-  override suspend fun delete(history: List<History>): Int {
-    return db.delete(history)
+  override suspend fun delete(history: List<History>) {
+    db.delete(history)
   }
 
   override suspend fun deleteAll() {
-    return db.deleteAll()
+    db.deleteAll()
   }
 
   override suspend fun update(history: History) {
@@ -53,17 +54,32 @@ class HistoryRepositoryImpl @Inject constructor(
     return db.find(mangaId, chapterId)
   }
 
-  override suspend fun getHistory(): List<History> {
+  override suspend fun findAll(): List<History> {
     return db.getHistory()
   }
 
-  override fun getHistoryWithRelationByDate(): Flow<Map<Date, List<HistoryWithRelations>>> {
+  override fun subscribeAllWithRelationByDate(): Flow<Map<Date, List<HistoryWithRelations>>> {
     val formatter = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
     return db.getHistoryWithRelations()
       .mapLatest { history ->
-        history
+        history.asIterable()
+          .map { it.toHistory() }
           .groupBy { formatter.parse(it.date) }
           .toSortedMap(reverseOrder())
       }
+  }
+
+  private fun TmpHistoryWithRelations.toHistory(): HistoryWithRelations {
+    return HistoryWithRelations(
+      mangaId = manga.id,
+      chapterId = chapter.id,
+      readAt = history.readAt,
+      mangaTitle = manga.title,
+      sourceId = manga.sourceId,
+      cover = manga.cover,
+      favorite = manga.favorite,
+      chapterNumber = chapter.number,
+      date = date
+    )
   }
 }

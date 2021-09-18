@@ -6,16 +6,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-@file:Suppress("PackageDirectoryMismatch")
-
-package tachiyomi.domain.history.model
+package tachiyomi.data.history.model
 
 import androidx.room.Embedded
 import androidx.room.Relation
+import tachiyomi.domain.history.model.History
 import tachiyomi.domain.manga.model.Chapter
 import tachiyomi.domain.manga.model.Manga
 
-data class HistoryWithRelations(
+data class TmpHistoryWithRelations(
   @Embedded val history: History,
   @Relation(
     parentColumn = "mangaId",

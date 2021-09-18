@@ -1,0 +1,18 @@
+CREATE TABLE IF NOT EXISTS download (
+  chapterId INTEGER NOT NULL PRIMARY KEY,
+  mangaId INTEGER NOT NULL,
+  priority INTEGER AS Int NOT NULL,
+  FOREIGN KEY (chapterId) REFERENCES chapter(id) ON DELETE CASCADE
+);
+
+findAll:
+SELECT download.*, manga.id, manga.title, chapter.key, chapter.name, chapter.scanlator
+FROM download
+JOIN manga ON download.mangaId = manga.id
+JOIN chapter ON download.chapterId = chapter.id;
+
+insert:
+INSERT INTO download VALUES (?, ?, ?);
+
+delete:
+DELETE FROM download WHERE chapterId = ?;

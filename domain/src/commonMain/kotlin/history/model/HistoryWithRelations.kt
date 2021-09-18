@@ -8,12 +8,14 @@
 
 package tachiyomi.domain.history.model
 
-import tachiyomi.domain.manga.model.Chapter
-import tachiyomi.domain.manga.model.Manga
-
 data class HistoryWithRelations(
-  val history: History,
-  val manga: Manga,
-  val chapter: Chapter,
+  val mangaId: Long,
+  val chapterId: Long,
+  val readAt: Long,
+  val mangaTitle: String,
+  val sourceId: Long,
+  val cover: String,
+  val favorite: Boolean,
+  val chapterNumber: Float,
   val date: String
 )

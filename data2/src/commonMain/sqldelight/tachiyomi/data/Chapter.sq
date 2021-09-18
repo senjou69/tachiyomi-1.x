@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS chapter (
 );
 
 CREATE INDEX IF NOT EXISTS manga_chapters_idx ON chapter(mangaId);
+CREATE INDEX IF NOT EXISTS manga_chapters_unread_index ON chapter(mangaId, read) WHERE read = 0;
 
 findById:
 SELECT * FROM chapter WHERE id = ?;
