@@ -8,12 +8,15 @@
 
 package tachiyomi.app.initializers
 
+import android.app.Application
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+import tachiyomi.app.R
 import tachiyomi.ui.library.LibraryNotifier
 import javax.inject.Inject
 
 class NotificationsInitializer @Inject constructor(
+  context: Application,
   notificationManager: NotificationManagerCompat,
   libraryNotifier: LibraryNotifier
 ) {
@@ -22,7 +25,7 @@ class NotificationsInitializer @Inject constructor(
     // TODO either inject channels here or write initialization in the data & core packages
     val libraryChannel =
       NotificationChannelCompat.Builder("library", NotificationManagerCompat.IMPORTANCE_LOW)
-        .setName("Library")
+        .setName(context.getString(R.string.notif_channel_library))
         .build()
     val channelList = listOf(libraryChannel)
     notificationManager.createNotificationChannelsCompat(channelList)

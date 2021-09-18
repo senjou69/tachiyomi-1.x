@@ -110,4 +110,7 @@
   <string name="information_no_categories">You have no categories. Tap the plus button to
     create one for organizing your library.</string>
 
+  <!-- Notification channels -->
+  <string name="notif_channel_library">Library</string>
+
 </resources>
