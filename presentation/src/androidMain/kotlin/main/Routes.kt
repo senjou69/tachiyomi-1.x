@@ -62,6 +62,5 @@ sealed class LeafScreen(val route: String) {
   object SettingsBrowse : LeafScreen("settings/browse")
   object SettingsBackup : LeafScreen("settings/backup")
   object SettingsSecurity : LeafScreen("settings/security")
-  object SettingsParentalControls : LeafScreen("settings/parental_controls")
   object SettingsAdvanced : LeafScreen("settings/advanced")
 }

@@ -38,7 +38,6 @@ import tachiyomi.ui.more.settings.SettingsBrowseScreen
 import tachiyomi.ui.more.settings.SettingsDownloadsScreen
 import tachiyomi.ui.more.settings.SettingsGeneralScreen
 import tachiyomi.ui.more.settings.SettingsLibraryScreen
-import tachiyomi.ui.more.settings.SettingsParentalControlsScreen
 import tachiyomi.ui.more.settings.SettingsReaderScreen
 import tachiyomi.ui.more.settings.SettingsScreen
 import tachiyomi.ui.more.settings.SettingsSecurityScreen
@@ -161,7 +160,6 @@ private fun NavGraphBuilder.addMoreTopLevel(
     addSettingsBrowse(navController, topScreen)
     addSettingsBackup(navController, topScreen)
     addSettingsSecurity(navController, topScreen)
-    addSettingsParentalControls(navController, topScreen)
     addSettingsAdvanced(navController, topScreen)
   }
 }
@@ -414,9 +412,6 @@ private fun NavGraphBuilder.addSettings(
       openSettingsSecurity = {
         navController.navigate(LeafScreen.SettingsSecurity.createRoute(root))
       },
-      openSettingsParentalControls = {
-        navController.navigate(LeafScreen.SettingsParentalControls.createRoute(root))
-      },
       openSettingsAdvanced = {
         navController.navigate(LeafScreen.SettingsAdvanced.createRoute(root))
       },
@@ -528,18 +523,6 @@ private fun NavGraphBuilder.addSettingsSecurity(
 ) {
   composable(LeafScreen.SettingsSecurity.createRoute(root)) {
     SettingsSecurityScreen(
-      navigateUp = { navController.navigateUp() }
-    )
-  }
-}
-
-@ExperimentalAnimationApi
-private fun NavGraphBuilder.addSettingsParentalControls(
-  navController: NavController,
-  root: TopScreen
-) {
-  composable(LeafScreen.SettingsParentalControls.createRoute(root)) {
-    SettingsParentalControlsScreen(
       navigateUp = { navController.navigateUp() }
     )
   }

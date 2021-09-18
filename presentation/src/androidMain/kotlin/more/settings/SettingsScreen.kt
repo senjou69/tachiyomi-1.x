@@ -41,7 +41,6 @@ fun SettingsScreen(
   openSettingsBrowse: () -> Unit,
   openSettingsBackup: () -> Unit,
   openSettingsSecurity: () -> Unit,
-  openSettingsParentalControls: () -> Unit,
   openSettingsAdvanced: () -> Unit,
   navigateUp: () -> Unit
 ) {
@@ -112,13 +111,6 @@ fun SettingsScreen(
           title = R.string.security_label,
           icon = Icons.Outlined.Security,
           onClick = openSettingsSecurity,
-        )
-      }
-      item {
-        PreferenceRow(
-          title = R.string.parental_controls_label,
-          icon = Icons.Outlined.PeopleOutline,
-          onClick = openSettingsParentalControls,
         )
       }
       item {
