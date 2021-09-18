@@ -19,7 +19,7 @@ class TrackServices @Inject constructor(
 ) {
 
   val trackers = listOf(
-    MyAnimeList(http, trackPreferences)
+    MyAnimeList(http, trackPreferences),
   )
 
   fun get(id: Int): TrackSite? {
@@ -30,8 +30,8 @@ class TrackServices @Inject constructor(
     const val MYANIMELIST = 1
     const val ANILIST = 2
     const val KITSU = 3
-    const val BANGUMI = 5
     const val SHIKIMORI = 4
+    const val BANGUMI = 5
   }
 
 }

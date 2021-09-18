@@ -8,35 +8,99 @@
 
 package tachiyomi.ui.more.about
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Chat
+import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Public
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalUriHandler
+import tachiyomi.i18n.MR
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.BackIconButton
-import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.PreferenceRow
+import tachiyomi.ui.more.components.LinkIcon
+import tachiyomi.ui.more.components.LogoHeaderScaffold
 
 @Composable
 fun AboutScreen(
   openLicenses: () -> Unit,
   navigateUp: () -> Unit
 ) {
-  Scaffold(
-    topBar = {
-      Toolbar(
-        title = { Text(stringResource(R.string.about_label)) },
-        navigationIcon = { BackIconButton(navigateUp) },
-      )
-    }
+  val uriHandler = LocalUriHandler.current
+
+  LogoHeaderScaffold(
+    titleResId = R.string.about_label,
+    navigationIcon = { BackIconButton(navigateUp) },
   ) {
     LazyColumn {
       item {
         PreferenceRow(
-          title = R.string.licenses_label,
-          onClick = openLicenses
+          title = R.string.version_label,
+          onClick = {
+            // TODO
+          },
         )
+      }
+
+      item {
+        PreferenceRow(
+          title = R.string.whats_new_label,
+          onClick = {
+            // TODO
+          },
+        )
+      }
+
+      item {
+        PreferenceRow(
+          title = R.string.translate_label,
+          onClick = { uriHandler.openUri("https://tachiyomi.org/help/contribution/#translation") },
+        )
+      }
+
+      item {
+        PreferenceRow(
+          title = R.string.licenses_label,
+          onClick = openLicenses,
+        )
+      }
+
+      item {
+        // TODO: custom icons
+        Row {
+          LinkIcon(
+            labelRes = MR.strings.website_label,
+            url = "https://tachiyomi.org",
+            icon = Icons.Outlined.Public,
+          )
+          LinkIcon(
+            labelRes = MR.strings.discord_label,
+            icon = Icons.Outlined.Chat,
+            url = "https://discord.gg/tachiyomi",
+          )
+          LinkIcon(
+            labelRes = MR.strings.twitter_label,
+            icon = Icons.Outlined.Code,
+            url = "https://twitter.com/tachiyomiorg",
+          )
+          LinkIcon(
+            labelRes = MR.strings.facebook_label,
+            icon = Icons.Outlined.Code,
+            url = "https://facebook.com/tachiyomiorg",
+          )
+          LinkIcon(
+            labelRes = MR.strings.reddit_label,
+            icon = Icons.Outlined.Code,
+            url = "https://www.reddit.com/r/Tachiyomi",
+          )
+          LinkIcon(
+            labelRes = MR.strings.github_label,
+            icon = Icons.Outlined.Code,
+            url = "https://github.com/tachiyomiorg",
+          )
+        }
       }
     }
   }

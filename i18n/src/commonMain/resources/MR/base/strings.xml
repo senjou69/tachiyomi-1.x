@@ -71,6 +71,12 @@
   <!-- About screen -->
   <string name="about_label">About</string>
   <string name="licenses_label">Open source licenses</string>
+  <string name="website_label">Website</string>
+  <string name="discord_label" translatable="false">Discord</string>
+  <string name="twitter_label" translatable="false">Twitter</string>
+  <string name="facebook_label" translatable="false">Facebook</string>
+  <string name="reddit_label" translatable="false">Reddit</string>
+  <string name="github_label" translatable="false">GitHub</string>
 
   <!-- Settings screen -->
   <string name="general_label">General</string>

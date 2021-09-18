@@ -8,16 +8,8 @@
 
 package tachiyomi.ui.more
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalElevationOverlay
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.outlined.GetApp
@@ -26,23 +18,16 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Label
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.ui.R
-import tachiyomi.ui.core.components.NoElevationOverlay
-import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.PreferenceRow
 import tachiyomi.ui.core.prefs.SwitchPreference
-import tachiyomi.ui.core.theme.CustomColors
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import tachiyomi.ui.core.viewmodel.viewModel
+import tachiyomi.ui.more.components.LogoHeaderScaffold
 import javax.inject.Inject
 
 class MoreViewModel @Inject constructor(
@@ -63,30 +48,7 @@ fun MoreScreen(
   val vm = viewModel<MoreViewModel>()
   val uriHandler = LocalUriHandler.current
 
-  Column {
-    Toolbar(
-      title = { Text(stringResource(R.string.more_label)) },
-      elevation = 0.dp,
-      modifier = Modifier.zIndex(1f)
-    )
-    CompositionLocalProvider(LocalElevationOverlay provides NoElevationOverlay) {
-      Surface(
-        color = CustomColors.current.bars,
-        contentColor = CustomColors.current.onBars,
-        modifier = Modifier
-          .fillMaxWidth()
-          // To ensure that the elevation shadow is drawn behind the Toolbar
-          .zIndex(0f),
-        elevation = 4.dp
-      ) {
-        Icon(
-          ImageVector.vectorResource(R.drawable.ic_tachi), modifier = Modifier
-            .padding(32.dp)
-            .size(56.dp),
-          contentDescription = null
-        )
-      }
-    }
+  LogoHeaderScaffold(R.string.more_label) {
     LazyColumn {
       item {
         SwitchPreference(
