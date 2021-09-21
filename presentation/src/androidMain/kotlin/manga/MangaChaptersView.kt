@@ -58,8 +58,8 @@ fun ChapterHeader(
     verticalAlignment = Alignment.CenterVertically
   ) {
     Text(
-      localizePlural(MR.plurals.chapters_num, chapters.size), modifier =
-      Modifier.weight(1f)
+      localizePlural(MR.plurals.chapters_num, chapters.size, chapters.size),
+      modifier = Modifier.weight(1f)
     )
     IconButton(onClick = { /*TODO*/ }) {
       Icon(Icons.Default.FilterList, null)

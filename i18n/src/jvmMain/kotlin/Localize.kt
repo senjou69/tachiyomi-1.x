@@ -27,7 +27,7 @@ actual fun localize(resource: StringResource): String {
 @Composable
 @ReadOnlyComposable
 actual fun localize(resource: StringResource, vararg args: Any): String {
-  return StringDesc.ResourceFormatted(resource, args).localized()
+  return StringDesc.ResourceFormatted(resource, *args).localized()
 }
 
 @Composable
@@ -39,5 +39,5 @@ actual fun localizePlural(resource: PluralsResource, quantity: Int): String {
 @Composable
 @ReadOnlyComposable
 actual fun localizePlural(resource: PluralsResource, quantity: Int, vararg args: Any): String {
-  return StringDesc.PluralFormatted(resource, quantity, args).localized()
+  return StringDesc.PluralFormatted(resource, quantity, *args).localized()
 }
