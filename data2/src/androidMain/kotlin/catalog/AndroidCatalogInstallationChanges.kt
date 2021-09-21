@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.data.catalog.service
+package tachiyomi.data.catalog
 
 import android.app.Application
 import android.content.BroadcastReceiver
@@ -15,6 +15,10 @@ import android.content.Intent
 import android.content.IntentFilter
 import kotlinx.coroutines.flow.MutableSharedFlow
 import tachiyomi.domain.catalog.service.CatalogInstallationChange
+import tachiyomi.domain.catalog.service.CatalogInstallationChange.LocalInstall
+import tachiyomi.domain.catalog.service.CatalogInstallationChange.LocalUninstall
+import tachiyomi.domain.catalog.service.CatalogInstallationChange.SystemInstall
+import tachiyomi.domain.catalog.service.CatalogInstallationChange.SystemUninstall
 import tachiyomi.domain.catalog.service.CatalogInstallationChanges
 import javax.inject.Inject
 
@@ -36,11 +40,11 @@ internal class AndroidCatalogInstallationChanges @Inject constructor(
   }
 
   fun notifyAppInstall(pkgName: String) {
-    flow.tryEmit(CatalogInstallationChange.LocalInstall(pkgName))
+    flow.tryEmit(LocalInstall(pkgName))
   }
 
   fun notifyAppUninstall(pkgName: String) {
-    flow.tryEmit(CatalogInstallationChange.LocalUninstall(pkgName))
+    flow.tryEmit(LocalUninstall(pkgName))
   }
 
   private inner class Receiver : BroadcastReceiver() {
@@ -51,10 +55,10 @@ internal class AndroidCatalogInstallationChanges @Inject constructor(
 
       when (intent.action) {
         Intent.ACTION_PACKAGE_ADDED -> {
-          flow.tryEmit(CatalogInstallationChange.SystemInstall(pkgName))
+          flow.tryEmit(SystemInstall(pkgName))
         }
         Intent.ACTION_PACKAGE_REMOVED -> {
-          flow.tryEmit(CatalogInstallationChange.SystemUninstall(pkgName))
+          flow.tryEmit(SystemUninstall(pkgName))
         }
       }
     }

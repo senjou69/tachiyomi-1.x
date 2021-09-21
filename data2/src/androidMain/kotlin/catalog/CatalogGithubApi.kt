@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.data.catalog.api
+package tachiyomi.data.catalog
 
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json

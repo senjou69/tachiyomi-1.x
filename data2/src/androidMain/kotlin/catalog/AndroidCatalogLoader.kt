@@ -6,12 +6,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.data.catalog.service
+package tachiyomi.data.catalog
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import dalvik.system.DexClassLoader
 import dalvik.system.PathClassLoader
 import kotlinx.coroutines.Dispatchers
@@ -22,9 +23,10 @@ import tachiyomi.core.http.Http
 import tachiyomi.core.log.Log
 import tachiyomi.core.prefs.AndroidPreferenceStore
 import tachiyomi.core.prefs.PrefixedPreferenceStore
-import tachiyomi.data.BuildConfig
+import tachiyomi.data2.BuildConfig
 import tachiyomi.domain.catalog.model.CatalogBundled
-import tachiyomi.domain.catalog.model.CatalogInstalled
+import tachiyomi.domain.catalog.model.CatalogInstalled.Locally
+import tachiyomi.domain.catalog.model.CatalogInstalled.SystemWide
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.service.CatalogLoader
 import tachiyomi.source.Dependencies
@@ -85,7 +87,7 @@ internal class AndroidCatalogLoader @Inject constructor(
    * Attempts to load an catalog from the given package name. It checks if the catalog
    * contains the required feature flag before trying to load it.
    */
-  override fun loadLocalCatalog(pkgName: String): CatalogInstalled.Locally? {
+  override fun loadLocalCatalog(pkgName: String): Locally? {
     val file = File(context.filesDir, "catalogs/${pkgName}/${pkgName}.apk")
     val pkgInfo = if (file.exists()) {
       pkgManager.getPackageArchiveInfo(file.absolutePath, PACKAGE_FLAGS)
@@ -104,10 +106,10 @@ internal class AndroidCatalogLoader @Inject constructor(
    * Attempts to load an catalog from the given package name. It checks if the catalog
    * contains the required feature flag before trying to load it.
    */
-  override fun loadSystemCatalog(pkgName: String): CatalogInstalled.SystemWide? {
+  override fun loadSystemCatalog(pkgName: String): SystemWide? {
     val pkgInfo = try {
       pkgManager.getPackageInfo(pkgName, PACKAGE_FLAGS)
-    } catch (error: PackageManager.NameNotFoundException) {
+    } catch (error: NameNotFoundException) {
       // Unlikely, but the package may have been uninstalled at this point
       Log.warn("Failed to load catalog: the package {} isn't installed", pkgName)
       return null
@@ -125,13 +127,13 @@ internal class AndroidCatalogLoader @Inject constructor(
     pkgName: String,
     pkgInfo: PackageInfo,
     file: File
-  ): CatalogInstalled.Locally? {
+  ): Locally? {
     val data = validateMetadata(pkgName, pkgInfo) ?: return null
     val dexOutputDir = context.codeCacheDir.absolutePath
     val loader = DexClassLoader(file.absolutePath, dexOutputDir, null, context.classLoader)
     val source = loadSource(pkgName, loader, data) ?: return null
 
-    return CatalogInstalled.Locally(
+    return Locally(
       name = source.name,
       description = data.description,
       source = source,
@@ -152,12 +154,12 @@ internal class AndroidCatalogLoader @Inject constructor(
   private fun loadSystemCatalog(
     pkgName: String,
     pkgInfo: PackageInfo
-  ): CatalogInstalled.SystemWide? {
+  ): SystemWide? {
     val data = validateMetadata(pkgName, pkgInfo) ?: return null
     val loader = PathClassLoader(pkgInfo.applicationInfo.sourceDir, null, context.classLoader)
     val source = loadSource(pkgName, loader, data) ?: return null
 
-    return CatalogInstalled.SystemWide(
+    return SystemWide(
       name = source.name,
       description = data.description,
       source = source,

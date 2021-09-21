@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.data.library.service
+package tachiyomi.data.library
 
 import android.content.Context
 import androidx.work.CoroutineWorker

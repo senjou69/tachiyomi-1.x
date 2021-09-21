@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.data.catalog.service
+package tachiyomi.data.catalog
 
 import android.app.Application
 import kotlinx.coroutines.flow.flow
@@ -16,7 +16,10 @@ import tachiyomi.core.http.get
 import tachiyomi.core.http.saveTo
 import tachiyomi.core.log.Log
 import tachiyomi.domain.catalog.model.CatalogRemote
-import tachiyomi.domain.catalog.model.InstallStep
+import tachiyomi.domain.catalog.model.InstallStep.Completed
+import tachiyomi.domain.catalog.model.InstallStep.Downloading
+import tachiyomi.domain.catalog.model.InstallStep.Error
+import tachiyomi.domain.catalog.model.InstallStep.Installing
 import tachiyomi.domain.catalog.service.CatalogInstaller
 import java.io.File
 import javax.inject.Inject
@@ -44,7 +47,7 @@ internal class AndroidCatalogInstaller @Inject constructor(
    * @param catalog The catalog to install.
    */
   override fun install(catalog: CatalogRemote) = flow {
-    emit(InstallStep.Downloading)
+    emit(Downloading)
     val tmpApkFile = File(context.cacheDir, "${catalog.pkgName}.apk")
     val tmpIconFile = File(context.cacheDir, "${catalog.pkgName}.png")
     try {
@@ -54,7 +57,7 @@ internal class AndroidCatalogInstaller @Inject constructor(
       val iconResponse = client.get(catalog.iconUrl, cache = http.noStore).awaitSuccess()
       iconResponse.saveTo(tmpIconFile)
 
-      emit(InstallStep.Installing)
+      emit(Installing)
 
       val extDir = File(context.filesDir, "catalogs/${catalog.pkgName}").apply { mkdirs() }
       val apkFile = File(extDir, tmpApkFile.name)
@@ -67,10 +70,10 @@ internal class AndroidCatalogInstaller @Inject constructor(
         installationChanges.notifyAppInstall(catalog.pkgName)
       }
 
-      emit(if (success) InstallStep.Completed else InstallStep.Error)
+      emit(if (success) Completed else Error)
     } catch (e: Exception) {
       Log.warn(e, "Error installing package")
-      emit(InstallStep.Error)
+      emit(Error)
     } finally {
       tmpApkFile.delete()
       tmpIconFile.delete()
