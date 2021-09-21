@@ -23,7 +23,7 @@ import tachiyomi.core.http.Http
 import tachiyomi.core.log.Log
 import tachiyomi.core.prefs.AndroidPreferenceStore
 import tachiyomi.core.prefs.PrefixedPreferenceStore
-import tachiyomi.data2.BuildConfig
+import tachiyomi.data.BuildConfig
 import tachiyomi.domain.catalog.model.CatalogBundled
 import tachiyomi.domain.catalog.model.CatalogInstalled.Locally
 import tachiyomi.domain.catalog.model.CatalogInstalled.SystemWide

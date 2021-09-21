@@ -7,5 +7,4 @@ object Module {
   const val presentation = ":presentation"
   const val app = ":app"
   const val i18n = ":i18n"
-  const val data2 = ":data2"
 }

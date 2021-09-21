@@ -15,6 +15,7 @@ kotlin {
       dependencies {
         implementation(project(Module.core))
         implementation(project(Module.uiCore))
+        implementation(project(Module.data))
         implementation(project(Module.presentation))
       }
     }
@@ -23,7 +24,6 @@ kotlin {
     named("androidMain") {
       kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
-        implementation(project(Module.data))
         implementation(Deps.androidx.core)
         implementation(Deps.androidx.emoji)
         implementation(Deps.androidx.appCompat)
