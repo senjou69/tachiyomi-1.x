@@ -19,11 +19,13 @@ kotlin {
       }
     }
     named("jvmMain") {
+      kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
         implementation(Deps.sqldelight.jvm)
       }
     }
     named("androidMain") {
+      kotlin.srcDir("src/sharedAndroidMain/kotlin")
       dependencies {
         implementation(Deps.sqldelight.android)
         implementation(Deps.requerySqlite)
