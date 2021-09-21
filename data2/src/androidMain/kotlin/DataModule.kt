@@ -9,24 +9,23 @@
 package tachiyomi.data
 
 import android.app.Application
-import androidx.room.withTransaction
 import tachiyomi.core.db.Transactions
 import tachiyomi.core.di.GenericsProvider
 import tachiyomi.core.prefs.AndroidPreferenceStore
-import tachiyomi.data.catalog.api.CatalogGithubApi
-import tachiyomi.data.catalog.service.AndroidCatalogInstallationChanges
-import tachiyomi.data.catalog.service.AndroidCatalogInstaller
-import tachiyomi.data.catalog.service.AndroidCatalogLoader
-import tachiyomi.data.catalog.service.CatalogRemoteRepositoryImpl
-import tachiyomi.data.download.service.DownloadRepositoryImpl
-import tachiyomi.data.history.service.HistoryRepositoryImpl
-import tachiyomi.data.library.service.CategoryRepositoryImpl
-import tachiyomi.data.library.service.LibraryRepositoryImpl
-import tachiyomi.data.library.service.LibraryUpdateSchedulerImpl
-import tachiyomi.data.library.service.MangaCategoryRepositoryImpl
-import tachiyomi.data.manga.service.ChapterRepositoryImpl
-import tachiyomi.data.manga.service.MangaRepositoryImpl
-import tachiyomi.data.updates.service.UpdatesRepositoryImpl
+import tachiyomi.data.catalog.AndroidCatalogInstallationChanges
+import tachiyomi.data.catalog.AndroidCatalogInstaller
+import tachiyomi.data.catalog.AndroidCatalogLoader
+import tachiyomi.data.catalog.CatalogGithubApi
+import tachiyomi.data.catalog.CatalogRemoteRepositoryImpl
+import tachiyomi.data.category.CategoryRepositoryImpl
+import tachiyomi.data.download.DownloadRepositoryImpl
+import tachiyomi.data.history.HistoryRepositoryImpl
+import tachiyomi.data.library.LibraryRepositoryImpl
+import tachiyomi.data.library.LibraryUpdateSchedulerImpl
+import tachiyomi.data.library.MangaCategoryRepositoryImpl
+import tachiyomi.data.manga.ChapterRepositoryImpl
+import tachiyomi.data.manga.MangaRepositoryImpl
+import tachiyomi.data.updates.UpdatesRepositoryImpl
 import tachiyomi.domain.catalog.service.CatalogInstallationChanges
 import tachiyomi.domain.catalog.service.CatalogInstaller
 import tachiyomi.domain.catalog.service.CatalogLoader
@@ -51,13 +50,12 @@ import tachiyomi.domain.updates.service.UpdatesRepository
 import toothpick.ktp.binding.bind
 import toothpick.ktp.binding.module
 import java.io.File
-import javax.inject.Inject
 
-@Suppress("FunctionName")
 fun DataModule(context: Application) = module {
 
-  bind<AppDatabase>().toProviderInstance { AppDatabase.build(context) }.providesSingleton()
-  bind<Transactions>().toClass<RoomTransactions>()
+  bind<Database>().toProviderInstance { createDatabase(DatabaseDriverFactory(context)) }
+    .providesSingleton()
+  bind<Transactions>().toClass<DatabaseTransactions>()
 
   bind<MangaRepository>().toClass<MangaRepositoryImpl>().singleton()
 
@@ -109,12 +107,4 @@ fun DataModule(context: Application) = module {
   bind<UpdatesRepository>().toClass<UpdatesRepositoryImpl>().singleton()
 
   bind<HistoryRepository>().toClass<HistoryRepositoryImpl>().singleton()
-}
-
-private class RoomTransactions @Inject constructor(private val db: AppDatabase) : Transactions {
-
-  override suspend fun <R> run(action: suspend () -> R): R {
-    return db.withTransaction(action)
-  }
-
 }

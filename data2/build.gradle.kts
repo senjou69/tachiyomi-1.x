@@ -1,6 +1,7 @@
 plugins {
   kotlin("multiplatform")
   id("com.android.library")
+  id("kotlin-kapt")
   id("com.squareup.sqldelight")
 }
 
@@ -20,14 +21,24 @@ kotlin {
     named("jvmMain") {
       dependencies {
         implementation(Deps.sqldelight.jvm)
-        implementation(Deps.toothpick.ktp)
       }
     }
     named("androidMain") {
       dependencies {
         implementation(Deps.sqldelight.android)
-        implementation(Deps.toothpick.ktp)
         implementation(Deps.sqlite)
+        implementation(Deps.androidx.workManager.runtime)
+      }
+    }
+    listOf("jvmMain", "androidMain").forEach {
+      getByName(it) {
+        dependencies {
+          implementation(project(Module.sourceApi))
+          implementation(Deps.toothpick.ktp)
+        }
+        project.dependencies {
+          add("kapt", Deps.toothpick.compiler)
+        }
       }
     }
   }
