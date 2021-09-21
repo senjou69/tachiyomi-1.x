@@ -12,6 +12,7 @@ import com.squareup.sqldelight.Query
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
@@ -57,15 +58,17 @@ class LibraryRepositoryImpl @Inject constructor(
   }
 
   override fun subscribeAll(sort: LibrarySort): Flow<List<LibraryManga>> {
-    return findAllQuery(sort).asFlow().mapToList(DatabaseDispatcher)
+    return findAllQuery(sort).asFlow().mapToList(DatabaseDispatcher).map { it.ordered(sort) }
   }
 
   override fun subscribeUncategorized(sort: LibrarySort): Flow<List<LibraryManga>> {
     return findUncategorizedQuery(sort).asFlow().mapToList(DatabaseDispatcher)
+      .map { it.ordered(sort) }
   }
 
   override fun subscribeToCategory(categoryId: Long, sort: LibrarySort): Flow<List<LibraryManga>> {
     return findAllInCategoryQuery(categoryId, sort).asFlow().mapToList(DatabaseDispatcher)
+      .map { it.ordered(sort) }
   }
 
   private fun findAllQuery(sort: LibrarySort): Query<LibraryManga> {
