@@ -210,10 +210,8 @@ private fun LazyListScope.DisplayPage(
       }
       Text(
         localize(
-          MR.strings.columns_num_label, if (columns > 1) columns.toString() else
-            localize(
-              MR.strings.columns_auto
-            )
+          MR.strings.columns_num_label, if (columns > 1) columns else
+            localize(MR.strings.columns_auto)
         ), Modifier.padding(top = 8.dp)
       )
       val maxValue = round(LocalConfiguration.current.screenWidthDp.dp / 64.dp)
