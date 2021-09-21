@@ -6,13 +6,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-@file:Suppress("PackageDirectoryMismatch")
+package tachiyomi.core.coroutines
 
-package tachiyomi.domain.library.model
+import kotlinx.coroutines.CoroutineScope
+import kotlin.coroutines.CoroutineContext
 
-import androidx.room.Embedded
-
-data class CategoryWithCount(
-  @Embedded val category: Category,
-  val mangaCount: Int
-)
+actual fun <T> runBlocking(
+  context: CoroutineContext,
+  block: suspend CoroutineScope.() -> T
+) = kotlinx.coroutines.runBlocking(context, block)
