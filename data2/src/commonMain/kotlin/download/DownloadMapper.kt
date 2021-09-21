@@ -10,7 +10,7 @@ package tachiyomi.data.download
 
 import tachiyomi.domain.download.model.SavedDownload
 
-val downloadMapper =
+internal val downloadMapper =
   { chapterId: Long, mangaId: Long, priority: Int, sourceId: Long, mangaName: String,
     chapterKey: String, chapterName: String, scanlator: String ->
 

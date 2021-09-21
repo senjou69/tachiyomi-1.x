@@ -10,7 +10,7 @@ package tachiyomi.data.updates
 
 import tachiyomi.domain.updates.model.UpdatesManga
 
-val updatesMapper =
+internal val updatesMapper =
   { id: Long, sourceId: Long, key: String, title: String, cover: String, favorite: Boolean,
     dateUpload: Long, chapterId: Long, name: String, read: Boolean, number: Float, date: String ->
 

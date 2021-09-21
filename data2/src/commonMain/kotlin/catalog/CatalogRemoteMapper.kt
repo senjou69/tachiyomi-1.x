@@ -10,7 +10,7 @@ package tachiyomi.data.catalog
 
 import tachiyomi.domain.catalog.model.CatalogRemote
 
-val catalogRemoteMapper =
+internal val catalogRemoteMapper =
   { sourceId: Long, name: String, description: String, pkgName: String, versionName: String,
     versionCode: Int, lang: String, pkgUrl: String, iconUrl: String, nsfw: Boolean ->
 

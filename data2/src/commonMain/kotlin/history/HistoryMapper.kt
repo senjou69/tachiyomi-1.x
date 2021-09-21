@@ -11,7 +11,7 @@ package tachiyomi.data.history
 import tachiyomi.domain.history.model.History
 import tachiyomi.domain.history.model.HistoryWithRelations
 
-val historyMapper = { mangaId: Long, chapterId: Long, readAt: Long ->
+internal val historyMapper = { mangaId: Long, chapterId: Long, readAt: Long ->
   History(
     readAt = mangaId,
     mangaId = chapterId,
@@ -19,7 +19,7 @@ val historyMapper = { mangaId: Long, chapterId: Long, readAt: Long ->
   )
 }
 
-val historyWithRelationsMapper =
+internal val historyWithRelationsMapper =
   { mangaId: Long, chapterId: Long, readAt: Long, mangaTitle: String, sourceId: Long,
     cover: String, favorite: Boolean, chapterNumber: Float, date: String ->
 
