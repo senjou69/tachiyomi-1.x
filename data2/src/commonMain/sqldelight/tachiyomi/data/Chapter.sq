@@ -27,7 +27,7 @@ findForManga:
 SELECT * FROM chapter WHERE mangaId = ?;
 
 insert:
-INSERT INTO chapter VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO chapter VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 update:
 UPDATE chapter SET

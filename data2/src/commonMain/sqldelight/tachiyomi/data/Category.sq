@@ -59,7 +59,7 @@ WHERE category.id = 0
 ORDER BY sort;
 
 insert:
-INSERT INTO category VALUES (?, ?, ?, ?);
+INSERT INTO category VALUES (NULL, ?, ?, ?);
 
 update:
 UPDATE category SET

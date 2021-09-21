@@ -74,7 +74,6 @@ class MangaRepositoryImpl @Inject constructor(
 
   private fun insertBlocking(manga: Manga) {
     db.mangaQueries.insert(
-      id = null,
       sourceId = manga.sourceId,
       key = manga.key,
       title = manga.title,

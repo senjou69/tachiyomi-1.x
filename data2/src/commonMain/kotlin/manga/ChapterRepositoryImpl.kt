@@ -104,7 +104,6 @@ class ChapterRepositoryImpl @Inject constructor(
 
   private fun insertBlocking(chapter: Chapter) {
     db.chapterQueries.insert(
-      id = chapter.id,
       mangaId = chapter.mangaId,
       key = chapter.key,
       name = chapter.name,

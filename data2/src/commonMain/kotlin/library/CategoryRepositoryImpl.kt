@@ -108,7 +108,6 @@ class CategoryRepositoryImpl @Inject constructor(
 
   private fun insertBlocking(category: Category) {
     db.categoryQueries.insert(
-      id = category.id,
       name = category.name,
       sort = category.order,
       updateInterval = category.updateInterval
