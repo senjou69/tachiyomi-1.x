@@ -9,6 +9,8 @@
 package tachiyomi.data
 
 import android.app.Application
+import android.os.Build
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
 import io.requery.android.database.sqlite.RequerySQLiteOpenHelperFactory
@@ -25,7 +27,12 @@ actual class DatabaseDriverFactory @Inject constructor(
       schema = Database.Schema,
       context = app,
       name = "tachiyomi.db",
-      factory = RequerySQLiteOpenHelperFactory()
+      // Support database inspector
+      if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        FrameworkSQLiteOpenHelperFactory()
+      } else {
+        RequerySQLiteOpenHelperFactory()
+      }
     )
   }
 

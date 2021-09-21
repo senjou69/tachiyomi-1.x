@@ -69,7 +69,8 @@ object Deps {
     const val navAnimation = "com.google.accompanist:accompanist-navigation-animation:$version"
   }
 
-  const val sqlite = "com.github.requery:sqlite-android:3.36.0"
+  const val requerySqlite = "com.github.requery:sqlite-android:3.36.0"
+  const val androidSqlite = "androidx.sqlite:sqlite-framework:2.1.0"
 
   object toothpick {
     private const val version = "3.1.0"

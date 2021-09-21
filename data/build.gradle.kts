@@ -26,8 +26,12 @@ kotlin {
     named("androidMain") {
       dependencies {
         implementation(Deps.sqldelight.android)
-        implementation(Deps.sqlite)
+        implementation(Deps.requerySqlite)
         implementation(Deps.androidx.workManager.runtime)
+      }
+      project.dependencies {
+        compileOnly(Deps.androidSqlite)
+        debugImplementation(Deps.androidSqlite)
       }
     }
     listOf("jvmMain", "androidMain").forEach {
