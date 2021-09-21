@@ -8,7 +8,7 @@ findAll:
 SELECT library.id, library.sourceId, library.key, library.title, library.status, library.cover,
   library.lastUpdate, COUNT(chapter.id) AS unread
 FROM library
-INNER JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
+LEFT JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
 GROUP BY library.id
 ORDER BY CASE
   WHEN :sort = 'title' THEN title
@@ -24,7 +24,7 @@ SELECT library.id, library.sourceId, library.key, library.title, library.status,
   library.lastUpdate, COUNT(chapter.id) AS total,
   SUM(CASE WHEN chapter.read == 0 THEN 1 ELSE 0 END) AS unread
 FROM library
-INNER JOIN chapter ON library.id = chapter.mangaId
+LEFT JOIN chapter ON library.id = chapter.mangaId
 GROUP BY library.id
 ORDER BY total;
 
@@ -32,7 +32,7 @@ findUncategorized:
 SELECT library.id, library.sourceId, library.key, library.title, library.status, library.cover,
   library.lastUpdate, COUNT(chapter.id) AS unread
 FROM library
-INNER JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
+LEFT JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
 WHERE NOT EXISTS
   (SELECT mangacategory.mangaId FROM mangacategory WHERE library.id = mangacategory.mangaId)
 GROUP BY library.id
@@ -50,7 +50,7 @@ SELECT library.id, library.sourceId, library.key, library.title, library.status,
   library.lastUpdate, COUNT(chapter.id) AS total,
   SUM(CASE WHEN chapter.read == 0 THEN 1 ELSE 0 END) AS unread
 FROM library
-INNER JOIN chapter ON library.id = chapter.mangaId
+LEFT JOIN chapter ON library.id = chapter.mangaId
 WHERE NOT EXISTS
   (SELECT mangacategory.mangaId FROM mangacategory WHERE library.id = mangacategory.mangaId)
 GROUP BY library.id
@@ -61,7 +61,7 @@ SELECT library.id, library.sourceId, library.key, library.title, library.status,
   library.lastUpdate, COUNT(chapter.id) AS unread
 FROM mangacategory
 INNER JOIN library ON mangacategory.mangaId = library.id
-INNER JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
+LEFT JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
 WHERE mangacategory.categoryId = ?
 GROUP BY library.id
 ORDER BY CASE
@@ -79,7 +79,7 @@ SELECT library.id, library.sourceId, library.key, library.title, library.status,
   SUM(CASE WHEN chapter.read == 0 THEN 1 ELSE 0 END) AS unread
 FROM mangacategory
 INNER JOIN library ON mangacategory.mangaId = library.id
-INNER JOIN chapter ON library.id = chapter.mangaId
+LEFT JOIN chapter ON library.id = chapter.mangaId
 WHERE mangacategory.categoryId = ?
 GROUP BY library.id
 ORDER BY total;

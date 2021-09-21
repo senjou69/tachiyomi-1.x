@@ -27,8 +27,8 @@ actual class DatabaseDriverFactory @Inject constructor(
       schema = Database.Schema,
       context = app,
       name = "tachiyomi.db",
-      // Support database inspector
-      if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      factory = if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        // Support database inspector in Android Studio
         FrameworkSQLiteOpenHelperFactory()
       } else {
         RequerySQLiteOpenHelperFactory()
