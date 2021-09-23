@@ -9,6 +9,7 @@
 package tachiyomi.data
 
 import android.app.Application
+import com.squareup.sqldelight.db.SqlDriver
 import tachiyomi.core.db.Transactions
 import tachiyomi.core.di.GenericsProvider
 import tachiyomi.core.prefs.AndroidPreferenceStore
@@ -25,6 +26,7 @@ import tachiyomi.data.library.LibraryUpdateSchedulerImpl
 import tachiyomi.data.library.MangaCategoryRepositoryImpl
 import tachiyomi.data.manga.ChapterRepositoryImpl
 import tachiyomi.data.manga.MangaRepositoryImpl
+import tachiyomi.data.manga.mangaGenresConverter
 import tachiyomi.data.updates.UpdatesRepositoryImpl
 import tachiyomi.domain.catalog.service.CatalogInstallationChanges
 import tachiyomi.domain.catalog.service.CatalogInstaller
@@ -53,8 +55,18 @@ import java.io.File
 
 fun DataModule(context: Application) = module {
 
-  bind<Database>().toProviderInstance { createDatabase(DatabaseDriverFactory(context)) }
-    .providesSingleton()
+  val driver = DatabaseDriverFactory(context).create()
+  val db = Database(
+    driver = driver,
+    mangaAdapter = Manga.Adapter(
+      genresAdapter = mangaGenresConverter
+    )
+  )
+  val dbHandler = JvmDatabaseHandler(db, driver)
+
+  bind<Database>().toInstance(db)
+  bind<SqlDriver>().toInstance(driver)
+  bind<DatabaseHandler>().toInstance(dbHandler)
   bind<Transactions>().toClass<DatabaseTransactions>()
 
   bind<MangaRepository>().toClass<MangaRepositoryImpl>().singleton()

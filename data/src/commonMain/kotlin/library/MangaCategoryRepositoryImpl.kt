@@ -8,51 +8,46 @@
 
 package tachiyomi.data.library
 
-import kotlinx.coroutines.withContext
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
-import tachiyomi.data.DatabaseDispatcher
+import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.library.model.MangaCategory
 import tachiyomi.domain.library.service.MangaCategoryRepository
 
 class MangaCategoryRepositoryImpl @Inject constructor(
-  private val db: Database
+  private val handler: DatabaseHandler
 ) : MangaCategoryRepository {
 
   override suspend fun replaceAll(mangaCategories: List<MangaCategory>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        val mangaIdsToDelete = mangaCategories.asSequence().map { it.mangaId }.distinct()
-        for (mangaId in mangaIdsToDelete) {
-          deleteForMangaBlocking(mangaId)
-        }
-        for (mangaCategory in mangaCategories) {
-          insertBlocking(mangaCategory)
-        }
+    handler.await(inTransaction = true) {
+      val mangaIdsToDelete = mangaCategories.asSequence().map { it.mangaId }.distinct()
+      for (mangaId in mangaIdsToDelete) {
+        deleteForMangaBlocking(mangaId)
+      }
+      for (mangaCategory in mangaCategories) {
+        insertBlocking(mangaCategory)
       }
     }
   }
 
   override suspend fun deleteForManga(mangaId: Long) {
-    withContext(DatabaseDispatcher) {
-      deleteForMangaBlocking(mangaId)
-    }
+    handler.await { deleteForMangaBlocking(mangaId) }
   }
 
   override suspend fun deleteForMangas(mangaIds: List<Long>) {
-    withContext(DatabaseDispatcher) {
+    handler.await(inTransaction = true) {
       for (mangaId in mangaIds) {
         deleteForMangaBlocking(mangaId)
       }
     }
   }
 
-  private fun deleteForMangaBlocking(mangaId: Long) {
-    db.mangaCategoriesQueries.deleteForManga(mangaId)
+  private fun Database.deleteForMangaBlocking(mangaId: Long) {
+    mangaCategoriesQueries.deleteForManga(mangaId)
   }
 
-  private fun insertBlocking(mangaCategory: MangaCategory) {
-    db.mangaCategoriesQueries.insert(
+  private fun Database.insertBlocking(mangaCategory: MangaCategory) {
+    mangaCategoriesQueries.insert(
       mangaId = mangaCategory.mangaId,
       categoryId = mangaCategory.categoryId
     )

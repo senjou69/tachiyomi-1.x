@@ -8,51 +8,42 @@
 
 package tachiyomi.data.download
 
-import kotlinx.coroutines.withContext
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
-import tachiyomi.data.DatabaseDispatcher
+import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.download.model.SavedDownload
 import tachiyomi.domain.download.service.DownloadRepository
 
 class DownloadRepositoryImpl @Inject constructor(
-  private val db: Database
+  private val handler: DatabaseHandler
 ) : DownloadRepository {
 
   override suspend fun findAll(): List<SavedDownload> {
-    return withContext(DatabaseDispatcher) {
-      db.downloadQueries.findAll(downloadMapper).executeAsList()
-    }
+    return handler.awaitList { downloadQueries.findAll(downloadMapper) }
   }
 
   override suspend fun insert(downloads: List<SavedDownload>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (download in downloads) {
-          insertBlocking(download)
-        }
+    handler.await(inTransaction = true) {
+      for (download in downloads) {
+        insertBlocking(download)
       }
     }
   }
 
   override suspend fun delete(downloads: List<SavedDownload>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (download in downloads) {
-          db.downloadQueries.delete(download.chapterId)
-        }
+    handler.await(inTransaction = true) {
+      for (download in downloads) {
+        downloadQueries.delete(download.chapterId)
       }
     }
   }
 
   override suspend fun delete(chapterId: Long) {
-    withContext(DatabaseDispatcher) {
-      db.downloadQueries.delete(chapterId)
-    }
+    handler.await { downloadQueries.delete(chapterId) }
   }
 
-  private fun insertBlocking(download: SavedDownload) {
-    db.downloadQueries.insert(
+  private fun Database.insertBlocking(download: SavedDownload) {
+    downloadQueries.insert(
       chapterId = download.chapterId,
       mangaId = download.mangaId,
       priority = download.priority

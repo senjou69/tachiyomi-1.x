@@ -8,23 +8,16 @@
 
 package tachiyomi.data
 
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withContext
 import tachiyomi.core.db.Transactions
 import tachiyomi.core.di.Inject
 
-internal class DatabaseTransactions @Inject constructor(private val db: Database) : Transactions {
+internal class DatabaseTransactions @Inject constructor(
+  private val handler: DatabaseHandler
+) : Transactions {
 
-  override suspend fun <R> run(action: suspend () -> R): R {
-    return withContext(DatabaseDispatcher) {
-      val scope = this
-      val deferred = db.transactionWithResult<Deferred<R>> {
-        scope.async {
-          action()
-        }
-      }
-      deferred.await()
+  override suspend fun <T> run(action: suspend () -> T): T {
+    return handler.await(inTransaction = true) {
+      action()
     }
   }
 

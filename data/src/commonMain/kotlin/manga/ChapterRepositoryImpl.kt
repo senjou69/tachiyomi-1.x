@@ -8,102 +8,80 @@
 
 package tachiyomi.data.manga
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
-import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
-import tachiyomi.data.DatabaseDispatcher
+import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.manga.model.Chapter
 import tachiyomi.domain.manga.model.ChapterUpdate
 import tachiyomi.domain.manga.service.ChapterRepository
 
 class ChapterRepositoryImpl @Inject constructor(
-  private val db: Database
+  private val handler: DatabaseHandler
 ) : ChapterRepository {
 
   override fun subscribeForManga(mangaId: Long): Flow<List<Chapter>> {
-    return db.chapterQueries.findForManga(mangaId, chapterMapper).asFlow()
-      .mapToList(DatabaseDispatcher)
+    return handler.subscribeToList { chapterQueries.findForManga(mangaId, chapterMapper) }
   }
 
   override fun subscribe(chapterId: Long): Flow<Chapter?> {
-    return db.chapterQueries.findById(chapterId, chapterMapper).asFlow()
-      .mapToOneOrNull(DatabaseDispatcher)
+    return handler.subscribeToOneOrNull { chapterQueries.findById(chapterId, chapterMapper) }
   }
 
   override suspend fun findForManga(mangaId: Long): List<Chapter> {
-    return withContext(DatabaseDispatcher) {
-      db.chapterQueries.findForManga(mangaId, chapterMapper).executeAsList()
-    }
+    return handler.awaitList { chapterQueries.findForManga(mangaId, chapterMapper) }
   }
 
   override suspend fun find(chapterId: Long): Chapter? {
-    return withContext(DatabaseDispatcher) {
-      db.chapterQueries.findById(chapterId, chapterMapper).executeAsOneOrNull()
-    }
+    return handler.awaitOneOrNull { chapterQueries.findById(chapterId, chapterMapper) }
   }
 
   override suspend fun find(chapterKey: String, mangaId: Long): Chapter? {
-    return withContext(DatabaseDispatcher) {
-      db.chapterQueries.findByKey(mangaId, chapterKey, chapterMapper).executeAsOneOrNull()
-    }
+    return handler.awaitOneOrNull { chapterQueries.findByKey(mangaId, chapterKey, chapterMapper) }
   }
 
   override suspend fun insert(chapters: List<Chapter>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (chapter in chapters) {
-          insertBlocking(chapter)
-        }
+    handler.await(inTransaction = true) {
+      for (chapter in chapters) {
+        insertBlocking(chapter)
       }
     }
   }
 
   override suspend fun update(chapters: List<Chapter>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (chapter in chapters) {
-          updateBlocking(chapter)
-        }
+    handler.await(inTransaction = true) {
+      for (chapter in chapters) {
+        updateBlocking(chapter)
       }
     }
   }
 
   override suspend fun updatePartial(updates: List<ChapterUpdate>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (update in updates) {
-          updateBlocking(update)
-        }
+    handler.await(inTransaction = true) {
+      for (update in updates) {
+        updateBlocking(update)
       }
     }
   }
 
   override suspend fun updateOrder(chapters: List<Chapter>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (chapter in chapters) {
-          db.chapterQueries.updateOrder(chapter.sourceOrder, chapter.mangaId, chapter.key)
-        }
+    handler.await(inTransaction = true) {
+      for (chapter in chapters) {
+        chapterQueries.updateOrder(chapter.sourceOrder, chapter.mangaId, chapter.key)
       }
     }
   }
 
   override suspend fun delete(chapters: List<Chapter>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (chapter in chapters) {
-          db.chapterQueries.delete(chapter.id)
-        }
+    handler.await(inTransaction = true) {
+      for (chapter in chapters) {
+        chapterQueries.delete(chapter.id)
       }
     }
   }
 
-  private fun insertBlocking(chapter: Chapter) {
-    db.chapterQueries.insert(
+  private fun Database.insertBlocking(chapter: Chapter) {
+    chapterQueries.insert(
       mangaId = chapter.mangaId,
       key = chapter.key,
       name = chapter.name,
@@ -118,8 +96,8 @@ class ChapterRepositoryImpl @Inject constructor(
     )
   }
 
-  private fun updateBlocking(chapter: Chapter) {
-    db.chapterQueries.update(
+  private fun Database.updateBlocking(chapter: Chapter) {
+    chapterQueries.update(
       chapter.mangaId,
       chapter.key,
       chapter.name,
@@ -135,8 +113,8 @@ class ChapterRepositoryImpl @Inject constructor(
     )
   }
 
-  private fun updateBlocking(chapter: ChapterUpdate) {
-    db.chapterQueries.update(
+  private fun Database.updateBlocking(chapter: ChapterUpdate) {
+    chapterQueries.update(
       chapter.mangaId,
       chapter.key,
       chapter.name,

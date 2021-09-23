@@ -15,8 +15,11 @@ ORDER BY CASE
   WHEN :sort = 'lastRead' THEN title -- TODO
   WHEN :sort = 'lastUpdated' THEN lastUpdate
   WHEN :sort = 'unread' THEN unread
-  WHEN :sort = 'source' THEN sourceId -- TODO add title when composed keys are supported
+  WHEN :sort = 'source' THEN sourceId
   ELSE title
+END,
+CASE
+  WHEN :sort = 'source' THEN title
 END;
 
 findAllWithTotalChapters:
@@ -41,8 +44,11 @@ ORDER BY CASE
   WHEN :sort = 'lastRead' THEN title -- TODO
   WHEN :sort = 'lastUpdated' THEN lastUpdate
   WHEN :sort = 'unread' THEN unread
-  WHEN :sort = 'source' THEN sourceId -- TODO add title when composed keys are supported
+  WHEN :sort = 'source' THEN sourceId
   ELSE title
+END,
+CASE
+  WHEN :sort = 'source' THEN title
 END;
 
 findUncategorizedWithTotalChapters:
@@ -69,8 +75,11 @@ ORDER BY CASE
   WHEN :sort = 'lastRead' THEN title -- TODO
   WHEN :sort = 'lastUpdated' THEN lastUpdate
   WHEN :sort = 'unread' THEN unread
-  WHEN :sort = 'source' THEN sourceId -- TODO add title when composed keys are supported
+  WHEN :sort = 'source' THEN sourceId
   ELSE title
+END,
+CASE
+  WHEN :sort = 'source' THEN title
 END;
 
 findAllInCategoryWithTotalChapters:

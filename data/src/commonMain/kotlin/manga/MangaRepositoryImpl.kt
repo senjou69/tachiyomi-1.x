@@ -8,72 +8,55 @@
 
 package tachiyomi.data.manga
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToOneOrNull
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
-import tachiyomi.data.DatabaseDispatcher
+import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.MangaUpdate
 import tachiyomi.domain.manga.service.MangaRepository
 
 class MangaRepositoryImpl @Inject constructor(
-  private val db: Database
+  private val handler: DatabaseHandler
 ) : MangaRepository {
 
   override suspend fun find(mangaId: Long): Manga? {
-    return withContext(DatabaseDispatcher) {
-      db.mangaQueries.findById(mangaId, mangaMapper).executeAsOneOrNull()
-    }
+    return handler.awaitOneOrNull { mangaQueries.findById(mangaId, mangaMapper) }
   }
 
   override suspend fun find(key: String, sourceId: Long): Manga? {
-    return withContext(DatabaseDispatcher) {
-      db.mangaQueries.findByKey(key, sourceId, mangaMapper).executeAsOneOrNull()
-    }
+    return handler.awaitOneOrNull { mangaQueries.findByKey(key, sourceId, mangaMapper) }
   }
 
   override suspend fun findFavorites(): List<Manga> {
-    return withContext(DatabaseDispatcher) {
-      db.mangaQueries.findFavorites(mangaMapper).executeAsList()
-    }
+    return handler.awaitList { mangaQueries.findFavorites(mangaMapper) }
   }
 
   override fun subscribe(mangaId: Long): Flow<Manga?> {
-    return db.mangaQueries.findById(mangaId, mangaMapper).asFlow()
-      .mapToOneOrNull(DatabaseDispatcher)
+    return handler.subscribeToOneOrNull { mangaQueries.findById(mangaId, mangaMapper) }
   }
 
   override fun subscribe(key: String, sourceId: Long): Flow<Manga?> {
-    return db.mangaQueries.findByKey(key, sourceId, mangaMapper).asFlow()
-      .mapToOneOrNull(DatabaseDispatcher)
+    return handler.subscribeToOneOrNull { mangaQueries.findByKey(key, sourceId, mangaMapper) }
   }
 
   override suspend fun insert(manga: Manga): Long {
-    return withContext(DatabaseDispatcher) {
-      db.transactionWithResult {
-        insertBlocking(manga)
-        db.mangaQueries.lastInsertedId().executeAsOne()
-      }
+    return handler.awaitOne(inTransaction = true) {
+      insertBlocking(manga)
+      mangaQueries.lastInsertedId()
     }
   }
 
   override suspend fun updatePartial(update: MangaUpdate) {
-    withContext(DatabaseDispatcher) {
-      updatePartialBlocking(update)
-    }
+    handler.await { updatePartialBlocking(update) }
   }
 
   override suspend fun deleteNonFavorite() {
-    withContext(DatabaseDispatcher) {
-      db.mangaQueries.deleteNonFavorite()
-    }
+    handler.await { mangaQueries.deleteNonFavorite() }
   }
 
-  private fun insertBlocking(manga: Manga) {
-    db.mangaQueries.insert(
+  private fun Database.insertBlocking(manga: Manga) {
+    mangaQueries.insert(
       sourceId = manga.sourceId,
       key = manga.key,
       title = manga.title,
@@ -93,8 +76,8 @@ class MangaRepositoryImpl @Inject constructor(
     )
   }
 
-  private fun updatePartialBlocking(update: MangaUpdate) {
-    db.mangaQueries.update(
+  private fun Database.updatePartialBlocking(update: MangaUpdate) {
+    mangaQueries.update(
       update.sourceId,
       update.key,
       update.title,

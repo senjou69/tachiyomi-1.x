@@ -10,6 +10,6 @@ package tachiyomi.core.db
 
 interface Transactions {
 
-  suspend fun <R> run(action: suspend () -> R): R
+  suspend fun <T> run(action: suspend () -> T): T
 
 }

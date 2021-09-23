@@ -8,40 +8,33 @@
 
 package tachiyomi.data.history
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.withContext
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
-import tachiyomi.data.DatabaseDispatcher
+import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.history.model.History
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.history.service.HistoryRepository
 import java.util.Date
 
 class HistoryRepositoryImpl @Inject constructor(
-  private val db: Database
+  private val handler: DatabaseHandler
 ) : HistoryRepository {
 
   override suspend fun find(mangaId: Long, chapterId: Long): History? {
-    return withContext(DatabaseDispatcher) {
-      db.historyQueries.find(mangaId, chapterId, historyMapper).executeAsOneOrNull()
-    }
+    return handler.awaitOneOrNull { historyQueries.find(mangaId, chapterId, historyMapper) }
   }
 
   override suspend fun findAll(): List<History> {
-    return withContext(DatabaseDispatcher) {
-      db.historyQueries.findAll(historyMapper).executeAsList()
-    }
+    return handler.awaitList { historyQueries.findAll(historyMapper) }
   }
 
   override fun subscribeAllWithRelationByDate(): Flow<Map<Date, List<HistoryWithRelations>>> {
     // TODO
     //val formatter = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
-    return db.historyQueries.findAllWithRelations(historyWithRelationsMapper).asFlow()
-      .mapToList(DatabaseDispatcher)
+    return handler
+      .subscribeToList { historyQueries.findAllWithRelations(historyWithRelationsMapper) }
       .mapLatest { history ->
         history
           .groupBy { Date(it.readAt) }
@@ -51,59 +44,47 @@ class HistoryRepositoryImpl @Inject constructor(
   }
 
   override suspend fun insert(history: History) {
-    withContext(DatabaseDispatcher) {
-      insertBlocking(history)
-    }
+    handler.await { insertBlocking(history) }
   }
 
   override suspend fun insert(history: List<History>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (h in history) {
-          insertBlocking(h)
-        }
+    handler.await(inTransaction = true) {
+      for (h in history) {
+        insertBlocking(h)
       }
     }
   }
 
   override suspend fun update(history: History) {
-    withContext(DatabaseDispatcher) {
-      updateBlocking(history)
-    }
+    handler.await { updateBlocking(history) }
   }
 
   override suspend fun delete(history: History) {
-    withContext(DatabaseDispatcher) {
-      db.historyQueries.deleteById(history.mangaId, history.chapterId)
-    }
+    handler.await { historyQueries.deleteById(history.mangaId, history.chapterId) }
   }
 
   override suspend fun delete(history: List<History>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        for (h in history) {
-          db.historyQueries.deleteById(h.mangaId, h.chapterId)
-        }
+    handler.await(inTransaction = true) {
+      for (h in history) {
+        historyQueries.deleteById(h.mangaId, h.chapterId)
       }
     }
   }
 
   override suspend fun deleteAll() {
-    withContext(DatabaseDispatcher) {
-      db.historyQueries.deleteAll()
-    }
+    handler.await { historyQueries.deleteAll() }
   }
 
-  private fun insertBlocking(history: History) {
-    db.historyQueries.insert(
+  private fun Database.insertBlocking(history: History) {
+    historyQueries.insert(
       mangaId = history.mangaId,
       chapterId = history.chapterId,
       readAt = history.readAt
     )
   }
 
-  private fun updateBlocking(history: History) {
-    db.historyQueries.update(
+  private fun Database.updateBlocking(history: History) {
+    historyQueries.update(
       readAt = history.readAt,
       mangaId = history.mangaId,
       chapterId = history.chapterId

@@ -8,44 +8,36 @@
 
 package tachiyomi.data.catalog
 
-import com.squareup.sqldelight.runtime.coroutines.asFlow
-import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.withContext
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
-import tachiyomi.data.DatabaseDispatcher
+import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.service.CatalogRemoteRepository
 
 class CatalogRemoteRepositoryImpl @Inject constructor(
-  private val db: Database
+  private val handler: DatabaseHandler
 ) : CatalogRemoteRepository {
 
   override suspend fun getRemoteCatalogs(): List<CatalogRemote> {
-    return withContext(DatabaseDispatcher) {
-      db.catalogRemoteQueries.findAll(catalogRemoteMapper).executeAsList()
-    }
+    return handler.awaitList { catalogRemoteQueries.findAll(catalogRemoteMapper) }
   }
 
   override fun getRemoteCatalogsFlow(): Flow<List<CatalogRemote>> {
-    return db.catalogRemoteQueries.findAll(catalogRemoteMapper).asFlow()
-      .mapToList(DatabaseDispatcher)
+    return handler.subscribeToList { catalogRemoteQueries.findAll(catalogRemoteMapper) }
   }
 
   override suspend fun setRemoteCatalogs(catalogs: List<CatalogRemote>) {
-    withContext(DatabaseDispatcher) {
-      db.transaction {
-        db.catalogRemoteQueries.deleteAll()
-        for (catalog in catalogs) {
-          insertBlocking(catalog)
-        }
+    handler.await(inTransaction = true) {
+      catalogRemoteQueries.deleteAll()
+      for (catalog in catalogs) {
+        insertBlocking(catalog)
       }
     }
   }
 
-  private fun insertBlocking(catalog: CatalogRemote) {
-    db.catalogRemoteQueries.insert(
+  private fun Database.insertBlocking(catalog: CatalogRemote) {
+    catalogRemoteQueries.insert(
       id = catalog.sourceId,
       name = catalog.name,
       description = catalog.description,
