@@ -26,7 +26,6 @@ import tachiyomi.data.library.LibraryUpdateSchedulerImpl
 import tachiyomi.data.library.MangaCategoryRepositoryImpl
 import tachiyomi.data.manga.ChapterRepositoryImpl
 import tachiyomi.data.manga.MangaRepositoryImpl
-import tachiyomi.data.manga.mangaGenresConverter
 import tachiyomi.data.updates.UpdatesRepositoryImpl
 import tachiyomi.domain.catalog.service.CatalogInstallationChanges
 import tachiyomi.domain.catalog.service.CatalogInstaller
@@ -56,12 +55,7 @@ import java.io.File
 fun DataModule(context: Application) = module {
 
   val driver = DatabaseDriverFactory(context).create()
-  val db = Database(
-    driver = driver,
-    mangaAdapter = Manga.Adapter(
-      genresAdapter = mangaGenresConverter
-    )
-  )
+  val db = createDatabase(driver)
   val dbHandler = JvmDatabaseHandler(db, driver)
 
   bind<Database>().toInstance(db)

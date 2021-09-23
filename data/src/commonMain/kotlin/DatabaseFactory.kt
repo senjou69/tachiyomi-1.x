@@ -15,8 +15,7 @@ expect class DatabaseDriverFactory {
   fun create(): SqlDriver
 }
 
-fun createDatabase(factory: DatabaseDriverFactory): Database {
-  val driver = factory.create()
+fun createDatabase(driver: SqlDriver): Database {
   return Database(
     driver = driver,
     mangaAdapter = Manga.Adapter(
