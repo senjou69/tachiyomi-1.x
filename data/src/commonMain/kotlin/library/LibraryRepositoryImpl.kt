@@ -10,7 +10,6 @@ package tachiyomi.data.library
 
 import com.squareup.sqldelight.Query
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import tachiyomi.core.di.Inject
 import tachiyomi.data.Database
 import tachiyomi.data.DatabaseHandler
@@ -29,15 +28,15 @@ class LibraryRepositoryImpl @Inject constructor(
 ) : LibraryRepository {
 
   override suspend fun findAll(sort: LibrarySort): List<LibraryManga> {
-    return handler.awaitList { findAllQuery(sort) }.ordered(sort)
+    return handler.awaitList { findAllQuery(sort) }
   }
 
   override suspend fun findUncategorized(sort: LibrarySort): List<LibraryManga> {
-    return handler.awaitList { findUncategorizedQuery(sort) }.ordered(sort)
+    return handler.awaitList { findUncategorizedQuery(sort) }
   }
 
   override suspend fun findForCategory(categoryId: Long, sort: LibrarySort): List<LibraryManga> {
-    return handler.awaitList { findAllInCategoryQuery(categoryId, sort) }.ordered(sort)
+    return handler.awaitList { findAllInCategoryQuery(categoryId, sort) }
   }
 
   override suspend fun findFavoriteSourceIds(): List<Long> {
@@ -45,37 +44,28 @@ class LibraryRepositoryImpl @Inject constructor(
   }
 
   override fun subscribeAll(sort: LibrarySort): Flow<List<LibraryManga>> {
-    return handler.subscribeToList { findAllQuery(sort) }.map { it.ordered(sort) }
+    return handler.subscribeToList { findAllQuery(sort) }
   }
 
   override fun subscribeUncategorized(sort: LibrarySort): Flow<List<LibraryManga>> {
-    return handler.subscribeToList { findUncategorizedQuery(sort) }.map { it.ordered(sort) }
+    return handler.subscribeToList { findUncategorizedQuery(sort) }
   }
 
   override fun subscribeToCategory(categoryId: Long, sort: LibrarySort): Flow<List<LibraryManga>> {
     return handler.subscribeToList { findAllInCategoryQuery(categoryId, sort) }
-      .map { it.ordered(sort) }
   }
 
   private fun Database.findAllQuery(sort: LibrarySort): Query<LibraryManga> {
     return when (sort.type) {
-      Title -> libraryQueries.findAll("title", libraryMapper)
-      LastRead -> libraryQueries.findAll("lastRead", libraryMapper)
-      LastUpdated -> libraryQueries.findAll("lastUpdated", libraryMapper)
-      Unread -> libraryQueries.findAll("unread", libraryMapper)
       TotalChapters -> libraryQueries.findAllWithTotalChapters(libraryWithTotalMapper)
-      Source -> libraryQueries.findAll("source", libraryMapper)
+      else -> libraryQueries.findAll(sort.parameter, libraryMapper)
     }
   }
 
   private fun Database.findUncategorizedQuery(sort: LibrarySort): Query<LibraryManga> {
     return when (sort.type) {
-      Title -> libraryQueries.findUncategorized("title", libraryMapper)
-      LastRead -> libraryQueries.findUncategorized("lastRead", libraryMapper)
-      LastUpdated -> libraryQueries.findUncategorized("lastUpdated", libraryMapper)
-      Unread -> libraryQueries.findUncategorized("unread", libraryMapper)
       TotalChapters -> libraryQueries.findUncategorizedWithTotalChapters(libraryWithTotalMapper)
-      Source -> libraryQueries.findUncategorized("source", libraryMapper)
+      else -> libraryQueries.findUncategorized(sort.parameter, libraryMapper)
     }
   }
 
@@ -84,19 +74,25 @@ class LibraryRepositoryImpl @Inject constructor(
     sort: LibrarySort
   ): Query<LibraryManga> {
     return when (sort.type) {
-      Title -> libraryQueries.findAllInCategory(categoryId, "title", libraryMapper)
-      LastRead -> libraryQueries.findAllInCategory(categoryId, "lastRead", libraryMapper)
-      LastUpdated -> libraryQueries.findAllInCategory(categoryId, "lastUpdated", libraryMapper)
-      Unread -> libraryQueries.findAllInCategory(categoryId, "unread", libraryMapper)
       TotalChapters -> libraryQueries.findAllInCategoryWithTotalChapters(
         categoryId, libraryWithTotalMapper
       )
-      Source -> libraryQueries.findAllInCategory(categoryId, "source", libraryMapper)
+      else -> libraryQueries.findAllInCategory(categoryId, sort.parameter, libraryMapper)
     }
   }
 
-  private fun List<LibraryManga>.ordered(sort: LibrarySort): List<LibraryManga> {
-    return if (sort.isAscending) this else asReversed()
-  }
+  // Returns the selected sorting as a query parameter
+  private val LibrarySort.parameter: String
+    get() {
+      val sort = when (type) {
+        Title -> "title"
+        LastRead -> "lastRead"
+        LastUpdated -> "lastUpdated"
+        Unread -> "unread"
+        TotalChapters -> "totalChapters"
+        Source -> "source"
+      }
+      return if (isAscending) sort else sort + "Desc"
+    }
 
 }

@@ -10,16 +10,24 @@ SELECT library.id, library.sourceId, library.key, library.title, library.status,
 FROM library
 LEFT JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
 GROUP BY library.id
-ORDER BY CASE
+ORDER BY
+CASE
   WHEN :sort = 'title' THEN title
   WHEN :sort = 'lastRead' THEN title -- TODO
   WHEN :sort = 'lastUpdated' THEN lastUpdate
   WHEN :sort = 'unread' THEN unread
   WHEN :sort = 'source' THEN sourceId
-  ELSE title
 END,
 CASE
+  WHEN :sort = 'titleDesc' THEN title
+  WHEN :sort = 'lastReadDesc' THEN title -- TODO
+  WHEN :sort = 'lastUpdatedDesc' THEN lastUpdate
+  WHEN :sort = 'unreadDesc' THEN unread
+  WHEN :sort = 'sourceDesc' THEN sourceId
+END DESC,
+CASE
   WHEN :sort = 'source' THEN title
+  WHEN :sort = 'sourceDesc' THEN title
 END;
 
 findAllWithTotalChapters:
@@ -39,16 +47,24 @@ LEFT JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
 WHERE NOT EXISTS
   (SELECT mangacategory.mangaId FROM mangacategory WHERE library.id = mangacategory.mangaId)
 GROUP BY library.id
-ORDER BY CASE
+ORDER BY
+CASE
   WHEN :sort = 'title' THEN title
   WHEN :sort = 'lastRead' THEN title -- TODO
   WHEN :sort = 'lastUpdated' THEN lastUpdate
   WHEN :sort = 'unread' THEN unread
   WHEN :sort = 'source' THEN sourceId
-  ELSE title
 END,
 CASE
+  WHEN :sort = 'titleDesc' THEN title
+  WHEN :sort = 'lastReadDesc' THEN title -- TODO
+  WHEN :sort = 'lastUpdatedDesc' THEN lastUpdate
+  WHEN :sort = 'unreadDesc' THEN unread
+  WHEN :sort = 'sourceDesc' THEN sourceId
+END DESC,
+CASE
   WHEN :sort = 'source' THEN title
+  WHEN :sort = 'sourceDesc' THEN title
 END;
 
 findUncategorizedWithTotalChapters:
@@ -70,16 +86,24 @@ INNER JOIN library ON mangacategory.mangaId = library.id
 LEFT JOIN chapter ON library.id = chapter.mangaId AND chapter.read = 0
 WHERE mangacategory.categoryId = ?
 GROUP BY library.id
-ORDER BY CASE
+ORDER BY
+CASE
   WHEN :sort = 'title' THEN title
   WHEN :sort = 'lastRead' THEN title -- TODO
   WHEN :sort = 'lastUpdated' THEN lastUpdate
   WHEN :sort = 'unread' THEN unread
   WHEN :sort = 'source' THEN sourceId
-  ELSE title
 END,
 CASE
+  WHEN :sort = 'titleDesc' THEN title
+  WHEN :sort = 'lastReadDesc' THEN title -- TODO
+  WHEN :sort = 'lastUpdatedDesc' THEN lastUpdate
+  WHEN :sort = 'unreadDesc' THEN unread
+  WHEN :sort = 'sourceDesc' THEN sourceId
+END DESC,
+CASE
   WHEN :sort = 'source' THEN title
+  WHEN :sort = 'sourceDesc' THEN title
 END;
 
 findAllInCategoryWithTotalChapters:
