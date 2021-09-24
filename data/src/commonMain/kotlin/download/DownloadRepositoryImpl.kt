@@ -14,7 +14,7 @@ import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.download.model.SavedDownload
 import tachiyomi.domain.download.service.DownloadRepository
 
-class DownloadRepositoryImpl @Inject constructor(
+internal class DownloadRepositoryImpl @Inject constructor(
   private val handler: DatabaseHandler
 ) : DownloadRepository {
 

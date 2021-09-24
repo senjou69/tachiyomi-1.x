@@ -16,7 +16,7 @@ import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.MangaUpdate
 import tachiyomi.domain.manga.service.MangaRepository
 
-class MangaRepositoryImpl @Inject constructor(
+internal class MangaRepositoryImpl @Inject constructor(
   private val handler: DatabaseHandler
 ) : MangaRepository {
 

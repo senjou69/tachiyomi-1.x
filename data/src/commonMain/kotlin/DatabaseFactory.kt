@@ -11,11 +11,11 @@ package tachiyomi.data
 import com.squareup.sqldelight.db.SqlDriver
 import tachiyomi.data.manga.mangaGenresConverter
 
-expect class DatabaseDriverFactory {
+internal expect class DatabaseDriverFactory {
   fun create(): SqlDriver
 }
 
-fun createDatabase(driver: SqlDriver): Database {
+internal fun createDatabase(driver: SqlDriver): Database {
   return Database(
     driver = driver,
     mangaAdapter = Manga.Adapter(

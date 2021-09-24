@@ -16,7 +16,7 @@ import tachiyomi.domain.updates.model.UpdatesManga
 import tachiyomi.domain.updates.service.UpdatesRepository
 import java.util.Date
 
-class UpdatesRepositoryImpl @Inject constructor(
+internal class UpdatesRepositoryImpl @Inject constructor(
   private val handler: DatabaseHandler
 ) : UpdatesRepository {
 

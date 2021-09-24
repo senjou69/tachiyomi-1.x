@@ -23,7 +23,7 @@ import tachiyomi.domain.library.model.LibrarySort.Type.TotalChapters
 import tachiyomi.domain.library.model.LibrarySort.Type.Unread
 import tachiyomi.domain.library.service.LibraryRepository
 
-class LibraryRepositoryImpl @Inject constructor(
+internal class LibraryRepositoryImpl @Inject constructor(
   private val handler: DatabaseHandler
 ) : LibraryRepository {
 

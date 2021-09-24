@@ -12,7 +12,7 @@ import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.sqlite.driver.JdbcSqliteDriver
 import java.util.Properties
 
-actual class DatabaseDriverFactory {
+internal actual class DatabaseDriverFactory {
   actual fun create(): SqlDriver {
     val driver = JdbcSqliteDriver(
       url = JdbcSqliteDriver.IN_MEMORY + "/tmp/tachiyomi.db",

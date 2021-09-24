@@ -18,7 +18,7 @@ import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.history.service.HistoryRepository
 import java.util.Date
 
-class HistoryRepositoryImpl @Inject constructor(
+internal class HistoryRepositoryImpl @Inject constructor(
   private val handler: DatabaseHandler
 ) : HistoryRepository {
 

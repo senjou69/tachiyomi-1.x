@@ -18,7 +18,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-actual class DatabaseDriverFactory @Inject constructor(
+internal actual class DatabaseDriverFactory @Inject constructor(
   private val app: Application
 ) {
 

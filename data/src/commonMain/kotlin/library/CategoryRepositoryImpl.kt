@@ -19,7 +19,7 @@ import tachiyomi.domain.library.model.CategoryUpdate
 import tachiyomi.domain.library.model.CategoryWithCount
 import tachiyomi.domain.library.service.CategoryRepository
 
-class CategoryRepositoryImpl @Inject constructor(
+internal class CategoryRepositoryImpl @Inject constructor(
   private val handler: DatabaseHandler
 ) : CategoryRepository {
 

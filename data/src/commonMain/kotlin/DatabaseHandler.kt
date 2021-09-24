@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
  * Database handler used to make SqlDelight queries suspending while making them transaction
  * aware so that the database is not locked if the continuations resume on another thread.
  */
-interface DatabaseHandler {
+internal interface DatabaseHandler {
 
   suspend fun <T> await(inTransaction: Boolean = false, block: suspend Database.() -> T): T
 

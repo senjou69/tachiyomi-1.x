@@ -15,7 +15,7 @@ import tachiyomi.data.DatabaseHandler
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.service.CatalogRemoteRepository
 
-class CatalogRemoteRepositoryImpl @Inject constructor(
+internal class CatalogRemoteRepositoryImpl @Inject constructor(
   private val handler: DatabaseHandler
 ) : CatalogRemoteRepository {
 

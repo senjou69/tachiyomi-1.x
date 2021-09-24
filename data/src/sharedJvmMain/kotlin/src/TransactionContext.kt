@@ -30,6 +30,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.asContextElement
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import java.util.concurrent.RejectedExecutionException
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.coroutines.ContinuationInterceptor
@@ -37,6 +38,46 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.coroutineContext
 import kotlin.coroutines.resume
+
+/**
+ * Returns the transaction dispatcher if we are on a transaction, or the database dispatchers.
+ */
+internal suspend fun JvmDatabaseHandler.getCurrentDatabaseContext(): CoroutineContext {
+  return coroutineContext[TransactionElement]?.transactionDispatcher ?: queryDispatcher
+}
+
+/**
+ * Calls the specified suspending [block] in a database transaction. The transaction will be
+ * marked as successful unless an exception is thrown in the suspending [block] or the coroutine
+ * is cancelled.
+ *
+ * Room will only perform at most one transaction at a time, additional transactions are queued
+ * and executed on a first come, first serve order.
+ *
+ * Performing blocking database operations is not permitted in a coroutine scope other than the
+ * one received by the suspending block. It is recommended that all [Dao] function invoked within
+ * the [block] be suspending functions.
+ *
+ * The dispatcher used to execute the given [block] will utilize threads from Room's query executor.
+ */
+internal suspend fun <T> JvmDatabaseHandler.withTransaction(block: suspend () -> T): T {
+  // Use inherited transaction context if available, this allows nested suspending transactions.
+  val transactionContext =
+    coroutineContext[TransactionElement]?.transactionDispatcher ?: createTransactionContext()
+  return withContext(transactionContext) {
+    val transactionElement = coroutineContext[TransactionElement]!!
+    transactionElement.acquire()
+    try {
+      db.transactionWithResult {
+        runBlocking(transactionContext) {
+          block()
+        }
+      }
+    } finally {
+      transactionElement.release()
+    }
+  }
+}
 
 /**
  * Creates a [CoroutineContext] for performing database operations within a coroutine transaction.
@@ -56,7 +97,7 @@ import kotlin.coroutines.resume
  * if a blocking DAO method is invoked within the transaction coroutine. Never assign meaning to
  * this value, for now all we care is if its present or not.
  */
-internal suspend fun JvmDatabaseHandler.createTransactionContext(): CoroutineContext {
+private suspend fun JvmDatabaseHandler.createTransactionContext(): CoroutineContext {
   val controlJob = Job()
   // make sure to tie the control job to this context to avoid blocking the transaction if
   // context get cancelled before we can even start using this job. Otherwise, the acquired
@@ -110,9 +151,9 @@ private suspend fun CoroutineDispatcher.acquireTransactionThread(
 /**
  * A [CoroutineContext.Element] that indicates there is an on-going database transaction.
  */
-internal class TransactionElement(
+private class TransactionElement(
   private val transactionThreadControlJob: Job,
-  internal val transactionDispatcher: ContinuationInterceptor
+  val transactionDispatcher: ContinuationInterceptor
 ) : CoroutineContext.Element {
 
   companion object Key : CoroutineContext.Key<TransactionElement>
