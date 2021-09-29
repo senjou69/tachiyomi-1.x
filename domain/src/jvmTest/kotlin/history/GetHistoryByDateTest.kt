@@ -28,13 +28,13 @@ class GetHistoryByDateTest : StringSpec({
   afterTest { clearAllMocks() }
 
   "called function" {
-    every { repository.subscribeAllWithRelationByDate() } returns flowOf()
+    every { repository.subscribeAll() } returns flowOf()
     interactor.subscribeAll()
-    verify { repository.subscribeAllWithRelationByDate() }
+    verify { repository.subscribeAll() }
   }
   "sorts by date" {
-    every { repository.subscribeAllWithRelationByDate() } returns flowOf(
-      mockkSortedMap(
+    every { repository.subscribeAll() } returns flowOf(
+      listOf(
         mockkUpdates(1627906952000),
         mockkUpdates(1627906952000),
         mockkUpdates(1627734152000),
@@ -53,10 +53,6 @@ class GetHistoryByDateTest : StringSpec({
 })
 
 private val formatter = SimpleDateFormat("yy-MM-dd")
-
-private fun mockkSortedMap(vararg mockkUpdates: HistoryWithRelations): Map<Date, List<HistoryWithRelations>> {
-  return mockkUpdates.groupBy { formatter.parse(it.date) }
-}
 
 private fun mockkUpdates(mockkDateUploaded: Long): HistoryWithRelations {
   return mockk {

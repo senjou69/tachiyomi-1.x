@@ -26,7 +26,7 @@ class GetUpdatesGroupByDateTest : StringSpec({
   }
   "sorts by date" {
     every { repository.subscribeAll() } returns flowOf(
-      mockkSortedMap(
+      listOf(
         mockkUpdates(1627906952000),
         mockkUpdates(1627906952000),
         mockkUpdates(1627734152000),
@@ -45,10 +45,6 @@ class GetUpdatesGroupByDateTest : StringSpec({
 })
 
 private val formatter = SimpleDateFormat("yy-MM-dd")
-
-private fun mockkSortedMap(vararg mockkUpdates: UpdatesManga): Map<Date, List<UpdatesManga>> {
-  return mockkUpdates.groupBy { formatter.parse(it.date) }
-}
 
 private fun mockkUpdates(mockkDateUploaded: Long): UpdatesManga {
   return mockk {
