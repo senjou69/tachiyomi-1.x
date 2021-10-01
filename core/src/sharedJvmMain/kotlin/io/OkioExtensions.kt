@@ -11,6 +11,7 @@ package tachiyomi.core.io
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.BufferedSink
+import okio.Path
 import okio.Source
 import okio.buffer
 import okio.sink
@@ -32,4 +33,8 @@ suspend fun Source.copyTo(sink: BufferedSink) {
       sink.use { it.writeAll(source) }
     }
   }
+}
+
+actual fun Path.setLastModified(epoch: Long) {
+  toFile().setLastModified(epoch)
 }

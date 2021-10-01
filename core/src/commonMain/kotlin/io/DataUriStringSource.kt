@@ -15,7 +15,7 @@ import tachiyomi.core.util.decodeBase64
 
 class DataUriStringSource(private val data: String) : Source {
 
-  private val timeout = Timeout()
+  private val timeout = Timeout.NONE
 
   private val headers = data.substringBefore(",")
 
@@ -29,7 +29,7 @@ class DataUriStringSource(private val data: String) : Source {
     }
   } else {
     { sink, bytes ->
-      val decoded = bytes.toByteArray()
+      val decoded = bytes.encodeToByteArray()
       sink.write(decoded)
       decoded.size.toLong()
     }

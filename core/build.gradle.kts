@@ -18,7 +18,7 @@ kotlin {
         api(Deps.kotlin.stdlib)
         api(Deps.kotlin.datetime)
         api(Deps.kotlin.serialization.json)
-        implementation(Deps.okio)
+        api(Deps.okio)
       }
     }
     named("jvmMain") {

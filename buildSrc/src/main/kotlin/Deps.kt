@@ -82,7 +82,7 @@ object Deps {
     const val testing = "com.github.stephanenicolas.toothpick:toothpick-testing-junit5:$version"
   }
 
-  const val okio = "com.squareup.okio:okio:2.10.0"
+  const val okio = "com.squareup.okio:okio:3.0.0-alpha.10"
   const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
   const val quickjs = "app.cash.quickjs:quickjs-android:0.9.1"
   const val jsoup = "org.jsoup:jsoup:1.14.2"

@@ -34,6 +34,7 @@ subprojects {
   tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile> {
     kotlinOptions {
       jvmTarget = JavaVersion.VERSION_1_8.toString()
+      freeCompilerArgs = freeCompilerArgs + "-Xjvm-default=compatibility"
     }
   }
   tasks.withType<Test> {
@@ -51,6 +52,7 @@ subprojects {
           optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
           optIn("kotlinx.serialization.ExperimentalSerializationApi")
           optIn("androidx.compose.foundation.ExperimentalFoundationApi")
+          optIn("okio.ExperimentalFileSystem")
         }
       }
     }
