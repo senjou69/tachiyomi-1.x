@@ -25,14 +25,14 @@ class SyncRemoteCatalogs @Inject internal constructor(
 
   suspend fun await(forceRefresh: Boolean): Boolean {
     val lastCheckPref = catalogPreferences.lastRemoteCheck()
-    val lastCheck = Instant.fromEpochSeconds(lastCheckPref.get())
+    val lastCheck = Instant.fromEpochMilliseconds(lastCheckPref.get())
     val now = Clock.System.now()
 
     if (forceRefresh || now - lastCheck > minTimeApiCheck) {
       try {
         val newCatalogs = catalogRemoteApi.fetchCatalogs()
         catalogRemoteRepository.setRemoteCatalogs(newCatalogs)
-        lastCheckPref.set(Clock.System.now().epochSeconds)
+        lastCheckPref.set(Clock.System.now().toEpochMilliseconds())
         return true
       } catch (e: Exception) {
         Log.warn(e, "Failed to fetch remote catalogs")
