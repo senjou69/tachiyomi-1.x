@@ -1,24 +1,29 @@
 plugins {
-  kotlin("jvm")
+  kotlin("multiplatform")
   `maven-publish`
   signing
 }
 
-dependencies {
-  implementation(project(Module.core))
+kotlin {
+  jvm()
+
+  sourceSets {
+    named("commonMain") {
+      dependencies {
+        implementation(project(Module.core))
+      }
+    }
+    named("jvmMain") {
+
+    }
+  }
 }
 
 val packageVersion = "1.1"
 
-java {
-  withJavadocJar()
-  withSourcesJar()
-}
-
 publishing {
   publications {
     create<MavenPublication>("publication") {
-      from(components["java"])
       groupId = "org.tachiyomi"
       artifactId = "source-api"
       version = packageVersion

@@ -1,6 +1,7 @@
 package tachiyomi.source
 
 import kotlinx.coroutines.delay
+import kotlinx.datetime.Clock
 import tachiyomi.source.model.ChapterInfo
 import tachiyomi.source.model.Filter
 import tachiyomi.source.model.FilterList
@@ -142,7 +143,7 @@ class TestSource : CatalogSource {
     val chapter1 = ChapterInfo(
       "1",
       "Chapter 1",
-      System.currentTimeMillis()
+      Clock.System.now().toEpochMilliseconds()
     )
     val chapter2 = chapter1.copy(key = "2", name = "Chapter2")
     val chapter3 = chapter1.copy(key = "3", name = "Chapter3")
