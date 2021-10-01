@@ -33,19 +33,27 @@ allprojects {
 subprojects {
   tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile> {
     kotlinOptions {
-      freeCompilerArgs = freeCompilerArgs + listOf(
-        "-Xopt-in=kotlin.RequiresOptIn",
-        "-Xuse-experimental=kotlin.ExperimentalStdlibApi",
-        "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
-        "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-        "-Xuse-experimental=kotlinx.serialization.ExperimentalSerializationApi",
-        "-Xuse-experimental=androidx.compose.foundation.ExperimentalFoundationApi"
-      )
       jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
   }
   tasks.withType<Test> {
     useJUnitPlatform()
+  }
+
+  plugins.withType<org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper> {
+    configure<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension> {
+      sourceSets.all {
+        languageSettings {
+          optIn("kotlin.RequiresOptIn")
+          optIn("kotlin.ExperimentalStdlibApi")
+          optIn("kotlin.time.ExperimentalTime")
+          optIn("kotlinx.coroutines.FlowPreview")
+          optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+          optIn("kotlinx.serialization.ExperimentalSerializationApi")
+          optIn("androidx.compose.foundation.ExperimentalFoundationApi")
+        }
+      }
+    }
   }
 
   plugins.withType<com.android.build.gradle.BasePlugin> {
