@@ -15,6 +15,7 @@ kotlin {
     named("commonMain") {
       dependencies {
         implementation(project(Module.core))
+        implementation(project(Module.sourceApi))
         implementation(Deps.kotlin.serialization.protobuf)
       }
     }
@@ -25,7 +26,6 @@ kotlin {
     listOf("jvmMain", "androidMain").forEach {
       getByName(it) {
         dependencies {
-          implementation(project(Module.sourceApi))
           implementation(Deps.toothpick.runtime)
         }
         project.dependencies {

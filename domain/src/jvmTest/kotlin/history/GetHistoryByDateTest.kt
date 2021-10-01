@@ -59,9 +59,6 @@ class GetHistoryByDateTest : StringSpec({
 
 
 private fun mockkUpdates(mockkDateUploaded: Long): HistoryWithRelations {
-  val a = Instant.fromEpochMilliseconds(0)
-    .toLocalDateTime(TimeZone.UTC).date
-
   return mockk {
     every { readAt } returns mockkDateUploaded
     every { date } returns Instant.fromEpochMilliseconds(mockkDateUploaded).dateString
