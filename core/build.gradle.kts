@@ -16,6 +16,7 @@ kotlin {
       dependencies {
         api(Deps.kotlin.coroutines.core)
         api(Deps.kotlin.stdlib)
+        api(Deps.kotlin.datetime)
         api(Deps.kotlin.serialization.json)
         implementation(Deps.okio)
       }
