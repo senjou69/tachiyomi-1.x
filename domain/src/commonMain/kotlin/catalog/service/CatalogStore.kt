@@ -16,14 +16,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import tachiyomi.core.di.Inject
+import tachiyomi.core.di.Singleton
 import tachiyomi.core.util.replace
 import tachiyomi.domain.catalog.model.CatalogBundled
 import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class CatalogStore @Inject constructor(
@@ -57,6 +59,8 @@ class CatalogStore @Inject constructor(
 
   private val pinnedCatalogsPreference = catalogPreferences.pinnedCatalogs()
 
+  private val lock = Mutex()
+
   init {
     val loadedCatalogs = loader.loadAll()
     val pinnedCatalogIds = pinnedCatalogsPreference.get()
@@ -82,7 +86,7 @@ class CatalogStore @Inject constructor(
     catalogRemoteRepository.getRemoteCatalogsFlow()
       .onEach {
         remoteCatalogs = it
-        synchronized(this@CatalogStore) {
+        lock.withLock {
           catalogs = catalogs.map { catalog ->
             if (catalog is CatalogInstalled) {
               val hasUpdate = catalog.checkHasUpdate()
@@ -107,7 +111,7 @@ class CatalogStore @Inject constructor(
 
   suspend fun togglePinnedCatalog(sourceId: Long) {
     withContext(Dispatchers.Default) {
-      synchronized(this@CatalogStore) {
+      lock.withLock {
         val position = catalogs.indexOfFirst { it.sourceId == sourceId }.takeIf { it >= 0 }
           ?: return@withContext
 
@@ -126,7 +130,7 @@ class CatalogStore @Inject constructor(
 
   private fun onInstalled(pkgName: String, isLocalInstall: Boolean) {
     scope.launch(Dispatchers.Default) {
-      synchronized(this@CatalogStore) {
+      lock.withLock {
         val previousCatalog = catalogs.find { (it as? CatalogInstalled)?.pkgName == pkgName }
 
         // Don't replace system catalogs with local catalogs
@@ -160,7 +164,7 @@ class CatalogStore @Inject constructor(
 
   private fun onUninstalled(pkgName: String, isLocalInstall: Boolean) {
     scope.launch(Dispatchers.Default) {
-      synchronized(this@CatalogStore) {
+      lock.withLock {
         val installedCatalog = catalogs.find { (it as? CatalogInstalled)?.pkgName == pkgName }
         if (installedCatalog != null &&
           installedCatalog is CatalogInstalled.Locally == isLocalInstall

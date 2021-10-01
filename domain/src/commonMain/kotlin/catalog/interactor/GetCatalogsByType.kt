@@ -10,11 +10,11 @@ package tachiyomi.domain.catalog.interactor
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.CatalogSort
-import javax.inject.Inject
 
 class GetCatalogsByType @Inject internal constructor(
   private val localCatalogs: GetLocalCatalogs,

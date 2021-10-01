@@ -10,11 +10,11 @@ package tachiyomi.domain.catalog.interactor
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogSort
 import tachiyomi.domain.catalog.service.CatalogStore
 import tachiyomi.domain.library.service.LibraryRepository
-import javax.inject.Inject
 
 class GetLocalCatalogs @Inject internal constructor(
   private val catalogStore: CatalogStore,
@@ -49,9 +49,9 @@ class GetLocalCatalogs @Inject internal constructor(
 
   private class FavoritesComparator(val favoriteIds: Map<Long, Int>) : Comparator<CatalogLocal> {
 
-    override fun compare(c1: CatalogLocal, c2: CatalogLocal): Int {
-      val pos1 = favoriteIds[c1.sourceId] ?: Int.MAX_VALUE
-      val pos2 = favoriteIds[c2.sourceId] ?: Int.MAX_VALUE
+    override fun compare(a: CatalogLocal, b: CatalogLocal): Int {
+      val pos1 = favoriteIds[a.sourceId] ?: Int.MAX_VALUE
+      val pos2 = favoriteIds[b.sourceId] ?: Int.MAX_VALUE
 
       return pos1.compareTo(pos2)
     }

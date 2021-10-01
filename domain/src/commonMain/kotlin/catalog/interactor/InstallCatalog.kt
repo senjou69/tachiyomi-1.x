@@ -9,10 +9,10 @@
 package tachiyomi.domain.catalog.interactor
 
 import kotlinx.coroutines.flow.Flow
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
 import tachiyomi.domain.catalog.service.CatalogInstaller
-import javax.inject.Inject
 
 class InstallCatalog @Inject internal constructor(
   private val catalogInstaller: CatalogInstaller

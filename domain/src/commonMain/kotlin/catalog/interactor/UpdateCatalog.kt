@@ -10,10 +10,10 @@ package tachiyomi.domain.catalog.interactor
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.InstallStep
 import tachiyomi.domain.catalog.service.CatalogRemoteRepository
-import javax.inject.Inject
 
 class UpdateCatalog @Inject internal constructor(
   private val catalogRemoteRepository: CatalogRemoteRepository,

@@ -8,16 +8,16 @@
 
 package tachiyomi.domain.catalog.interactor
 
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.service.CatalogStore
-import javax.inject.Inject
 
-class TogglePinnedCatalog @Inject constructor(
+class GetLocalCatalog @Inject internal constructor(
   private val store: CatalogStore
 ) {
 
-  suspend fun await(catalog: CatalogLocal) {
-    store.togglePinnedCatalog(catalog.sourceId)
+  fun get(sourceId: Long): CatalogLocal? {
+    return store.get(sourceId)
   }
 
 }

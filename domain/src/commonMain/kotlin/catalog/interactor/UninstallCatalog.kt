@@ -8,9 +8,9 @@
 
 package tachiyomi.domain.catalog.interactor
 
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.service.CatalogInstaller
-import javax.inject.Inject
 
 class UninstallCatalog @Inject internal constructor(
   private val catalogInstaller: CatalogInstaller

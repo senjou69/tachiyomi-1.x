@@ -8,12 +8,14 @@
 
 package tachiyomi.domain.catalog.interactor
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
+import tachiyomi.core.di.Inject
 import tachiyomi.core.log.Log
 import tachiyomi.domain.catalog.service.CatalogPreferences
 import tachiyomi.domain.catalog.service.CatalogRemoteApi
 import tachiyomi.domain.catalog.service.CatalogRemoteRepository
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
+import kotlin.time.Duration
 
 class SyncRemoteCatalogs @Inject internal constructor(
   private val catalogRemoteRepository: CatalogRemoteRepository,
@@ -22,14 +24,15 @@ class SyncRemoteCatalogs @Inject internal constructor(
 ) {
 
   suspend fun await(forceRefresh: Boolean): Boolean {
-    val remoteCheckPref = catalogPreferences.lastRemoteCheck()
-    val lastCheck = remoteCheckPref.get()
+    val lastCheckPref = catalogPreferences.lastRemoteCheck()
+    val lastCheck = Instant.fromEpochSeconds(lastCheckPref.get())
+    val now = Clock.System.now()
 
-    if (forceRefresh || System.currentTimeMillis() - lastCheck > minTimeApiCheck) {
+    if (forceRefresh || now - lastCheck > minTimeApiCheck) {
       try {
         val newCatalogs = catalogRemoteApi.fetchCatalogs()
         catalogRemoteRepository.setRemoteCatalogs(newCatalogs)
-        remoteCheckPref.set(System.currentTimeMillis())
+        lastCheckPref.set(Clock.System.now().epochSeconds)
         return true
       } catch (e: Exception) {
         Log.warn(e, "Failed to fetch remote catalogs")
@@ -40,7 +43,7 @@ class SyncRemoteCatalogs @Inject internal constructor(
   }
 
   internal companion object {
-    val minTimeApiCheck = TimeUnit.MINUTES.toMillis(5)
+    val minTimeApiCheck = Duration.minutes(5)
   }
 
 }
