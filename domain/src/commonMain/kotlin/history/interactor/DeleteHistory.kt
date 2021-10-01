@@ -10,23 +10,18 @@ package tachiyomi.domain.history.interactor
 
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.history.model.History
+import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.history.service.HistoryRepository
-import javax.inject.Inject
 
-class UpsertHistory @Inject constructor(
+class DeleteHistory @Inject constructor(
   private val historyRepository: HistoryRepository
 ) {
 
   suspend fun await(history: History) = withContext(NonCancellable) {
-    val oneOrNull = historyRepository.find(history.mangaId, history.chapterId)
-
     try {
-      if (oneOrNull != null) {
-        historyRepository.update(history)
-      } else {
-        historyRepository.insert(history)
-      }
+      historyRepository.delete(history)
     } catch (e: Throwable) {
       return@withContext Result.InternalError(e)
     }
@@ -34,9 +29,17 @@ class UpsertHistory @Inject constructor(
     Result.Success
   }
 
+  suspend fun await(history: HistoryWithRelations) {
+    val h = History(
+      mangaId = history.mangaId,
+      chapterId = history.chapterId,
+      readAt = history.readAt
+    )
+    await(h)
+  }
+
   sealed class Result {
     object Success : Result()
     data class InternalError(val error: Throwable) : Result()
   }
-
 }

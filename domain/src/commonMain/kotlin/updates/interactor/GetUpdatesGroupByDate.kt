@@ -10,24 +10,20 @@ package tachiyomi.domain.updates.interactor
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toLocalDate
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.updates.model.UpdatesManga
 import tachiyomi.domain.updates.service.UpdatesRepository
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import javax.inject.Inject
 
 class GetUpdatesGroupByDate @Inject internal constructor(
-  val repository: UpdatesRepository
+  private val repository: UpdatesRepository
 ) {
 
-  fun subscribeAll(): Flow<Map<Date, List<UpdatesManga>>> {
-    val formatter = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
+  fun subscribeAll(): Flow<Map<LocalDate, List<UpdatesManga>>> {
     return repository.subscribeAll()
       .mapLatest { updates ->
-        updates
-          .groupBy { formatter.parse(it.date) }
-          .toSortedMap(reverseOrder())
+        updates.groupBy { it.date.toLocalDate() }
       }
   }
 

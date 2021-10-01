@@ -10,24 +10,21 @@ package tachiyomi.domain.history.interactor
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toLocalDate
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.domain.history.service.HistoryRepository
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import javax.inject.Inject
 
 class GetHistoryByDate @Inject constructor(
   private val historyRepository: HistoryRepository
 ) {
 
-  fun subscribeAll(): Flow<Map<Date, List<HistoryWithRelations>>> {
-    val formatter = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
+  fun subscribeAll(): Flow<Map<LocalDate, List<HistoryWithRelations>>> {
     return historyRepository.subscribeAll()
       .mapLatest { history ->
-        history
-          .groupBy { formatter.parse(it.date) }
-          .toSortedMap(reverseOrder())
+        history.groupBy { it.date.toLocalDate() }
       }
   }
+
 }
