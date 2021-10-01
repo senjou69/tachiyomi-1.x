@@ -18,6 +18,9 @@ import java.util.prefs.Preferences
 
 /**
  * An implementation of a [PreferenceStore] backed by Java's [Preferences].
+ *
+ * TODO(inorichi): this will write to the registry on Windows. Consider creating a custom
+ *   implementation that writes to disk and has better support for string sets.
  */
 class JvmPreferenceStore(name: String) : PreferenceStore {
 
