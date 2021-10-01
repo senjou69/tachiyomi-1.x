@@ -42,7 +42,7 @@ internal class LibraryMangaFetcher(
         "${data.cover}_${cover.lastModified()}"
       }
       Type.URL -> {
-        val cover = libraryCovers.find(data.id)
+        val cover = libraryCovers.find(data.id).toFile()
         if (data.favorite && (!cover.exists() || cover.lastModified() == 0L)) {
           null
         } else {
@@ -80,7 +80,7 @@ internal class LibraryMangaFetcher(
   }
 
   private suspend fun getUrlLoader(manga: MangaCover): SourceResult {
-    val file = libraryCovers.find(manga.id)
+    val file = libraryCovers.find(manga.id).toFile()
     if (file.exists() && file.lastModified() != 0L) {
       return getFileLoader(file)
     }

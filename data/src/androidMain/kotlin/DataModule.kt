@@ -10,6 +10,8 @@ package tachiyomi.data
 
 import android.app.Application
 import com.squareup.sqldelight.db.SqlDriver
+import okio.FileSystem
+import okio.Path.Companion.toOkioPath
 import tachiyomi.core.db.Transactions
 import tachiyomi.core.di.GenericsProvider
 import tachiyomi.core.prefs.AndroidPreferenceStore
@@ -76,7 +78,12 @@ fun DataModule(context: Application) = module {
     .providesSingleton()
 
   bind<LibraryCovers>()
-    .toProviderInstance { LibraryCovers(File(context.filesDir, "library_covers")) }
+    .toProviderInstance {
+      LibraryCovers(
+        FileSystem.Companion.SYSTEM,
+        File(context.filesDir, "library_covers").toOkioPath()
+      )
+    }
     .providesSingleton()
   bind<LibraryUpdateScheduler>().toClass<LibraryUpdateSchedulerImpl>().singleton()
 
