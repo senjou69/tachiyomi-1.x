@@ -9,11 +9,21 @@
 package tachiyomi.core.util
 
 import kotlinx.coroutines.CompletionHandler
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
+
+expect fun <T> runBlocking(
+  context: CoroutineContext = EmptyCoroutineContext,
+  block: suspend CoroutineScope.() -> T
+): T
+
+expect val Dispatchers.IO: CoroutineDispatcher
 
 /**
  * TODO(inorichi): this is temporary until actors are implemented in multiplatform:

@@ -8,6 +8,17 @@
 
 package tachiyomi.core.io
 
+import okio.BufferedSink
+import okio.BufferedSource
+import okio.FileSystem
 import okio.Path
 
 expect fun Path.setLastModified(epoch: Long)
+
+expect suspend fun FileSystem.withAsyncSink(path: Path, block: (BufferedSink) -> Unit)
+
+expect suspend fun FileSystem.withAsyncGzipSink(path: Path, block: (BufferedSink) -> Unit)
+
+expect suspend fun <T> FileSystem.withAsyncSource(path: Path, block: (BufferedSource) -> T): T
+
+expect suspend fun <T> FileSystem.withAsyncGzipSource(path: Path, block: (BufferedSource) -> T): T

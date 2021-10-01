@@ -11,9 +11,20 @@ package tachiyomi.core.util
 import kotlinx.coroutines.CompletionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.SendChannel
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.channels.actor as jvmActor
+
+actual fun <T> runBlocking(
+  context: CoroutineContext,
+  block: suspend CoroutineScope.() -> T
+): T {
+  return kotlinx.coroutines.runBlocking(context, block)
+}
+
+actual val Dispatchers.IO
+  get() = IO
 
 actual class ActorScope<E>(private val actorScope: kotlinx.coroutines.channels.ActorScope<E>) {
   actual val channel

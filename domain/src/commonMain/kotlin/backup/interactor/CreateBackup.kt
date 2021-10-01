@@ -12,10 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
-import okio.buffer
-import okio.gzip
-import okio.sink
+import okio.FileSystem
+import okio.Path
 import tachiyomi.core.db.Transactions
+import tachiyomi.core.di.Inject
+import tachiyomi.core.io.withAsyncGzipSink
+import tachiyomi.core.util.IO
 import tachiyomi.domain.backup.model.Backup
 import tachiyomi.domain.backup.model.CategoryProto
 import tachiyomi.domain.backup.model.ChapterProto
@@ -25,10 +27,9 @@ import tachiyomi.domain.library.service.CategoryRepository
 import tachiyomi.domain.manga.service.ChapterRepository
 import tachiyomi.domain.manga.service.MangaRepository
 import tachiyomi.domain.track.service.TrackRepository
-import java.io.File
-import javax.inject.Inject
 
 class CreateBackup @Inject internal constructor(
+  private val fileSystem: FileSystem,
   private val mangaRepository: MangaRepository,
   private val categoryRepository: CategoryRepository,
   private val chapterRepository: ChapterRepository,
@@ -36,12 +37,11 @@ class CreateBackup @Inject internal constructor(
   private val transactions: Transactions
 ) {
 
-  suspend fun saveTo(file: File): Result {
+  suspend fun saveTo(path: Path): Result {
     return try {
       withContext(Dispatchers.IO) {
-        file.sink().gzip().buffer().use {
-          it.write(createDump())
-        }
+        val dump = createDump()
+        fileSystem.withAsyncGzipSink(path) { it.write(dump) }
       }
       Result.Success
     } catch (e: Exception) {

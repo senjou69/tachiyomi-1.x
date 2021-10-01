@@ -12,10 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
-import okio.buffer
-import okio.gzip
-import okio.source
+import okio.FileSystem
+import okio.Path
 import tachiyomi.core.db.Transactions
+import tachiyomi.core.di.Inject
+import tachiyomi.core.io.withAsyncGzipSource
+import tachiyomi.core.util.IO
 import tachiyomi.domain.backup.model.Backup
 import tachiyomi.domain.backup.model.CategoryProto
 import tachiyomi.domain.backup.model.MangaProto
@@ -30,10 +32,9 @@ import tachiyomi.domain.manga.service.MangaRepository
 import tachiyomi.domain.track.model.Track
 import tachiyomi.domain.track.model.TrackUpdate
 import tachiyomi.domain.track.service.TrackRepository
-import java.io.File
-import javax.inject.Inject
 
 class RestoreBackup @Inject internal constructor(
+  private val fileSystem: FileSystem,
   private val mangaRepository: MangaRepository,
   private val categoryRepository: CategoryRepository,
   private val chapterRepository: ChapterRepository,
@@ -42,10 +43,10 @@ class RestoreBackup @Inject internal constructor(
   private val transactions: Transactions
 ) {
 
-  suspend fun restoreFrom(file: File): Result {
+  suspend fun restoreFrom(path: Path): Result {
     return try {
       withContext(Dispatchers.IO) {
-        val bytes = file.source().gzip().buffer().use { it.readByteArray() }
+        val bytes = fileSystem.withAsyncGzipSource(path) { it.readByteArray() }
         val backup = loadDump(bytes)
 
         transactions.run {
