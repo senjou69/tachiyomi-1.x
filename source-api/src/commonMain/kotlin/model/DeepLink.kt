@@ -1,4 +1,4 @@
-package tachiyomi.source
+package tachiyomi.source.model
 
 sealed class DeepLink {
   abstract val key: String

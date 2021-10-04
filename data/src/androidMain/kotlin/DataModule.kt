@@ -65,6 +65,8 @@ fun DataModule(context: Application) = module {
   bind<DatabaseHandler>().toInstance(dbHandler)
   bind<Transactions>().toClass<DatabaseTransactions>()
 
+  bind<FileSystem>().toInstance(FileSystem.SYSTEM)
+
   bind<MangaRepository>().toClass<MangaRepositoryImpl>().singleton()
 
   bind<ChapterRepository>().toClass<ChapterRepositoryImpl>().singleton()

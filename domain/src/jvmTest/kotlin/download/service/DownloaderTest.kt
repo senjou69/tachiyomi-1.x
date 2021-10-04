@@ -11,9 +11,15 @@ package tachiyomi.domain.download.service
 import io.kotest.core.TestConfiguration
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.TestContext
+import io.kotest.matchers.file.shouldHaveFileSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldHaveLength
 import io.kotest.matchers.types.shouldBeInstanceOf
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.url
+import io.ktor.http.HttpHeaders
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,9 +28,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import okhttp3.Cache
-import okhttp3.CacheControl
 import okhttp3.OkHttpClient
-import tachiyomi.core.http.GET
 import tachiyomi.domain.catalog.interactor.GetLocalCatalog
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.download.model.QueuedDownload
@@ -39,9 +43,14 @@ import java.nio.file.Files
 
 class DownloaderTest : FunSpec({
 
-  val client = OkHttpClient.Builder()
+  val okhttpClient = OkHttpClient.Builder()
     .cache(Cache(getTestCacheDir(), Long.MAX_VALUE))
     .build()
+  val client = HttpClient(OkHttp) {
+    engine {
+      preconfigured = okhttpClient
+    }
+  }
 
   val directoryProvider = mockk<DownloadDirectoryProvider>()
   val getLocalCatalog = mockk<GetLocalCatalog>()
@@ -157,7 +166,10 @@ class DownloaderTest : FunSpec({
 
   context("complete page") {
     val imageUrl = ImageUrl("https://i.picsum.photos/id/11/300/400.jpg")
-    val imageUrlRequest = GET(imageUrl.url, cache = CacheControl.FORCE_CACHE)
+    val imageUrlRequest = client to HttpRequestBuilder().apply {
+      url(imageUrl.url)
+      headers.append(HttpHeaders.CacheControl, "only-if-cached, max-stale=${Int.MAX_VALUE}")
+    }
     beforeTest {
       coEvery { source.getImageRequest(any()) } returns imageUrlRequest
     }
@@ -166,7 +178,10 @@ class DownloaderTest : FunSpec({
       coEvery { source.getPageList(any()) } returns listOf(imageUrl)
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
-      result.tmpDir.listFiles()!!.first().extension shouldBe "jpg"
+
+      val file = result.tmpDir.listFiles()!!.first()
+      file.extension shouldBe "jpg"
+      file.shouldHaveFileSize(12260)
     }
     test("ImageUrl is retried") {
       coEvery { source.getImageRequest(any()) } throws Exception() andThen imageUrlRequest
@@ -178,7 +193,10 @@ class DownloaderTest : FunSpec({
       coEvery { source.getPageList(any()) } returns listOf(imageBase64)
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
-      result.tmpDir.listFiles()!!.first().extension shouldBe "jpg"
+
+      val file = result.tmpDir.listFiles()!!.first()
+      file.extension shouldBe "jpg"
+      file.shouldHaveFileSize(20401)
     }
     test("Text is saved to disk") {
       coEvery { source.getPageList(any()) } returns listOf(Text("a"))

@@ -6,15 +6,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.core
+package tachiyomi.core.http
 
-import tachiyomi.core.http.JSFactory
-import tachiyomi.core.http.QuickJSFactory
-import toothpick.ktp.binding.bind
-import toothpick.ktp.binding.module
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttpConfig
+import okhttp3.OkHttpClient
 
-val CoreModule = module {
-
-  bind<JSFactory>().toClass<QuickJSFactory>().singleton()
-
-}
+val HttpClient.okhttp: OkHttpClient
+  get() = (engineConfig as OkHttpConfig).preconfigured!!

@@ -2,6 +2,7 @@ plugins {
   kotlin("multiplatform")
   id("com.android.library")
   id("kotlin-kapt")
+  id("kotlinx-serialization")
   id("com.squareup.sqldelight")
 }
 

@@ -82,6 +82,13 @@ object Deps {
     const val testing = "com.github.stephanenicolas.toothpick:toothpick-testing-junit5:$version"
   }
 
+  object ktor {
+    private const val version = "1.6.4"
+    const val core = "io.ktor:ktor-client-core:$version"
+    const val okhttp = "io.ktor:ktor-client-okhttp:$version"
+    const val serialization = "io.ktor:ktor-client-serialization:$version"
+  }
+
   const val okio = "com.squareup.okio:okio:3.0.0-alpha.10"
   const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
   const val quickjs = "app.cash.quickjs:quickjs-android:0.9.1"

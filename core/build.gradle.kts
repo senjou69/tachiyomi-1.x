@@ -18,6 +18,8 @@ kotlin {
         api(Deps.kotlin.stdlib)
         api(Deps.kotlin.datetime)
         api(Deps.kotlin.serialization.json)
+        api(Deps.ktor.core)
+        api(Deps.ktor.serialization)
         api(Deps.okio)
       }
     }
@@ -38,6 +40,7 @@ kotlin {
         dependencies {
           api(Deps.okhttp)
           api(Deps.jsoup)
+          api(Deps.ktor.okhttp)
           implementation(Deps.tinylog.api)
           implementation(Deps.tinylog.impl)
           implementation(Deps.toothpick.ktp)

@@ -15,10 +15,11 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.jsoup.Jsoup
-import tachiyomi.core.http.Http
+import tachiyomi.core.http.HttpClients
 import tachiyomi.core.http.awaitBody
 import tachiyomi.core.http.awaitSuccess
 import tachiyomi.core.http.get
+import tachiyomi.core.http.okhttp
 import tachiyomi.core.http.post
 import tachiyomi.domain.track.model.TrackSearchResult
 import tachiyomi.domain.track.model.TrackState
@@ -30,7 +31,7 @@ import tachiyomi.domain.track.sites.TrackSite
 import javax.inject.Inject
 
 class MyAnimeList @Inject constructor(
-  private val http: Http,
+  private val httpClients: HttpClients,
   private val preferences: TrackPreferences
 ) : TrackSite() {
 
@@ -43,7 +44,8 @@ class MyAnimeList @Inject constructor(
 
   private val baseUrl = "https://myanimelist.net"
 
-  private val client get() = http.defaultClient
+  // TODO(inorichi): use ktor clients
+  private val client get() = httpClients.default.okhttp
 
   override suspend fun add(mediaId: Long): Long {
     val url = "$baseUrl/ownlist/manga/add.json"

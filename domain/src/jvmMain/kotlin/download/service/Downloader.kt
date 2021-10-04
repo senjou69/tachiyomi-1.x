@@ -8,6 +8,10 @@
 
 package tachiyomi.domain.download.service
 
+import io.ktor.client.request.request
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.bits.Memory
+import io.ktor.utils.io.bits.of
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.SendChannel
@@ -23,9 +27,7 @@ import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
-import okio.BufferedSource
 import okio.buffer
-import tachiyomi.core.http.awaitSuccess
 import tachiyomi.core.http.saveTo
 import tachiyomi.core.io.DataUriStringSource
 import tachiyomi.core.io.saveTo
@@ -70,6 +72,7 @@ internal open class Downloader @Inject constructor(
     }
   }
 
+  @Suppress("BlockingMethodInNonBlockingContext")
   private suspend fun downloadChapter(download: QueuedDownload, tmpChapterDir: File) {
     val catalog = getLocalCatalog.get(download.sourceId)
     checkNotNull(catalog) { "Catalog not found" }
@@ -145,15 +148,22 @@ internal open class Downloader @Inject constructor(
             .onEach {
               when (cpage) {
                 is ImageUrl -> {
-                  val response = source.client.newCall(source.getImageRequest(cpage)).awaitSuccess()
-                  val body = checkNotNull(response.body)
-                  val finalFile = getImageFile(tmpFile, body.source())
-                  response.saveTo(tmpFile)
+                  val (client, request) = source.getImageRequest(cpage)
+                  val body = client.request<ByteReadChannel>(request)
+
+                  val bytesToRead = 32
+                  val head = ByteArray(bytesToRead)
+                  val memory = Memory.of(head, 0, bytesToRead)
+                  body.peekTo(memory, 0, 0, bytesToRead.toLong(), bytesToRead.toLong())
+
+                  val finalFile = getImageFile(tmpFile, head)
+                  body.saveTo(tmpFile)
                   tmpFile.renameTo(finalFile)
                 }
                 is ImageBase64 -> {
                   val dataSource = DataUriStringSource(cpage.data).buffer()
-                  val finalFile = getImageFile(tmpFile, dataSource)
+                  val head = dataSource.peek().readByteArray(32)
+                  val finalFile = getImageFile(tmpFile, head)
                   dataSource.saveTo(tmpFile)
                   tmpFile.renameTo(finalFile)
                 }
@@ -178,9 +188,8 @@ internal open class Downloader @Inject constructor(
     }
   }
 
-  private fun getImageFile(tmpFile: File, source: BufferedSource): File {
-    val magic = source.peek().readByteArray(8)
-    val imageType = ImageUtil.findType(magic)
+  private fun getImageFile(tmpFile: File, head: ByteArray): File {
+    val imageType = ImageUtil.findType(head)
     return if (imageType != null) {
       tmpFile.resolveSibling(tmpFile.nameWithoutExtension + ".${imageType.extension}")
     } else {
@@ -189,9 +198,7 @@ internal open class Downloader @Inject constructor(
   }
 
   sealed class Result {
-
     abstract val download: QueuedDownload
-
     val success get() = this is Success
 
     data class Success(override val download: QueuedDownload, val tmpDir: File) : Result()

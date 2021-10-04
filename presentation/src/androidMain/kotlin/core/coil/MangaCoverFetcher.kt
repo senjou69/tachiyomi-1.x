@@ -14,6 +14,9 @@ import coil.decode.Options
 import coil.fetch.Fetcher
 import coil.fetch.SourceResult
 import coil.size.Size
+import io.ktor.client.engine.mergeHeaders
+import io.ktor.client.request.HttpRequestData
+import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Cache
@@ -22,6 +25,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.buffer
 import okio.source
+import tachiyomi.core.http.okhttp
 import tachiyomi.core.http.saveTo
 import tachiyomi.domain.catalog.interactor.GetLocalCatalog
 import tachiyomi.domain.library.service.LibraryCovers
@@ -122,17 +126,15 @@ internal class LibraryMangaFetcher(
   private fun getCall(manga: MangaCover): Call {
     val catalog = getLocalCatalog.get(manga.sourceId)
     val source = catalog?.source as? HttpSource
-    val client = source?.client ?: defaultClient
 
-    val newClient = client.newBuilder()
+    val clientAndRequest = source?.getCoverRequest(manga.cover)
+
+    val newClient = (clientAndRequest?.first?.okhttp ?: defaultClient).newBuilder()
       .cache(coilCache)
       .build()
 
-    val request = Request.Builder().url(manga.cover).also {
-      if (source != null) {
-        it.headers(source.headers)
-      }
-    }.build()
+    val request = clientAndRequest?.second?.build()?.convertToOkHttpRequest()
+      ?: Request.Builder().url(manga.cover).build()
 
     return newClient.newCall(request)
   }
@@ -150,4 +152,25 @@ internal class LibraryMangaFetcher(
     File, URL;
   }
 
+}
+
+/**
+ * Converts a ktor request to okhttp. Note that it does not support sending a request body. If we
+ * ever need it we could use reflection to call this other method instead:
+ * https://github.com/ktorio/ktor/blob/1.6.4/ktor-client/ktor-client-okhttp/jvm/src/io/ktor/client/engine/okhttp/OkHttpEngine.kt#L180
+ */
+private fun HttpRequestData.convertToOkHttpRequest(): Request {
+  val builder = Request.Builder()
+
+  with(builder) {
+    url(url.toString())
+    mergeHeaders(headers, body) { key, value ->
+      if (key == HttpHeaders.ContentLength) return@mergeHeaders
+      addHeader(key, value)
+    }
+
+    method(method.value, null)
+  }
+
+  return builder.build()
 }
