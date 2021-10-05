@@ -41,12 +41,10 @@ kotlin {
     listOf("jvmMain", "androidMain").forEach { name ->
       getByName(name) {
         dependencies {
-          api(Deps.okhttp)
-          api(Deps.jsoup)
           api(Deps.ktor.okhttp)
           implementation(Deps.tinylog.api)
           implementation(Deps.tinylog.impl)
-          implementation(Deps.toothpick.ktp)
+          implementation(Deps.toothpick.runtime)
         }
         project.dependencies {
           add("kapt", Deps.toothpick.compiler)

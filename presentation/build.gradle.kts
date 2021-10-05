@@ -49,7 +49,6 @@ kotlin {
           implementation(project(Module.sourceApi))
           implementation(project(Module.domain))
           implementation(Deps.toothpick.runtime)
-          implementation(Deps.toothpick.ktp)
         }
         project.dependencies.apply {
           add("kapt", Deps.toothpick.compiler)

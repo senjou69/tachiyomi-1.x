@@ -41,7 +41,7 @@ kotlin {
       getByName(it) {
         dependencies {
           implementation(project(Module.sourceApi))
-          implementation(Deps.toothpick.ktp)
+          implementation(Deps.toothpick.runtime)
         }
         project.dependencies {
           add("kapt", Deps.toothpick.compiler)

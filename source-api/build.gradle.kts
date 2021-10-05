@@ -14,7 +14,9 @@ kotlin {
       }
     }
     named("jvmMain") {
-
+      dependencies {
+        api(Deps.jsoup)
+      }
     }
   }
 }

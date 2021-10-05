@@ -51,7 +51,7 @@ object Deps {
   }
 
   object sqldelight {
-    private const val version = "1.5.0"
+    private const val version = "1.5.1"
     const val runtime = "com.squareup.sqldelight:runtime:$version"
     const val coroutines = "com.squareup.sqldelight:coroutines-extensions:$version"
     const val jvm = "com.squareup.sqldelight:sqlite-driver:$version"
@@ -75,10 +75,9 @@ object Deps {
 
   object toothpick {
     private const val version = "3.1.0"
-    const val runtime = "com.github.stephanenicolas.toothpick:toothpick-runtime:$version"
+    const val runtime = "com.github.stephanenicolas.toothpick:ktp:$version"
     const val smoothie = "com.github.stephanenicolas.toothpick:smoothie:$version"
     const val compiler = "com.github.stephanenicolas.toothpick:toothpick-compiler:$version"
-    const val ktp = "com.github.stephanenicolas.toothpick:ktp:$version"
     const val testing = "com.github.stephanenicolas.toothpick:toothpick-testing-junit5:$version"
   }
 
@@ -90,7 +89,6 @@ object Deps {
   }
 
   const val okio = "com.squareup.okio:okio:3.0.0-alpha.10"
-  const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
   const val quickjsAndroid = "app.cash.quickjs:quickjs-android:0.9.2"
   const val quickjsJvm = "app.cash.quickjs:quickjs-jvm:0.9.2"
   const val jsoup = "org.jsoup:jsoup:1.14.2"

@@ -29,7 +29,7 @@ kotlin {
       kotlin.srcDir("src/sharedAndroidMain/kotlin")
       dependencies {
         implementation(Deps.androidx.emoji)
-        implementation(Deps.toothpick.ktp)
+        implementation(Deps.toothpick.runtime)
         implementation(Deps.androidx.lifecycle.viewModel)
       }
     }

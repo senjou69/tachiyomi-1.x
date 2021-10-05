@@ -36,7 +36,6 @@ kotlin {
         dependencies {
           implementation(project(Module.domain))
           implementation(Deps.toothpick.runtime)
-          implementation(Deps.toothpick.ktp)
           implementation(Deps.tinylog.impl)
         }
         project.dependencies.apply {

@@ -30,4 +30,3 @@ actual object AppScope : Scope by Toothpick.openRootScope() {
   }
 
 }
-
