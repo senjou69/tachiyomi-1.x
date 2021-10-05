@@ -11,7 +11,6 @@ package tachiyomi.domain.download.service
 import io.kotest.core.TestConfiguration
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.core.test.TestContext
-import io.kotest.matchers.file.shouldHaveFileSize
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldHaveLength
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -29,6 +28,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okio.FileSystem
+import okio.Path.Companion.toOkioPath
+import tachiyomi.core.io.extension
+import tachiyomi.core.io.nameWithoutExtension
 import tachiyomi.domain.catalog.interactor.GetLocalCatalog
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.download.model.QueuedDownload
@@ -41,6 +44,7 @@ import tachiyomi.source.model.Text
 import java.io.File
 import java.nio.file.Files
 
+@Suppress("BlockingMethodInNonBlockingContext")
 class DownloaderTest : FunSpec({
 
   val okhttpClient = OkHttpClient.Builder()
@@ -52,6 +56,7 @@ class DownloaderTest : FunSpec({
     }
   }
 
+  val fileSystem = FileSystem.SYSTEM
   val directoryProvider = mockk<DownloadDirectoryProvider>()
   val getLocalCatalog = mockk<GetLocalCatalog>()
   val source = mockk<HttpSource>()
@@ -59,7 +64,7 @@ class DownloaderTest : FunSpec({
 
   val imageBase64 = ImageBase64(getBase64Image())
 
-  val downloader = object : Downloader(directoryProvider, getLocalCatalog) {
+  val downloader = object : Downloader(directoryProvider, getLocalCatalog, fileSystem) {
     override val retryDelay = 0L
   }
 
@@ -79,7 +84,7 @@ class DownloaderTest : FunSpec({
   afterTest { clearAllMocks() }
 
   beforeTest {
-    every { directoryProvider.getTempChapterDir(any()) } returns tempdir("chapter")
+    every { directoryProvider.getTempChapterDir(any()) } returns tempdir("chapter").toOkioPath()
     every { getLocalCatalog.get(any()) } returns catalog
     every { catalog.source } returns source
     every { source.client } returns client
@@ -179,9 +184,9 @@ class DownloaderTest : FunSpec({
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
 
-      val file = result.tmpDir.listFiles()!!.first()
+      val file = fileSystem.list(result.tmpDir).first()
       file.extension shouldBe "jpg"
-      file.shouldHaveFileSize(12260)
+      fileSystem.metadata(file).size shouldBe 12260
     }
     test("ImageUrl is retried") {
       coEvery { source.getImageRequest(any()) } throws Exception() andThen imageUrlRequest
@@ -194,15 +199,16 @@ class DownloaderTest : FunSpec({
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
 
-      val file = result.tmpDir.listFiles()!!.first()
+      val file = fileSystem.list(result.tmpDir).first()
       file.extension shouldBe "jpg"
-      file.shouldHaveFileSize(20401)
+      fileSystem.metadata(file).size shouldBe 20401
     }
     test("Text is saved to disk") {
       coEvery { source.getPageList(any()) } returns listOf(Text("a"))
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
-      result.tmpDir.listFiles()!!.first().extension shouldBe "txt"
+      val file = fileSystem.list(result.tmpDir).first()
+      file.extension shouldBe "txt"
     }
   }
 
@@ -212,28 +218,28 @@ class DownloaderTest : FunSpec({
       coEvery { source.getPageList(any()) } returns pages
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
-      result.tmpDir.listFiles()!!.forEach { it.nameWithoutExtension shouldHaveLength 1 }
+      fileSystem.list(result.tmpDir).forEach { it.nameWithoutExtension shouldHaveLength 1 }
     }
     test("2 digits") {
       val pages = IntRange(1, 99).map { Text("") }
       coEvery { source.getPageList(any()) } returns pages
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
-      result.tmpDir.listFiles()!!.forEach { it.nameWithoutExtension shouldHaveLength 2 }
+      fileSystem.list(result.tmpDir).forEach { it.nameWithoutExtension shouldHaveLength 2 }
     }
     test("3 digits") {
       val pages = IntRange(1, 999).map { Text("") }
       coEvery { source.getPageList(any()) } returns pages
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
-      result.tmpDir.listFiles()!!.forEach { it.nameWithoutExtension shouldHaveLength 3 }
+      fileSystem.list(result.tmpDir).forEach { it.nameWithoutExtension shouldHaveLength 3 }
     }
     test("4 digits") {
       val pages = IntRange(1, 1000).map { Text("") }
       coEvery { source.getPageList(any()) } returns pages
       val result = awaitDownload()
       result.shouldBeInstanceOf<Success>()
-      result.tmpDir.listFiles()!!.forEach { it.nameWithoutExtension shouldHaveLength 4 }
+      fileSystem.list(result.tmpDir).forEach { it.nameWithoutExtension shouldHaveLength 4 }
     }
   }
 

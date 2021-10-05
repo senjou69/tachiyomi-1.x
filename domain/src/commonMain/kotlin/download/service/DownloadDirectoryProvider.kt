@@ -8,10 +8,10 @@
 
 package tachiyomi.domain.download.service
 
+import okio.Path
+import tachiyomi.core.di.Inject
+import tachiyomi.core.di.Singleton
 import tachiyomi.domain.download.model.QueuedDownload
-import java.io.File
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * This class is used to provide the directories where the downloads should be saved.
@@ -24,12 +24,12 @@ class DownloadDirectoryProvider @Inject internal constructor(
 
   val downloadsDir = preferences.downloadsDir().get() // TODO update value
 
-  fun getChapterDir(download: QueuedDownload): File {
+  fun getChapterDir(download: QueuedDownload): Path {
     TODO()
     //return File()
   }
 
-  internal fun getTempChapterDir(download: QueuedDownload): File {
+  internal fun getTempChapterDir(download: QueuedDownload): Path {
     TODO()
     //return File("_tmp")
   }

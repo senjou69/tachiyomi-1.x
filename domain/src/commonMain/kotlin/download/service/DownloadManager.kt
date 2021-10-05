@@ -11,19 +11,21 @@ package tachiyomi.domain.download.service
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.actor
+import okio.FileSystem
+import tachiyomi.core.di.Inject
+import tachiyomi.core.di.Singleton
+import tachiyomi.core.util.actor
 import tachiyomi.domain.download.service.DownloadManagerActor.Message
 import tachiyomi.domain.manga.model.Chapter
 import tachiyomi.domain.manga.model.Manga
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class DownloadManager @Inject internal constructor(
   private val preferences: DownloadPreferences,
   private val downloader: Downloader,
   private val compressor: DownloadCompressor,
-  private val repository: DownloadRepository
+  private val repository: DownloadRepository,
+  private val fileSystem: FileSystem
 ) {
 
   @Suppress("EXPERIMENTAL_API_USAGE")
@@ -31,9 +33,15 @@ class DownloadManager @Inject internal constructor(
     context = Dispatchers.Default,
     capacity = Channel.UNLIMITED
   ) {
-    with(DownloadManagerActor(channel, preferences, downloader, compressor, repository)) {
-      receiveAll()
-    }
+    val actor = DownloadManagerActor(
+      messages = channel,
+      preferences = preferences,
+      downloader = downloader,
+      compressor = compressor,
+      repository = repository,
+      fileSystem = fileSystem
+    )
+    actor.receiveAll()
   }
 
   fun start() {

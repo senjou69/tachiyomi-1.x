@@ -10,8 +10,6 @@ package tachiyomi.domain.download.service
 
 import io.ktor.client.request.request
 import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.bits.Memory
-import io.ktor.utils.io.bits.of
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.SendChannel
@@ -27,9 +25,13 @@ import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.withIndex
 import kotlinx.coroutines.launch
+import okio.FileSystem
+import okio.Path
 import okio.buffer
-import tachiyomi.core.http.saveTo
+import tachiyomi.core.di.Inject
 import tachiyomi.core.io.DataUriStringSource
+import tachiyomi.core.io.nameWithoutExtension
+import tachiyomi.core.io.peek
 import tachiyomi.core.io.saveTo
 import tachiyomi.core.util.ImageUtil
 import tachiyomi.domain.catalog.interactor.GetLocalCatalog
@@ -43,12 +45,11 @@ import tachiyomi.source.model.PageComplete
 import tachiyomi.source.model.PageListEmpty
 import tachiyomi.source.model.PageUrl
 import tachiyomi.source.model.Text
-import java.io.File
-import javax.inject.Inject
 
 internal open class Downloader @Inject constructor(
   private val directoryProvider: DownloadDirectoryProvider,
-  private val getLocalCatalog: GetLocalCatalog
+  private val getLocalCatalog: GetLocalCatalog,
+  private val fileSystem: FileSystem
 ) {
 
   protected open val retryDelay = 1000L
@@ -59,9 +60,8 @@ internal open class Downloader @Inject constructor(
     downloadResult: SendChannel<Result>
   ) = scope.launch {
     for (download in downloads) {
-      val tmpChapterDir = directoryProvider.getTempChapterDir(download)
-
       val result = try {
+        val tmpChapterDir = directoryProvider.getTempChapterDir(download)
         downloadChapter(download, tmpChapterDir)
         Result.Success(download, tmpChapterDir)
       } catch (e: Throwable) {
@@ -73,7 +73,7 @@ internal open class Downloader @Inject constructor(
   }
 
   @Suppress("BlockingMethodInNonBlockingContext")
-  private suspend fun downloadChapter(download: QueuedDownload, tmpChapterDir: File) {
+  private suspend fun downloadChapter(download: QueuedDownload, tmpChapterDir: Path) {
     val catalog = getLocalCatalog.get(download.sourceId)
     checkNotNull(catalog) { "Catalog not found" }
 
@@ -98,21 +98,21 @@ internal open class Downloader @Inject constructor(
     val digits = pages.size.toString().length
 
     // List of downloaded files when the download starts
-    val downloadedFilesWithoutExtensionOnStart = if (tmpChapterDir.exists()) {
-      val allFiles = tmpChapterDir.listFiles().orEmpty().asSequence()
-      val tmpFilesFilter: (File) -> Boolean = { it.name.endsWith(".tmp") }
+    val downloadedFilesWithoutExtensionOnStart = if (fileSystem.exists(tmpChapterDir)) {
+      val allFiles = fileSystem.list(tmpChapterDir).asSequence()
+      val tmpFilesFilter: (Path) -> Boolean = { it.name.endsWith(".tmp") }
 
       // Delete all temporary (unfinished) files or with a wrong number of digits
       allFiles
         .filter { tmpFilesFilter(it) || it.nameWithoutExtension.length != digits }
-        .forEach { it.delete() }
+        .forEach { fileSystem.delete(it) }
 
       allFiles
         .filterNot(tmpFilesFilter)
         .map { it.nameWithoutExtension }
     } else {
-      tmpChapterDir.mkdirs()
-      emptySequence<File>()
+      fileSystem.createDirectories(tmpChapterDir)
+      emptySequence<Path>()
     }.toSet()
 
     var anyError = false
@@ -121,12 +121,12 @@ internal open class Downloader @Inject constructor(
       .withIndex()
       .flatMapConcat { (index, page) ->
         // Check if page was downloaded
-        val nameWithoutExtension = String.format("%0${digits}d", index + 1)
+        val nameWithoutExtension = getPageName(index + 1, digits)
         if (nameWithoutExtension in downloadedFilesWithoutExtensionOnStart) {
           return@flatMapConcat emptyFlow<Page>()
         }
 
-        val tmpFile = tmpChapterDir.resolve("$nameWithoutExtension.tmp")
+        val tmpFile = tmpChapterDir / "$nameWithoutExtension.tmp"
 
         // Retrieve complete page if needed
         val completePageFlow = when (page) {
@@ -150,27 +150,23 @@ internal open class Downloader @Inject constructor(
                 is ImageUrl -> {
                   val (client, request) = source.getImageRequest(cpage)
                   val body = client.request<ByteReadChannel>(request)
-
-                  val bytesToRead = 32
-                  val head = ByteArray(bytesToRead)
-                  val memory = Memory.of(head, 0, bytesToRead)
-                  body.peekTo(memory, 0, 0, bytesToRead.toLong(), bytesToRead.toLong())
+                  val head = body.peek(32)
 
                   val finalFile = getImageFile(tmpFile, head)
-                  body.saveTo(tmpFile)
-                  tmpFile.renameTo(finalFile)
+                  body.saveTo(tmpFile, fileSystem)
+                  fileSystem.atomicMove(tmpFile, finalFile)
                 }
                 is ImageBase64 -> {
                   val dataSource = DataUriStringSource(cpage.data).buffer()
                   val head = dataSource.peek().readByteArray(32)
                   val finalFile = getImageFile(tmpFile, head)
-                  dataSource.saveTo(tmpFile)
-                  tmpFile.renameTo(finalFile)
+                  dataSource.saveTo(tmpFile, fileSystem)
+                  fileSystem.atomicMove(tmpFile, finalFile)
                 }
                 is Text -> {
-                  val finalFile = tmpFile.resolveSibling("$nameWithoutExtension.txt")
-                  tmpFile.writeText(cpage.text)
-                  tmpFile.renameTo(finalFile)
+                  val finalFile = tmpFile.parent!! / "$nameWithoutExtension.txt"
+                  fileSystem.write(tmpFile) { writeUtf8(cpage.text) }
+                  fileSystem.atomicMove(tmpFile, finalFile)
                 }
               }
             }
@@ -188,12 +184,22 @@ internal open class Downloader @Inject constructor(
     }
   }
 
-  private fun getImageFile(tmpFile: File, head: ByteArray): File {
+  private fun getImageFile(tmpFile: Path, head: ByteArray): Path {
     val imageType = ImageUtil.findType(head)
     return if (imageType != null) {
-      tmpFile.resolveSibling(tmpFile.nameWithoutExtension + ".${imageType.extension}")
+      tmpFile.parent!! / "${tmpFile.nameWithoutExtension}.${imageType.extension}"
     } else {
-      tmpFile.resolveSibling(tmpFile.nameWithoutExtension)
+      tmpFile.parent!! / tmpFile.nameWithoutExtension
+    }
+  }
+
+  private fun getPageName(pageNumber: Int, digits: Int): String {
+    return buildString {
+      val pageNumberStr = pageNumber.toString()
+      repeat(digits - pageNumberStr.length) {
+        append(0)
+      }
+      append(pageNumberStr)
     }
   }
 
@@ -201,7 +207,7 @@ internal open class Downloader @Inject constructor(
     abstract val download: QueuedDownload
     val success get() = this is Success
 
-    data class Success(override val download: QueuedDownload, val tmpDir: File) : Result()
+    data class Success(override val download: QueuedDownload, val tmpDir: Path) : Result()
     data class Failure(override val download: QueuedDownload, val error: Throwable) : Result()
   }
 

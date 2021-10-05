@@ -105,7 +105,9 @@ fun DataModule(context: Application) = module {
   bind<DownloadPreferences>()
     .toProviderInstance {
       val defaultDownloads = context.getExternalFilesDir("downloads")!!
-      DownloadPreferences(AndroidPreferenceStore(context, "download"), defaultDownloads)
+      DownloadPreferences(
+        AndroidPreferenceStore(context, "download"), defaultDownloads.toOkioPath()
+      )
     }
     .providesSingleton()
 

@@ -12,25 +12,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.launch
+import okio.FileSystem
+import okio.Path
+import okio.Path.Companion.toPath
+import tachiyomi.core.di.Inject
+import tachiyomi.core.io.createZip
+import tachiyomi.core.util.IO
 import tachiyomi.domain.download.model.QueuedDownload
-import java.io.File
-import java.util.zip.Deflater
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
-import javax.inject.Inject
 
 internal class DownloadCompressor @Inject constructor(
-  private val directoryProvider: DownloadDirectoryProvider
+  private val directoryProvider: DownloadDirectoryProvider,
+  private val fileSystem: FileSystem,
 ) {
 
   fun worker(
     scope: CoroutineScope,
     download: QueuedDownload,
-    tmpChapterDir: File,
+    tmpChapterDir: Path,
     compressionResult: SendChannel<Result>
   ) = scope.launch(Dispatchers.IO) {
     val chapterDir = directoryProvider.getChapterDir(download)
-    val tmpZip = File(chapterDir.absolutePath + ".cbz.tmp")
+    val tmpZip = "$chapterDir.cbz.tmp".toPath()
     val result = try {
       compressChapter(tmpChapterDir, tmpZip)
       Result.Success(download, tmpZip)
@@ -41,19 +43,12 @@ internal class DownloadCompressor @Inject constructor(
     compressionResult.send(result)
   }
 
-  private fun compressChapter(tmpChapterDir: File, tmpZip: File) {
-    val files = checkNotNull(tmpChapterDir.listFiles()) { "Chapter directory does not exist" }
+  private fun compressChapter(tmpChapterDir: Path, tmpZip: Path) {
+    val files = fileSystem.list(tmpChapterDir)
 
-    val outStream = ZipOutputStream(tmpZip.outputStream())
-    outStream.setLevel(Deflater.NO_COMPRESSION)
-
-    outStream.use {
-      for (file in files) {
-        file.inputStream().use { input ->
-          outStream.putNextEntry(ZipEntry(file.name))
-          input.copyTo(outStream)
-          outStream.closeEntry()
-        }
+    fileSystem.createZip(tmpZip, false) {
+      for (path in files) {
+        addEntry(path.name, fileSystem.source(path))
       }
     }
   }
@@ -64,7 +59,7 @@ internal class DownloadCompressor @Inject constructor(
 
     val success get() = this is Success
 
-    data class Success(override val download: QueuedDownload, val tmpZip: File) : Result()
+    data class Success(override val download: QueuedDownload, val tmpZip: Path) : Result()
     data class Failure(override val download: QueuedDownload, val error: Throwable) : Result()
   }
 

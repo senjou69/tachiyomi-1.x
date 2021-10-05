@@ -15,19 +15,22 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.selects.select
+import okio.FileSystem
+import okio.Path
+import okio.Path.Companion.toPath
 import tachiyomi.core.util.removeFirst
 import tachiyomi.domain.download.model.QueuedDownload
 import tachiyomi.domain.download.model.SavedDownload
 import tachiyomi.domain.manga.model.Chapter
 import tachiyomi.domain.manga.model.Manga
-import java.io.File
 
 internal open class DownloadManagerActor(
   private val messages: Channel<Message>,
   private val preferences: DownloadPreferences,
   private val downloader: Downloader,
   private val compressor: DownloadCompressor,
-  private val repository: DownloadRepository
+  private val repository: DownloadRepository,
+  private val fileSystem: FileSystem
 ) {
 
   private val compressPreference = preferences.compress()
@@ -227,14 +230,14 @@ internal open class DownloadManagerActor(
     downloads.remove(download)
 
     // Both compressed files and directories end with "[._]tmp" so we just drop the last 4 chars
-    val finalFile = File(tmpFile.absolutePath.dropLast(4))
-    tmpFile.renameTo(finalFile)
+    val finalFile = tmpFile.toString().dropLast(4).toPath()
+    fileSystem.atomicMove(tmpFile, finalFile)
   }
 
   sealed class State {
     data class Downloading(val workerId: Int, val download: QueuedDownload) : State()
     data class Compressing(val download: QueuedDownload) : State()
-    data class Completing(val download: QueuedDownload, val tmpFile: File) : State()
+    data class Completing(val download: QueuedDownload, val tmpFile: Path) : State()
     data class Failed(val error: Throwable) : State()
 
     val inProgress get() = this is Downloading || this is Compressing

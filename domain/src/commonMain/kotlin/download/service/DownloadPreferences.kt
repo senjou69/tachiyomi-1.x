@@ -8,21 +8,22 @@
 
 package tachiyomi.domain.download.service
 
+import okio.Path
+import okio.Path.Companion.toPath
 import tachiyomi.core.prefs.Preference
 import tachiyomi.core.prefs.PreferenceStore
-import java.io.File
 
 class DownloadPreferences(
   private val preferenceStore: PreferenceStore,
-  private val defaultDownloadsDir: File
+  private val defaultDownloadsDir: Path
 ) {
 
-  fun downloadsDir(): Preference<File> {
+  fun downloadsDir(): Preference<Path> {
     return preferenceStore.getObject(
       key = "downloads_dir",
       defaultValue = defaultDownloadsDir,
-      serializer = { it.absolutePath },
-      deserializer = { File(it) }
+      serializer = { it.toString() },
+      deserializer = { it.toPath() }
     )
   }
 
