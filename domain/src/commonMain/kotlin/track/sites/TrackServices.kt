@@ -8,9 +8,9 @@
 
 package tachiyomi.domain.track.sites
 
+import tachiyomi.core.di.Inject
 import tachiyomi.core.http.HttpClients
 import tachiyomi.domain.track.service.TrackPreferences
-import javax.inject.Inject
 
 class TrackServices @Inject constructor(
   httpClients: HttpClients,

@@ -8,12 +8,12 @@
 
 package tachiyomi.domain.track.interactor
 
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.track.model.Track
 import tachiyomi.domain.track.model.TrackSearchResult
 import tachiyomi.domain.track.service.TrackRepository
 import tachiyomi.domain.track.sites.TrackSite
-import javax.inject.Inject
 
 class BindTrack @Inject internal constructor(
   private val trackRepository: TrackRepository
