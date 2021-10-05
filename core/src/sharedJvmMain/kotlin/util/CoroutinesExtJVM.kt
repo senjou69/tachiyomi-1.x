@@ -9,34 +9,37 @@
 package tachiyomi.core.util
 
 import kotlinx.coroutines.CompletionHandler
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.SendChannel
 import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.channels.actor as jvmActor
 
-expect fun <T> runBlocking(
-  context: CoroutineContext = EmptyCoroutineContext,
+@Suppress("EXTENSION_SHADOWED_BY_MEMBER")
+actual val Dispatchers.IO
+  get() = IO
+
+actual fun <T> runBlocking(
+  context: CoroutineContext,
   block: suspend CoroutineScope.() -> T
-): T
-
-expect val Dispatchers.IO: CoroutineDispatcher
-
-/**
- * TODO(inorichi): this is temporary until actors are implemented in multiplatform:
- *   https://github.com/Kotlin/kotlinx.coroutines/issues/1851
- */
-expect class ActorScope<E> {
-  val channel: Channel<E>
+): T {
+  return kotlinx.coroutines.runBlocking(context, block)
 }
 
-expect fun <E> CoroutineScope.actor(
+actual class ActorScope<E>(private val actorScope: kotlinx.coroutines.channels.ActorScope<E>) {
+  actual val channel
+    get() = actorScope.channel
+}
+
+actual fun <E> CoroutineScope.actor(
   context: CoroutineContext,
-  capacity: Int = 0,
-  start: CoroutineStart = CoroutineStart.DEFAULT,
-  onCompletion: CompletionHandler? = null,
+  capacity: Int,
+  start: CoroutineStart,
+  onCompletion: CompletionHandler?,
   block: suspend ActorScope<E>.() -> Unit
-): SendChannel<E>
+): SendChannel<E> {
+  return jvmActor(context, capacity, start, onCompletion) {
+    block(ActorScope(this))
+  }
+}

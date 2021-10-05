@@ -14,33 +14,8 @@ import okio.BufferedSink
 import okio.BufferedSource
 import okio.FileSystem
 import okio.Path
-import okio.Source
 import okio.buffer
 import okio.gzip
-import okio.sink
-import java.io.File
-
-@Suppress("BlockingMethodInNonBlockingContext")
-suspend fun Source.saveTo(file: File) {
-  withContext(Dispatchers.IO) {
-    use { source ->
-      file.sink().buffer().use { it.writeAll(source) }
-    }
-  }
-}
-
-@Suppress("BlockingMethodInNonBlockingContext")
-suspend fun Source.copyTo(sink: BufferedSink) {
-  withContext(Dispatchers.IO) {
-    use { source ->
-      sink.use { it.writeAll(source) }
-    }
-  }
-}
-
-actual fun Path.setLastModified(epoch: Long) {
-  toFile().setLastModified(epoch)
-}
 
 @Suppress("BlockingMethodInNonBlockingContext")
 actual suspend fun FileSystem.withAsyncSink(path: Path, block: (BufferedSink) -> Unit) {

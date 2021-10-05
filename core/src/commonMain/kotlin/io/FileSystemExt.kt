@@ -13,8 +13,6 @@ import okio.BufferedSource
 import okio.FileSystem
 import okio.Path
 
-expect fun Path.setLastModified(epoch: Long)
-
 expect suspend fun FileSystem.withAsyncSink(path: Path, block: (BufferedSink) -> Unit)
 
 expect suspend fun FileSystem.withAsyncGzipSink(path: Path, block: (BufferedSink) -> Unit)
