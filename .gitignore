@@ -3,6 +3,7 @@
 /local.properties
 /.idea/*
 !/.idea/codeStyleSettings.xml
+!/.idea/codeStyles/
 !/.idea/inspectionProfiles/
 !/.idea/fileTemplates/
 .DS_Store
