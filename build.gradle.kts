@@ -52,6 +52,7 @@ subprojects {
           optIn("kotlin.time.ExperimentalTime")
           optIn("kotlinx.coroutines.FlowPreview")
           optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+          optIn("kotlinx.coroutines.ObsoleteCoroutinesApi")
           optIn("kotlinx.serialization.ExperimentalSerializationApi")
           optIn("androidx.compose.foundation.ExperimentalFoundationApi")
           optIn("okio.ExperimentalFileSystem")

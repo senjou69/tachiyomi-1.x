@@ -23,6 +23,7 @@ actual fun <T> runBlocking(
   return kotlinx.coroutines.runBlocking(context, block)
 }
 
+@Suppress("EXTENSION_SHADOWED_BY_MEMBER")
 actual val Dispatchers.IO
   get() = IO
 

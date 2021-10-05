@@ -8,19 +8,14 @@
 
 package tachiyomi.core.http
 
-import app.cash.quickjs.QuickJs
-import javax.inject.Inject
-
 /**
- * A factory for creating instances of [QuickJS].
+ * A factory for creating [JS] instances.
  */
-class QuickJSFactory @Inject constructor() : JSFactory {
+expect class JSFactory {
 
   /**
-   * Returns a new instance of [QuickJS].
+   * Returns a new instance of [JS].
    */
-  override fun create(): JS {
-    return QuickJS(QuickJs.create())
-  }
+  fun create(): JS
 
 }

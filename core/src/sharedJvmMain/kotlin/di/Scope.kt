@@ -8,9 +8,10 @@
 
 package tachiyomi.core.di
 
-import toothpick.Scope
 import toothpick.Toothpick
 
-fun Scope.close() {
+actual typealias Scope = toothpick.Scope
+
+actual fun Scope.close() {
   Toothpick.closeScope(name)
 }

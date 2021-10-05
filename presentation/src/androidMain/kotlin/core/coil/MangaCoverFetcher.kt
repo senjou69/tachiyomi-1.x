@@ -26,7 +26,7 @@ import okhttp3.Request
 import okio.buffer
 import okio.source
 import tachiyomi.core.http.okhttp
-import tachiyomi.core.http.saveTo
+import tachiyomi.core.io.saveTo
 import tachiyomi.domain.catalog.interactor.GetLocalCatalog
 import tachiyomi.domain.library.service.LibraryCovers
 import tachiyomi.source.HttpSource
@@ -100,7 +100,7 @@ internal class LibraryMangaFetcher(
       if (!file.exists() || file.length() != body.contentLength()) {
         val tmpFile = File(file.absolutePath + ".tmp")
         try {
-          body.saveTo(tmpFile)
+          body.source().saveTo(tmpFile)
           tmpFile.renameTo(file)
         } finally {
           tmpFile.delete()

@@ -91,7 +91,8 @@ object Deps {
 
   const val okio = "com.squareup.okio:okio:3.0.0-alpha.10"
   const val okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
-  const val quickjs = "app.cash.quickjs:quickjs-android:0.9.1"
+  const val quickjsAndroid = "app.cash.quickjs:quickjs-android:0.9.2"
+  const val quickjsJvm = "app.cash.quickjs:quickjs-jvm:0.9.2"
   const val jsoup = "org.jsoup:jsoup:1.14.2"
 
   object tinylog {

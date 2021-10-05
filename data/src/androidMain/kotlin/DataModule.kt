@@ -13,7 +13,6 @@ import com.squareup.sqldelight.db.SqlDriver
 import okio.FileSystem
 import okio.Path.Companion.toOkioPath
 import tachiyomi.core.db.Transactions
-import tachiyomi.core.di.GenericsProvider
 import tachiyomi.core.prefs.AndroidPreferenceStore
 import tachiyomi.data.catalog.AndroidCatalogInstallationChanges
 import tachiyomi.data.catalog.AndroidCatalogInstaller
@@ -100,8 +99,7 @@ fun DataModule(context: Application) = module {
   bind<CatalogLoader>().toClass<AndroidCatalogLoader>().singleton()
 
   bind<AndroidCatalogInstallationChanges>().singleton()
-  bind<CatalogInstallationChanges>()
-    .toProviderInstance(GenericsProvider(AndroidCatalogInstallationChanges::class.java))
+  bind<CatalogInstallationChanges>().toClass<AndroidCatalogInstallationChanges>().singleton()
 
   bind<DownloadRepository>().toClass<DownloadRepositoryImpl>().singleton()
   bind<DownloadPreferences>()

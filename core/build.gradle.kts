@@ -25,6 +25,9 @@ kotlin {
     }
     named("jvmMain") {
       kotlin.srcDir("src/sharedJvmMain/kotlin")
+      dependencies {
+        implementation(Deps.quickjsJvm)
+      }
     }
     named("androidMain") {
       kotlin.srcDir("src/sharedAndroidMain/kotlin")
@@ -32,7 +35,7 @@ kotlin {
         implementation(Deps.androidx.core)
         implementation(Deps.androidx.lifecycle.process)
         implementation(Deps.androidx.dataStore)
-        implementation(Deps.quickjs)
+        implementation(Deps.quickjsAndroid)
       }
     }
     listOf("jvmMain", "androidMain").forEach { name ->

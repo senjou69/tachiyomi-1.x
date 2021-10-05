@@ -8,11 +8,12 @@
 
 package tachiyomi.core.di
 
-import toothpick.config.Module
+/**
+ * A child scope of [AppScope] which can be injected another modules and is usually short-lived.
+ */
+expect interface Scope
 
 /**
- * Binds the given [instance] to its class.
+ * Closes this scope.
  */
-inline fun <reified B> Module.bindInstance(instance: B) {
-  bind(B::class.java).toInstance(instance)
-}
+expect fun Scope.close()

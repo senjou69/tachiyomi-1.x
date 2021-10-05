@@ -8,49 +8,39 @@
 
 package tachiyomi.core.http
 
-import app.cash.quickjs.QuickJs
+import okio.Closeable
 
 /**
- * An implementation of [JS] to execute JavaScript code backed by the quickjs library.
+ * A wrapper to allow executing JavaScript code without knowing the implementation details.
  */
-class QuickJS(private val engine: QuickJs) : JS {
+expect class JS : Closeable {
 
   /**
    * Evaluates the given JavaScript [script] and returns its result as [String] or throws an
    * exception.
    */
-  override fun evaluateAsString(script: String): String {
-    return engine.evaluate(script) as String
-  }
+  fun evaluateAsString(script: String): String
 
   /**
    * Evaluates the given JavaScript [script] and returns its result as [Int] or throws an exception.
    */
-  override fun evaluateAsInt(script: String): Int {
-    return engine.evaluate(script) as Int
-  }
+  fun evaluateAsInt(script: String): Int
 
   /**
    * Evaluates the given JavaScript [script] and returns its result as [Double] or throws an
    * exception.
    */
-  override fun evaluateAsDouble(script: String): Double {
-    return engine.evaluate(script) as Double
-  }
+  fun evaluateAsDouble(script: String): Double
 
   /**
    * Evaluates the given JavaScript [script] and returns its result as [Boolean] or throws an
    * exception.
    */
-  override fun evaluateAsBoolean(script: String): Boolean {
-    return engine.evaluate(script) as Boolean
-  }
+  fun evaluateAsBoolean(script: String): Boolean
 
   /**
    * Closes this instance. No evaluations can be made on this instance after calling this method.
    */
-  override fun close() {
-    engine.close()
-  }
+  override fun close()
 
 }
