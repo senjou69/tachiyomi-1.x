@@ -17,7 +17,7 @@ buildscript {
 
 plugins {
   id("com.github.ben-manes.versions") version "0.39.0"
-  id("org.jetbrains.gradle.plugin.idea-ext") version "1.0.1"
+  id("org.jetbrains.gradle.plugin.idea-ext") version "1.1"
 }
 
 allprojects {
