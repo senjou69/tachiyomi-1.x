@@ -9,5 +9,3 @@
 package tachiyomi.core.di
 
 actual typealias Inject = javax.inject.Inject
-
-actual typealias Singleton = javax.inject.Singleton

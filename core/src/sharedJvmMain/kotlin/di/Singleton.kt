@@ -8,6 +8,4 @@
 
 package tachiyomi.core.di
 
-expect annotation class Inject()
-
-expect annotation class Singleton()
+actual typealias Singleton = javax.inject.Singleton

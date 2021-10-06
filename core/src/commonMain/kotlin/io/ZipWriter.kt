@@ -19,6 +19,6 @@ expect fun FileSystem.createZip(
 )
 
 expect class ZipWriterScope {
-  fun addEntry(destination: String, source: Source)
+  fun addFile(destination: String, source: Source)
   fun addDirectory(destination: String)
 }

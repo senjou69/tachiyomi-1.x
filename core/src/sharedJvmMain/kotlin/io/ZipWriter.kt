@@ -40,7 +40,7 @@ actual class ZipWriterScope(
   private val stream: ZipOutputStream
 ) {
 
-  actual fun addEntry(destination: String, source: Source) {
+  actual fun addFile(destination: String, source: Source) {
     val entry = ZipEntry(destination)
     stream.putNextEntry(entry)
     source.buffer().use { bufferedSource ->

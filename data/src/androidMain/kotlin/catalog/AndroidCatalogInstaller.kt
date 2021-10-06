@@ -14,7 +14,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.utils.io.ByteReadChannel
 import kotlinx.coroutines.flow.flow
 import tachiyomi.core.http.HttpClients
-import tachiyomi.core.http.saveTo
+import tachiyomi.core.io.saveTo
 import tachiyomi.core.log.Log
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep.*

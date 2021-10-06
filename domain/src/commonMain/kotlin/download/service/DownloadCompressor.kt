@@ -48,7 +48,7 @@ internal class DownloadCompressor @Inject constructor(
 
     fileSystem.createZip(tmpZip, false) {
       for (path in files) {
-        addEntry(path.name, fileSystem.source(path))
+        addFile(path.name, fileSystem.source(path))
       }
     }
   }
