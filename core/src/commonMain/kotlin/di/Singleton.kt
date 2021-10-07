@@ -8,4 +8,5 @@
 
 package tachiyomi.core.di
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect annotation class Singleton()

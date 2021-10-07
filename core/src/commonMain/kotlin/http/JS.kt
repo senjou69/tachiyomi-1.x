@@ -13,6 +13,7 @@ import okio.Closeable
 /**
  * A wrapper to allow executing JavaScript code without knowing the implementation details.
  */
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect class JS : Closeable {
 
   /**

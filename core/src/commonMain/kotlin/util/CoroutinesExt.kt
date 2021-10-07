@@ -18,8 +18,10 @@ import kotlinx.coroutines.channels.SendChannel
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect val Dispatchers.IO: CoroutineDispatcher
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect fun <T> runBlocking(
   context: CoroutineContext = EmptyCoroutineContext,
   block: suspend CoroutineScope.() -> T
@@ -29,10 +31,12 @@ expect fun <T> runBlocking(
  * TODO(inorichi): this is temporary until actors are implemented in multiplatform:
  *   https://github.com/Kotlin/kotlinx.coroutines/issues/1851
  */
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect class ActorScope<E> {
   val channel: Channel<E>
 }
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect fun <E> CoroutineScope.actor(
   context: CoroutineContext,
   capacity: Int = 0,

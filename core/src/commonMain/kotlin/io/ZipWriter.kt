@@ -12,12 +12,14 @@ import okio.FileSystem
 import okio.Path
 import okio.Source
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect fun FileSystem.createZip(
   destination: Path,
   compress: Boolean,
   block: ZipWriterScope.() -> Unit
 )
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect class ZipWriterScope {
   fun addFile(destination: String, source: Source)
   fun addDirectory(destination: String)

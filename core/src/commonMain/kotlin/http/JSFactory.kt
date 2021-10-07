@@ -11,6 +11,7 @@ package tachiyomi.core.http
 /**
  * A factory for creating [JS] instances.
  */
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect class JSFactory {
 
   /**

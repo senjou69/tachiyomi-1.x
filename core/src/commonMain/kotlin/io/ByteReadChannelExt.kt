@@ -19,6 +19,7 @@ import tachiyomi.core.util.IO
 
 private const val BUFFER_SIZE = 8096
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect suspend fun ByteReadChannel.peek(bytes: Int, buffer: ByteArray = ByteArray(bytes)): ByteArray
 
 suspend fun ByteReadChannel.saveTo(path: Path, fileSystem: FileSystem) {

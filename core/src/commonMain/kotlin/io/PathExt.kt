@@ -16,4 +16,5 @@ val Path.nameWithoutExtension
 val Path.extension
   get() = name.substringAfterLast(".")
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect fun Path.setLastModified(epoch: Long)

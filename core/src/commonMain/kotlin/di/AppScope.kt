@@ -11,6 +11,7 @@ package tachiyomi.core.di
 /**
  * The global scope for dependency injection that will provide all the application level components.
  */
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect object AppScope {
 
   /**

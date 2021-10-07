@@ -13,10 +13,14 @@ import okio.BufferedSource
 import okio.FileSystem
 import okio.Path
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect suspend fun FileSystem.withAsyncSink(path: Path, block: (BufferedSink) -> Unit)
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect suspend fun FileSystem.withAsyncGzipSink(path: Path, block: (BufferedSink) -> Unit)
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect suspend fun <T> FileSystem.withAsyncSource(path: Path, block: (BufferedSource) -> T): T
 
+@Suppress("NO_ACTUAL_FOR_EXPECT")
 expect suspend fun <T> FileSystem.withAsyncGzipSource(path: Path, block: (BufferedSource) -> T): T
