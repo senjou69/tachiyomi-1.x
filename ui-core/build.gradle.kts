@@ -20,13 +20,11 @@ kotlin {
       }
     }
     named("jvmMain") {
-      kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
         api(compose.desktop.currentOs)
       }
     }
     named("androidMain") {
-      kotlin.srcDir("src/sharedAndroidMain/kotlin")
       dependencies {
         implementation(Deps.androidx.emoji)
         implementation(Deps.toothpick.runtime)
@@ -43,9 +41,7 @@ idea {
         arrayOf(
           "src/commonMain/kotlin",
           "src/jvmMain/kotlin",
-          "src/androidMain/kotlin",
-          "src/sharedJvmMain/kotlin",
-          "src/sharedAndroidMain/kotlin"
+          "src/androidMain/kotlin"
         ).forEach { put(it, "tachiyomi.ui.core") }
       }
     }

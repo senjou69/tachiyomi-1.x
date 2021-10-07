@@ -69,7 +69,6 @@ idea {
           "src/jvmMain/kotlin",
           "src/androidMain/kotlin",
           "src/sharedJvmMain/kotlin",
-          "src/sharedAndroidMain/kotlin",
           "src/jvmTest/kotlin"
         ).forEach { put(it, "tachiyomi.domain") }
       }

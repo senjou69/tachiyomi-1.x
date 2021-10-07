@@ -73,8 +73,7 @@ idea {
           "src/commonMain/kotlin",
           "src/jvmMain/kotlin",
           "src/androidMain/kotlin",
-          "src/sharedJvmMain/kotlin",
-          "src/sharedAndroidMain/kotlin"
+          "src/sharedJvmMain/kotlin"
         ).forEach { put(it, "tachiyomi.app") }
       }
     }

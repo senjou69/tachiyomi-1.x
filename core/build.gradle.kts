@@ -30,7 +30,7 @@ kotlin {
       }
     }
     named("androidMain") {
-      kotlin.srcDir("src/sharedAndroidMain/kotlin")
+      kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
         implementation(Deps.androidx.core)
         implementation(Deps.androidx.lifecycle.process)
@@ -91,7 +91,7 @@ publishing {
     maven {
       val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
       val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-      url = uri(if (packageVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+//      url = uri(if (packageVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
       credentials {
         username = System.getenv("SONATYPE_USER")
@@ -113,8 +113,7 @@ idea {
           "src/commonMain/kotlin",
           "src/jvmMain/kotlin",
           "src/androidMain/kotlin",
-          "src/sharedJvmMain/kotlin",
-          "src/sharedAndroidMain/kotlin"
+          "src/sharedJvmMain/kotlin"
         ).forEach { put(it, "tachiyomi.core") }
       }
     }

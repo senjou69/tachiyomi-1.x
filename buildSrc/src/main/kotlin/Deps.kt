@@ -3,7 +3,7 @@ object Deps {
 
   object kotlin {
     const val version = "1.5.31"
-    const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
+    const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-common:$version"
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.0"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
     const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
