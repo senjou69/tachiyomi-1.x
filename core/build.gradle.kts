@@ -91,7 +91,7 @@ publishing {
     maven {
       val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
       val snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-//      url = uri(if (packageVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
+      setUrl(if (packageVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
       credentials {
         username = System.getenv("SONATYPE_USER")
