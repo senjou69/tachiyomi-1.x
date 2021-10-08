@@ -21,7 +21,7 @@ kotlin {
   }
 }
 
-val packageVersion = "1.1"
+val packageVersion = "1.2-SNAPSHOT"
 
 publishing {
   publications {
