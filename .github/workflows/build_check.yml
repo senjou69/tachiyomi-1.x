@@ -26,9 +26,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-          server-id: ossrh
-          server-username: MAVEN_USERNAME
-          server-password: MAVEN_PASSWORD
 
       - name: Copy CI gradle.properties
         run: |
@@ -45,11 +42,3 @@ jobs:
 
       - name: Upload test coverage
         uses: codecov/codecov-action@v1
-
-      # If versions ends with -SNAPSHOT, the artifact will be deployed to the snapshots repository.
-      # If it doesn’t, it will be uploaded to the staging repository, which requires manual approval.
-      - name: Publish to the Maven Central Repository
-        run: mvn --batch-mode clean deploy -Pci-cd
-        env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
