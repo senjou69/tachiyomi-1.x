@@ -104,8 +104,8 @@ publishing {
       setUrl(if (packageVersion.endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl)
 
       credentials {
-        username = System.getenv("SONATYPE_USER")
-        password = System.getenv("SONATYPE_PASS")
+        username = System.getenv("MAVEN_USERNAME")
+        password = System.getenv("MAVEN_PASSWORD")
       }
     }
   }
