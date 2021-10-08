@@ -70,10 +70,10 @@ val packageVersion = "1.2-SNAPSHOT"
 publishing {
   publications.withType(MavenPublication::class) {
     groupId = "org.tachiyomi"
-    artifactId = "common"
+    artifactId = "core"
     version = packageVersion
     pom {
-      name.set("Tachiyomi Common")
+      name.set("Tachiyomi Core")
       description.set("Common classes for Tachiyomi.")
       url.set("https://github.com/tachiyomiorg/tachiyomi-1.x")
       licenses {
