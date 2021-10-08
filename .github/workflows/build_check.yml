@@ -45,9 +45,12 @@ jobs:
 
       - name: Publish packages to Maven Central
         run:  |
-          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
-          gpg --list-secret-keys --keyid-format LONG
-          gradle publish
+          echo "${{ secrets.OSSRH_GPG_SECRET_KEY }}" > ~/.gradle/signing.gpg
+          gradle publish \
+            -Psigning.keyId=${{ secrets.OSSRH_GPG_SECRET_KEY_ID }} \
+            -Psigning.password=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+            -Psigning.secretKeyRingFile=$(echo ~/.gradle/signing.gpg)
+          rm ~/.gradle/signing.gpg
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
