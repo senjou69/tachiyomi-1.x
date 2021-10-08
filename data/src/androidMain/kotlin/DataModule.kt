@@ -98,8 +98,9 @@ fun DataModule(context: Application) = module {
   bind<CatalogStore>().singleton()
   bind<CatalogLoader>().toClass<AndroidCatalogLoader>().singleton()
 
-  bind<AndroidCatalogInstallationChanges>().singleton()
-  bind<CatalogInstallationChanges>().toClass<AndroidCatalogInstallationChanges>().singleton()
+  val catalogInstallationChanges = AndroidCatalogInstallationChanges(context)
+  bind<CatalogInstallationChanges>().toInstance(catalogInstallationChanges)
+  bind<AndroidCatalogInstallationChanges>().toInstance(catalogInstallationChanges)
 
   bind<DownloadRepository>().toClass<DownloadRepositoryImpl>().singleton()
   bind<DownloadPreferences>()
