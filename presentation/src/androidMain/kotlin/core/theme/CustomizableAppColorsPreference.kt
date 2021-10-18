@@ -17,13 +17,16 @@ import tachiyomi.ui.core.prefs.PreferenceMutableState
 import tachiyomi.ui.core.prefs.asColor
 import tachiyomi.ui.core.prefs.asStateIn
 
-data class AppColorsPreference(
+/**
+ * The application colors that can be customized by the user (overriding the current theme colors).
+ */
+data class CustomizableAppColorsPreference(
   val primary: Preference<Color>,
   val secondary: Preference<Color>,
   val bars: Preference<Color>
 )
 
-class AppColorsPreferenceState(
+class CustomizableAppColorsPreferenceState(
   val primaryState: PreferenceMutableState<Color>,
   val secondaryState: PreferenceMutableState<Color>,
   val barsState: PreferenceMutableState<Color>
@@ -33,24 +36,24 @@ class AppColorsPreferenceState(
   val bars by barsState
 }
 
-fun UiPreferences.getLightColors(): AppColorsPreference {
-  return AppColorsPreference(
+fun UiPreferences.getLightColors(): CustomizableAppColorsPreference {
+  return CustomizableAppColorsPreference(
     colorPrimaryLight().asColor(),
     colorSecondaryLight().asColor(),
     colorBarsLight().asColor()
   )
 }
 
-fun UiPreferences.getDarkColors(): AppColorsPreference {
-  return AppColorsPreference(
+fun UiPreferences.getDarkColors(): CustomizableAppColorsPreference {
+  return CustomizableAppColorsPreference(
     colorPrimaryDark().asColor(),
     colorSecondaryDark().asColor(),
     colorBarsDark().asColor()
   )
 }
 
-fun AppColorsPreference.asState(scope: CoroutineScope): AppColorsPreferenceState {
-  return AppColorsPreferenceState(
+fun CustomizableAppColorsPreference.asState(scope: CoroutineScope): CustomizableAppColorsPreferenceState {
+  return CustomizableAppColorsPreferenceState(
     primary.asStateIn(scope),
     secondary.asStateIn(scope),
     bars.asStateIn(scope)

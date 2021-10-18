@@ -43,7 +43,7 @@ import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.ChoicePreference
 import tachiyomi.ui.core.prefs.ColorPreference
 import tachiyomi.ui.core.theme.AppColors
-import tachiyomi.ui.core.theme.AppColorsPreferenceState
+import tachiyomi.ui.core.theme.CustomizableAppColorsPreferenceState
 import tachiyomi.ui.core.theme.Theme
 import tachiyomi.ui.core.theme.asState
 import tachiyomi.ui.core.theme.getDarkColors
@@ -64,7 +64,7 @@ class ThemesViewModel @Inject constructor(
   val darkColors = uiPreferences.getDarkColors().asState(scope)
 
   @Composable
-  fun getActiveColors(): AppColorsPreferenceState {
+  fun getCustomizedColors(): CustomizableAppColorsPreferenceState {
     return if (MaterialTheme.colors.isLight) lightColors else darkColors
   }
 }
@@ -75,7 +75,7 @@ fun SettingsAppearance(
 ) {
   val vm = viewModel<ThemesViewModel>()
 
-  val activeColors = vm.getActiveColors()
+  val customizedColors = vm.getCustomizedColors()
   val isLight = MaterialTheme.colors.isLight
   val themesForCurrentMode = remember(isLight) {
     themes.filter { it.materialColors.isLight == isLight }
@@ -109,16 +109,16 @@ fun SettingsAppearance(
           items(themesForCurrentMode) { theme ->
             ThemeItem(theme, onClick = {
               (if (isLight) vm.lightTheme else vm.darkTheme).value = it.id
-              activeColors.primaryState.value = it.materialColors.primary
-              activeColors.secondaryState.value = it.materialColors.secondary
-              activeColors.barsState.value = it.extraColors.bars
+              customizedColors.primaryState.value = it.materialColors.primary
+              customizedColors.secondaryState.value = it.materialColors.secondary
+              customizedColors.barsState.value = it.extraColors.bars
             })
           }
         }
       }
       item {
         ColorPreference(
-          preference = activeColors.primaryState,
+          preference = customizedColors.primaryState,
           title = "Color primary",
           subtitle = "Displayed most frequently across your app",
           customText = localize(MR.strings.color_picker_custom),
@@ -129,7 +129,7 @@ fun SettingsAppearance(
       }
       item {
         ColorPreference(
-          preference = activeColors.secondaryState,
+          preference = customizedColors.secondaryState,
           title = "Color secondary",
           subtitle = "Accents select parts of the UI",
           customText = localize(MR.strings.color_picker_custom),
@@ -140,7 +140,7 @@ fun SettingsAppearance(
       }
       item {
         ColorPreference(
-          preference = activeColors.barsState,
+          preference = customizedColors.barsState,
           title = "Toolbar color",
           customText = localize(MR.strings.color_picker_custom),
           presetsText = localize(MR.strings.color_picker_presets),

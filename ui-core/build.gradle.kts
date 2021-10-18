@@ -26,9 +26,10 @@ kotlin {
     }
     named("androidMain") {
       dependencies {
-        implementation(Deps.androidx.emoji)
         implementation(Deps.toothpick.runtime)
+        implementation(Deps.androidx.emoji)
         implementation(Deps.androidx.lifecycle.viewModel)
+        implementation(Deps.accompanist.insets)
       }
     }
   }

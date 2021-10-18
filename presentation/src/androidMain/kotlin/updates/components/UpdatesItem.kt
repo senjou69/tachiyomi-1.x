@@ -35,7 +35,7 @@ import tachiyomi.ui.core.components.MangaListItemColumn
 import tachiyomi.ui.core.components.MangaListItemImage
 import tachiyomi.ui.core.components.MangaListItemSubtitle
 import tachiyomi.ui.core.components.MangaListItemTitle
-import tachiyomi.ui.core.components.selectedBackground
+import tachiyomi.ui.core.modifiers.selectedBackground
 import tachiyomi.domain.updates.model.UpdatesManga as Manga
 
 @Composable

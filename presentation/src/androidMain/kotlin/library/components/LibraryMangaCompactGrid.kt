@@ -39,7 +39,7 @@ import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.ui.core.coil.rememberMangaCover
-import tachiyomi.ui.core.components.selectedBackground
+import tachiyomi.ui.core.modifiers.selectedBackground
 import tachiyomi.ui.core.util.Typefaces
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -8,16 +8,25 @@
 
 package tachiyomi.ui
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.core.theme.AppColors
+import tachiyomi.ui.core.theme.themes
 
 @Composable
 fun MainApp() {
-  MaterialTheme {
-    TopAppBar(
-      title = { Text("Tachiyomi") }
-    )
+  val theme = themes.last()
+  AppColors(theme.materialColors, theme.extraColors) {
+    Surface {
+      Toolbar(
+        title = { Text("Tachiyomi") }
+      )
+      Box(Modifier.fillMaxSize())
+    }
   }
 }

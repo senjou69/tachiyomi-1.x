@@ -17,7 +17,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 
 /**
  * TODO: not sure if this is the best approach. Maybe we should try to expose the AppTheme viewmodel
- * instead and call a method there
+ *   instead and call a method there
  */
 @Composable
 fun TransparentStatusBar(content: @Composable () -> Unit) {
