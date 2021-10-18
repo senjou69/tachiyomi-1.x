@@ -15,6 +15,7 @@ kotlin {
       dependencies {
         implementation(project(Module.core))
         implementation(project(Module.uiCore))
+        implementation(project(Module.domain))
         implementation(project(Module.data))
         implementation(project(Module.presentation))
       }
@@ -34,7 +35,6 @@ kotlin {
     listOf("jvmMain", "androidMain").forEach {
       getByName(it) {
         dependencies {
-          implementation(project(Module.domain))
           implementation(Deps.toothpick.runtime)
           implementation(Deps.tinylog.impl)
         }

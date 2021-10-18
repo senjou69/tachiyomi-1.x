@@ -42,8 +42,8 @@ import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.ChoicePreference
 import tachiyomi.ui.core.prefs.ColorPreference
+import tachiyomi.ui.core.theme.AppColors
 import tachiyomi.ui.core.theme.AppColorsPreferenceState
-import tachiyomi.ui.core.theme.CustomColors
 import tachiyomi.ui.core.theme.Theme
 import tachiyomi.ui.core.theme.asState
 import tachiyomi.ui.core.theme.getDarkColors
@@ -78,7 +78,7 @@ fun SettingsAppearance(
   val activeColors = vm.getActiveColors()
   val isLight = MaterialTheme.colors.isLight
   val themesForCurrentMode = remember(isLight) {
-    themes.filter { it.colors.isLight == isLight }
+    themes.filter { it.materialColors.isLight == isLight }
   }
 
   Column {
@@ -109,9 +109,9 @@ fun SettingsAppearance(
           items(themesForCurrentMode) { theme ->
             ThemeItem(theme, onClick = {
               (if (isLight) vm.lightTheme else vm.darkTheme).value = it.id
-              activeColors.primaryState.value = it.colors.primary
-              activeColors.secondaryState.value = it.colors.secondary
-              activeColors.barsState.value = it.customColors.bars
+              activeColors.primaryState.value = it.materialColors.primary
+              activeColors.secondaryState.value = it.materialColors.secondary
+              activeColors.barsState.value = it.extraColors.bars
             })
           }
         }
@@ -145,7 +145,7 @@ fun SettingsAppearance(
           customText = localize(MR.strings.color_picker_custom),
           presetsText = localize(MR.strings.color_picker_presets),
           selectText = localize(MR.strings.action_select),
-          unsetColor = CustomColors.current.bars
+          unsetColor = AppColors.current.bars
         )
       }
     }
@@ -158,13 +158,13 @@ private fun ThemeItem(
   onClick: (Theme) -> Unit
 ) {
   val borders = MaterialTheme.shapes.small
-  val borderColor = if (theme.colors.isLight) {
+  val borderColor = if (theme.materialColors.isLight) {
     Color.Black.copy(alpha = 0.25f)
   } else {
     Color.White.copy(alpha = 0.15f)
   }
   Surface(
-    elevation = 4.dp, color = theme.colors.background, shape = borders,
+    elevation = 4.dp, color = theme.materialColors.background, shape = borders,
     modifier = Modifier
       .size(100.dp, 160.dp)
       .padding(8.dp)
@@ -174,7 +174,7 @@ private fun ThemeItem(
     Column {
       Toolbar(
         modifier = Modifier.requiredHeight(24.dp), title = {},
-        backgroundColor = theme.customColors.bars
+        backgroundColor = theme.extraColors.bars
       )
       Box(
         Modifier
@@ -192,7 +192,7 @@ private fun ThemeItem(
             .size(40.dp, 20.dp),
           content = {},
           colors = ButtonDefaults.buttonColors(
-            disabledBackgroundColor = theme.colors.primary
+            disabledBackgroundColor = theme.materialColors.primary
           )
         )
         Surface(
@@ -200,12 +200,12 @@ private fun ThemeItem(
             .size(24.dp)
             .align(Alignment.BottomEnd),
           shape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50)),
-          color = theme.colors.secondary,
+          color = theme.materialColors.secondary,
           elevation = 6.dp,
           content = { }
         )
       }
-      BottomAppBar(Modifier.requiredHeight(24.dp), backgroundColor = theme.customColors.bars) {
+      BottomAppBar(Modifier.requiredHeight(24.dp), backgroundColor = theme.extraColors.bars) {
       }
     }
   }

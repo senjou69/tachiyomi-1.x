@@ -31,7 +31,7 @@ import androidx.compose.material.icons.twotone.FileDownload
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import tachiyomi.ui.core.theme.CustomColors
+import tachiyomi.ui.core.theme.AppColors
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -56,8 +56,8 @@ fun LibrarySelectionBar(
         .padding(bottom = 32.dp)
         .fillMaxWidth(),
       shape = MaterialTheme.shapes.medium,
-      color = CustomColors.current.bars,
-      contentColor = CustomColors.current.onBars,
+      color = AppColors.current.bars,
+      contentColor = AppColors.current.onBars,
       elevation = 4.dp
     ) {
       Row(

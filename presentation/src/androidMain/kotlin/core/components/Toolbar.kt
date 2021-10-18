@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.statusBarsPadding
-import tachiyomi.ui.core.theme.CustomColors
+import tachiyomi.ui.core.theme.AppColors
 
 @Composable
 fun Toolbar(
@@ -28,8 +28,8 @@ fun Toolbar(
   modifier: Modifier = Modifier,
   navigationIcon: @Composable (() -> Unit)? = null,
   actions: @Composable RowScope.() -> Unit = {},
-  backgroundColor: Color = CustomColors.current.bars,
-  contentColor: Color = CustomColors.current.onBars,
+  backgroundColor: Color = AppColors.current.bars,
+  contentColor: Color = AppColors.current.onBars,
   elevation: Dp = AppBarDefaults.TopAppBarElevation,
   applyInsets: Boolean = true
 ) {

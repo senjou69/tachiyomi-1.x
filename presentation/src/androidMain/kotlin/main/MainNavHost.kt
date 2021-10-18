@@ -44,7 +44,7 @@ import dev.icerock.moko.resources.StringResource
 import tachiyomi.domain.ui.model.StartScreen
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
-import tachiyomi.ui.core.theme.CustomColors
+import tachiyomi.ui.core.theme.AppColors
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -53,7 +53,6 @@ fun MainNavHost(startScreen: StartScreen) {
   val navController = rememberAnimatedNavController()
   val currentScreen by navController.currentBackStackEntryAsState()
   val currentRoute = currentScreen?.destination?.route
-  val customColors = CustomColors.current
 
   val (requestedHideBottomNav, requestHideBottomNav) = remember { mutableStateOf(false) }
 
@@ -65,7 +64,7 @@ fun MainNavHost(startScreen: StartScreen) {
 
   Scaffold(
     modifier = Modifier
-      .background(customColors.bars)
+      .background(AppColors.current.bars)
       .navigationBarsPadding(),
     content = {
       Box {
@@ -84,8 +83,8 @@ fun MainNavHost(startScreen: StartScreen) {
         exit = slideOutVertically(targetOffsetY = { it })
       ) {
         BottomNavigation(
-          backgroundColor = CustomColors.current.bars,
-          contentColor = CustomColors.current.onBars,
+          backgroundColor = AppColors.current.bars,
+          contentColor = AppColors.current.onBars,
         ) {
           TopLevelRoutes.values.forEach {
             val isSelected = currentRoute?.startsWith(it.screen.route) ?: false

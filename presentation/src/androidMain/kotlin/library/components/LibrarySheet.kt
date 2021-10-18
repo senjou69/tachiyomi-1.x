@@ -60,7 +60,7 @@ import tachiyomi.domain.library.model.LibrarySort
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.ChoiceChip
-import tachiyomi.ui.core.theme.CustomColors
+import tachiyomi.ui.core.theme.AppColors
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.library.LibrarySheetViewModel
 import kotlin.math.round
@@ -84,8 +84,8 @@ fun LibrarySheet(
   TabRow(
     modifier = Modifier.requiredHeight(48.dp),
     selectedTabIndex = currentPage,
-    backgroundColor = CustomColors.current.bars,
-    contentColor = CustomColors.current.onBars,
+    backgroundColor = AppColors.current.bars,
+    contentColor = AppColors.current.onBars,
     indicator = { TabRowDefaults.Indicator(Modifier.pagerTabIndicatorOffset(pagerState, it)) }
   ) {
     listOf("Filter", "Sort", "Display").forEachIndexed { i, title ->

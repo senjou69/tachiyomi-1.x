@@ -24,7 +24,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import tachiyomi.domain.library.model.CategoryWithCount
 import tachiyomi.ui.categories.visibleName
-import tachiyomi.ui.core.theme.CustomColors
+import tachiyomi.ui.core.theme.AppColors
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
@@ -42,8 +42,8 @@ fun LibraryTabs(
   ) {
     ScrollableTabRow(
       selectedTabIndex = state.currentPage,
-      backgroundColor = CustomColors.current.bars,
-      contentColor = CustomColors.current.onBars,
+      backgroundColor = AppColors.current.bars,
+      contentColor = AppColors.current.onBars,
       edgePadding = 0.dp,
       indicator = { TabRowDefaults.Indicator(Modifier.pagerTabIndicatorOffset(state, it)) }
     ) {

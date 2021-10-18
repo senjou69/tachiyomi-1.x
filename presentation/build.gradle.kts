@@ -16,6 +16,8 @@ kotlin {
       dependencies {
         implementation(project(Module.core))
         implementation(project(Module.uiCore))
+        implementation(project(Module.sourceApi))
+        implementation(project(Module.domain))
         compileOnly(compose.preview)
       }
     }
@@ -46,8 +48,6 @@ kotlin {
     listOf("jvmMain", "androidMain").forEach {
       getByName(it) {
         dependencies {
-          implementation(project(Module.sourceApi))
-          implementation(project(Module.domain))
           implementation(Deps.toothpick.runtime)
         }
         project.dependencies.apply {

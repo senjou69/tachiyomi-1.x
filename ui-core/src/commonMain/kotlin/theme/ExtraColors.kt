@@ -8,17 +8,20 @@
 
 package tachiyomi.ui.core.theme
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 
-class CustomColors(
+/**
+ * The extra colors of the application which are not included in [MaterialTheme.colors]. An instance
+ * of this class can be retrieved through the composition local [AppColors.current].
+ */
+@Stable
+class ExtraColors(
   bars: Color = Color.Unspecified,
   onBars: Color = Color.Unspecified,
   isBarLight: Boolean = bars.luminance() > 0.5
@@ -30,19 +33,10 @@ class CustomColors(
   var isBarLight by mutableStateOf(isBarLight, structuralEqualityPolicy())
     private set
 
-  fun updateFrom(other: CustomColors) {
+  fun updateFrom(other: ExtraColors) {
     bars = other.bars
     onBars = other.onBars
     isBarLight = other.isBarLight
   }
 
-  companion object {
-    inline val current
-      @ReadOnlyComposable
-      @Composable
-      get() = LocalCustomColors.current
-  }
-
 }
-
-val LocalCustomColors = staticCompositionLocalOf { CustomColors() }

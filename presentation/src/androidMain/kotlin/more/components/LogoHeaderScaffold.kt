@@ -28,7 +28,7 @@ import tachiyomi.i18n.localize
 import tachiyomi.ui.R
 import tachiyomi.ui.core.components.NoElevationOverlay
 import tachiyomi.ui.core.components.Toolbar
-import tachiyomi.ui.core.theme.CustomColors
+import tachiyomi.ui.core.theme.AppColors
 
 @Composable
 fun LogoHeaderScaffold(
@@ -45,8 +45,8 @@ fun LogoHeaderScaffold(
     )
     CompositionLocalProvider(LocalElevationOverlay provides NoElevationOverlay) {
       Surface(
-        color = CustomColors.current.bars,
-        contentColor = CustomColors.current.onBars,
+        color = AppColors.current.bars,
+        contentColor = AppColors.current.onBars,
         modifier = Modifier
           .fillMaxWidth()
           // To ensure that the elevation shadow is drawn behind the Toolbar
