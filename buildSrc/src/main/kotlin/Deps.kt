@@ -23,18 +23,18 @@ object Deps {
   }
 
   object androidx {
-    const val core = "androidx.core:core-ktx:1.7.0-beta02"
+    const val core = "androidx.core:core-ktx:1.7.0-rc01"
     const val appCompat = "androidx.appcompat:appcompat:1.4.0-beta01"
-    const val browser = "androidx.browser:browser:1.4.0-beta01"
+    const val browser = "androidx.browser:browser:1.4.0-rc01"
     const val webkit = "androidx.webkit:webkit:1.4.0"
     const val sqlite = "androidx.sqlite:sqlite-ktx:2.2.0-alpha02"
     const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
     const val emoji = "androidx.emoji2:emoji2-views:1.0.0-beta01"
 
     object compose {
-      const val activity = "androidx.activity:activity-compose:1.4.0-beta01"
+      const val activity = "androidx.activity:activity-compose:1.4.0-rc01"
       const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha10"
-      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build385"
+      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build411"
     }
 
     object lifecycle {
@@ -45,13 +45,13 @@ object Deps {
     }
 
     object workManager {
-      private const val version = "2.7.0-rc01"
+      private const val version = "2.7.0"
       const val runtime = "androidx.work:work-runtime-ktx:$version"
     }
   }
 
   object accompanist {
-    private const val version = "0.19.0"
+    private const val version = "0.20.0"
     const val pager = "com.google.accompanist:accompanist-pager:$version"
     const val pagerIndicator = "com.google.accompanist:accompanist-pager-indicators:$version"
     const val flowlayout = "com.google.accompanist:accompanist-flowlayout:$version"
@@ -62,7 +62,7 @@ object Deps {
   }
 
   object sqldelight {
-    private const val version = "1.5.1"
+    private const val version = "1.5.2"
     const val runtime = "com.squareup.sqldelight:runtime:$version"
     const val coroutines = "com.squareup.sqldelight:coroutines-extensions:$version"
     const val jvm = "com.squareup.sqldelight:sqlite-driver:$version"
