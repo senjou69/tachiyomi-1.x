@@ -8,7 +8,6 @@
 
 package tachiyomi.ui.library.components
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
@@ -38,7 +37,6 @@ import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.modifiers.selectedBackground
 import tachiyomi.ui.core.util.Typefaces
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryMangaComfortableGrid(
   library: List<LibraryManga>,

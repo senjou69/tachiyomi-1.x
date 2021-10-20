@@ -8,7 +8,6 @@
 
 package tachiyomi.ui.browse.catalog
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -89,7 +88,6 @@ fun CatalogScreen(
   }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MangaTable(
   mangas: List<Manga>,
