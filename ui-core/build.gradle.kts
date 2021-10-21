@@ -23,6 +23,7 @@ kotlin {
       dependencies {
         implementation(Deps.androidx.emoji)
         implementation(Deps.androidx.lifecycle.viewModel)
+        implementation(Deps.androidx.compose.activity)
         implementation(Deps.accompanist.insets)
         implementation(Deps.coil.compose)
       }

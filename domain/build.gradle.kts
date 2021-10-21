@@ -21,9 +21,6 @@ kotlin {
         implementation(project(Module.sourceApi))
         implementation(Deps.kotlin.serialization.protobuf)
       }
-      project.dependencies {
-        add("kapt", Deps.toothpick.compiler)
-      }
     }
     named("jvmMain") {
     }
@@ -39,6 +36,10 @@ kotlin {
       }
     }
   }
+}
+
+dependencies {
+  add("kapt", Deps.toothpick.compiler)
 }
 
 val jacocoTestReport by tasks.creating(JacocoReport::class.java) {

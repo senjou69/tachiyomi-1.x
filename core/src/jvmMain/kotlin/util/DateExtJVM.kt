@@ -8,13 +8,13 @@
 
 package tachiyomi.core.util
 
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toJavaLocalDateTime
 
-// These should be removed when we have formatters in kotlin-datetime
+actual class DateTimeFormatter actual constructor(pattern: String) {
+  internal val jtFormatter = java.time.format.DateTimeFormatter.ofPattern(pattern)
+}
 
-expect fun LocalDate.asRelativeTimeString(): String
-
-expect class DateTimeFormatter(pattern: String)
-
-expect fun LocalDateTime.format(formatter: DateTimeFormatter): String
+actual fun LocalDateTime.format(formatter: DateTimeFormatter): String {
+  return toJavaLocalDateTime().format(formatter.jtFormatter)
+}
