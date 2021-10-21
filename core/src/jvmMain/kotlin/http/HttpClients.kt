@@ -9,7 +9,8 @@
 package tachiyomi.core.http
 
 import io.ktor.client.HttpClient
+import tachiyomi.core.di.Inject
 
-actual class HttpClients {
+actual class HttpClients @Inject constructor() {
   actual val default = HttpClient()
 }

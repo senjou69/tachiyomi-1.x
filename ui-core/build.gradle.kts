@@ -22,6 +22,7 @@ kotlin {
     named("jvmMain") {
       dependencies {
         api(compose.desktop.currentOs)
+        implementation(Deps.toothpick.runtime)
       }
     }
     named("androidMain") {
