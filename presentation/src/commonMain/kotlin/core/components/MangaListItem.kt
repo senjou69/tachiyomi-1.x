@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import coil.compose.rememberImagePainter
 import tachiyomi.ui.core.coil.MangaCover
+import tachiyomi.ui.core.coil.rememberImagePainter
 
 @Composable
 fun MangaListItem(
