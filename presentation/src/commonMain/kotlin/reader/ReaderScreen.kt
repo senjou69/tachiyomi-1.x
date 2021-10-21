@@ -10,10 +10,12 @@ package tachiyomi.ui.reader
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import tachiyomi.ui.core.modifiers.statusBarsPadding
 
 @Composable
 fun ReaderScreen(
   chapterId: Long
 ) {
-  Text("Chapter ID: $chapterId")
+  Text("Chapter ID: $chapterId", modifier = Modifier.statusBarsPadding())
 }
