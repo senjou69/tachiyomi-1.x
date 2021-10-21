@@ -6,14 +6,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.core.coil
+package tachiyomi.ui.core.image
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
-import coil.annotation.ExperimentalCoilApi
 
-@ExperimentalCoilApi
 @Composable
 actual fun <T> rememberImagePainter(data: T): Painter {
-  return coil.compose.rememberImagePainter(data)
+  // TODO(inorichi): find out a way to draw images on JVM
+  return ColorPainter(Color.Black)
 }

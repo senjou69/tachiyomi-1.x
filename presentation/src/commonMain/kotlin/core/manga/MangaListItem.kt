@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.core.components
+package tachiyomi.ui.core.manga
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -21,8 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import tachiyomi.ui.core.coil.MangaCover
-import tachiyomi.ui.core.coil.rememberImagePainter
+import tachiyomi.ui.core.image.rememberImagePainter
 
 @Composable
 fun MangaListItem(

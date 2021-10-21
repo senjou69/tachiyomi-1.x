@@ -11,9 +11,9 @@ package tachiyomi.ui.deeplink
 import tachiyomi.core.log.Log
 import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.service.CatalogStore
-import tachiyomi.source.model.DeepLink
 import tachiyomi.source.DeepLinkSource
 import tachiyomi.source.Source
+import tachiyomi.source.model.DeepLink
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import javax.inject.Inject
 

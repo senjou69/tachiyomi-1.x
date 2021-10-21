@@ -28,12 +28,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
-import tachiyomi.ui.core.coil.rememberMangaCover
-import tachiyomi.ui.core.components.MangaListItem
-import tachiyomi.ui.core.components.MangaListItemColumn
-import tachiyomi.ui.core.components.MangaListItemImage
-import tachiyomi.ui.core.components.MangaListItemSubtitle
-import tachiyomi.ui.core.components.MangaListItemTitle
+import tachiyomi.ui.core.manga.MangaListItem
+import tachiyomi.ui.core.manga.MangaListItemColumn
+import tachiyomi.ui.core.manga.MangaListItemImage
+import tachiyomi.ui.core.manga.MangaListItemSubtitle
+import tachiyomi.ui.core.manga.MangaListItemTitle
+import tachiyomi.ui.core.manga.rememberMangaCover
 import tachiyomi.ui.core.modifiers.selectedBackground
 import tachiyomi.domain.updates.model.UpdatesManga as Manga
 

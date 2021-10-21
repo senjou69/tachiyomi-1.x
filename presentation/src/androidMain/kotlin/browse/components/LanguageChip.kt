@@ -26,9 +26,7 @@ import androidx.compose.ui.unit.dp
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 import tachiyomi.ui.browse.LanguageChoice
-import tachiyomi.ui.browse.LanguageChoice.All
-import tachiyomi.ui.browse.LanguageChoice.One
-import tachiyomi.ui.browse.LanguageChoice.Others
+import tachiyomi.ui.browse.LanguageChoice.*
 import tachiyomi.ui.core.components.EmojiText
 
 @Composable

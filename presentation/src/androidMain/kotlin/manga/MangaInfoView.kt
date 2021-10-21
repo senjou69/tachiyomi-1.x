@@ -63,9 +63,9 @@ import tachiyomi.domain.manga.model.Manga
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 import tachiyomi.source.Source
-import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.core.manga.rememberMangaCover
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

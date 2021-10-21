@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.core.coil
+package tachiyomi.ui.core.manga
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

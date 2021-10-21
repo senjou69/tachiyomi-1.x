@@ -40,11 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import tachiyomi.domain.manga.model.Manga
-import tachiyomi.ui.core.coil.MangaCover
-import tachiyomi.ui.core.coil.rememberMangaCover
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.LoadingScreen
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.core.manga.MangaCover
+import tachiyomi.ui.core.manga.rememberMangaCover
 import tachiyomi.ui.core.util.Typefaces
 import tachiyomi.ui.core.viewmodel.viewModel
 

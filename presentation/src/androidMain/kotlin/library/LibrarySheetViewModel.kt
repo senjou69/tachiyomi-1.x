@@ -12,9 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import tachiyomi.domain.library.model.DisplayMode
 import tachiyomi.domain.library.model.LibraryFilter
-import tachiyomi.domain.library.model.LibraryFilter.Value.Excluded
-import tachiyomi.domain.library.model.LibraryFilter.Value.Included
-import tachiyomi.domain.library.model.LibraryFilter.Value.Missing
+import tachiyomi.domain.library.model.LibraryFilter.Value.*
 import tachiyomi.domain.library.model.LibrarySort
 import tachiyomi.domain.library.service.LibraryPreferences
 import tachiyomi.ui.core.viewmodel.BaseViewModel

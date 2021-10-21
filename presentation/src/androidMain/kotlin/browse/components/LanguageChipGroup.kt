@@ -13,9 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import tachiyomi.ui.browse.LanguageChoice
-import tachiyomi.ui.browse.LanguageChoice.All
-import tachiyomi.ui.browse.LanguageChoice.One
-import tachiyomi.ui.browse.LanguageChoice.Others
+import tachiyomi.ui.browse.LanguageChoice.*
 
 @Composable
 fun LanguageChipGroup(

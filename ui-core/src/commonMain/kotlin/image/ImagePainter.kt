@@ -6,7 +6,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.core.coil
+package tachiyomi.ui.core.image
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter

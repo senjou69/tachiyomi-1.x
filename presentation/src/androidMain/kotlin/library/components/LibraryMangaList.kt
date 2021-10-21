@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.rememberInsetsPaddingValues
 import tachiyomi.domain.library.model.LibraryManga
-import tachiyomi.ui.core.coil.rememberMangaCover
-import tachiyomi.ui.core.components.MangaListItem
-import tachiyomi.ui.core.components.MangaListItemImage
-import tachiyomi.ui.core.components.MangaListItemTitle
+import tachiyomi.ui.core.manga.MangaListItem
+import tachiyomi.ui.core.manga.MangaListItemImage
+import tachiyomi.ui.core.manga.MangaListItemTitle
+import tachiyomi.ui.core.manga.rememberMangaCover
 import tachiyomi.ui.core.modifiers.selectedBackground
 
 @Composable

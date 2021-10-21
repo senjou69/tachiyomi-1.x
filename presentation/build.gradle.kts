@@ -24,7 +24,6 @@ kotlin {
     named("jvmMain") {
     }
     named("androidMain") {
-      kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
         implementation(Deps.androidx.browser)
         implementation(Deps.androidx.webkit)
