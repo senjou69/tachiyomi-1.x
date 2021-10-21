@@ -6,8 +6,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.core.modifiers
+package tachiyomi.ui.core.coil
 
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.painter.Painter
 
-expect fun Modifier.statusBarsPadding(): Modifier
+@Composable
+expect fun <T> rememberImagePainter(data: T): Painter

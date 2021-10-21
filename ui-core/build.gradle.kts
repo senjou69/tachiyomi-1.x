@@ -30,6 +30,7 @@ kotlin {
         implementation(Deps.androidx.emoji)
         implementation(Deps.androidx.lifecycle.viewModel)
         implementation(Deps.accompanist.insets)
+        implementation(Deps.coil.compose)
       }
     }
   }

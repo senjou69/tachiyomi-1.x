@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import tachiyomi.core.prefs.Preference
 import tachiyomi.ui.core.prefs.PreferenceMutableState
 
-expect abstract class BaseViewModel {
+expect abstract class BaseViewModel() {
 
   protected val scope: CoroutineScope
 
