@@ -6,8 +6,8 @@ plugins {
 }
 
 kotlin {
-  jvm()
   android()
+  jvm("desktop")
 
   sourceSets {
     named("commonMain") {
@@ -16,12 +16,12 @@ kotlin {
         api(Deps.moko.core)
       }
     }
-    named("jvmMain") {
-    }
     named("androidMain") {
       dependencies {
         compileOnly(compose.ui)
       }
+    }
+    named("desktopMain") {
     }
   }
 }

@@ -9,7 +9,7 @@ plugins {
 
 kotlin {
   android()
-  jvm()
+  jvm("desktop")
 
   sourceSets {
     named("commonMain") {
@@ -20,8 +20,6 @@ kotlin {
         implementation(project(Module.domain))
         compileOnly(compose.preview)
       }
-    }
-    named("jvmMain") {
     }
     named("androidMain") {
       dependencies {
@@ -44,17 +42,13 @@ kotlin {
         implementation(Deps.aboutLibraries.core)
       }
     }
-    listOf("jvmMain", "androidMain").forEach {
-      getByName(it) {
-        dependencies {
-          implementation(Deps.toothpick.runtime)
-        }
-        project.dependencies.apply {
-          add("kapt", Deps.toothpick.compiler)
-        }
-      }
+    named("desktopMain") {
     }
   }
+}
+
+dependencies {
+  add("kapt", Deps.toothpick.compiler)
 }
 
 idea {
@@ -63,9 +57,8 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         arrayOf(
           "src/commonMain/kotlin",
-          "src/jvmMain/kotlin",
           "src/androidMain/kotlin",
-          "src/sharedJvmMain/kotlin"
+          "src/desktopMain/kotlin"
         ).forEach { put(it, "tachiyomi.ui") }
       }
     }

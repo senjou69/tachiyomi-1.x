@@ -7,8 +7,8 @@ plugins {
 }
 
 kotlin {
-  jvm()
   android()
+  jvm("desktop")
 
   sourceSets {
     named("commonMain") {
@@ -20,30 +20,26 @@ kotlin {
         implementation(project(Module.presentation))
       }
     }
-    named("jvmMain") {
-    }
     named("androidMain") {
-      kotlin.srcDir("src/sharedJvmMain/kotlin")
       dependencies {
         implementation(Deps.androidx.core)
         implementation(Deps.androidx.emoji)
         implementation(Deps.androidx.appCompat)
         implementation(Deps.androidx.compose.activity)
         implementation(Deps.toothpick.smoothie)
+        implementation(Deps.tinylog.impl)
       }
     }
-    listOf("jvmMain", "androidMain").forEach {
-      getByName(it) {
-        dependencies {
-          implementation(Deps.toothpick.runtime)
-          implementation(Deps.tinylog.impl)
-        }
-        project.dependencies.apply {
-          add("kapt", Deps.toothpick.compiler)
-        }
+    named("desktopMain") {
+      dependencies {
+        implementation(Deps.tinylog.impl)
       }
     }
   }
+}
+
+dependencies {
+  add("kapt", Deps.toothpick.compiler)
 }
 
 android {
@@ -71,9 +67,8 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         arrayOf(
           "src/commonMain/kotlin",
-          "src/jvmMain/kotlin",
           "src/androidMain/kotlin",
-          "src/sharedJvmMain/kotlin"
+          "src/desktopMain/kotlin"
         ).forEach { put(it, "tachiyomi.app") }
       }
     }

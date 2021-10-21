@@ -26,14 +26,8 @@ kotlin {
       }
     }
     named("jvmMain") {
-      dependencies {
-        implementation(Deps.toothpick.runtime)
-      }
     }
     named("androidMain") {
-      dependencies {
-        implementation(Deps.toothpick.runtime)
-      }
     }
     named("jvmTest") {
       dependencies {
@@ -66,9 +60,6 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         arrayOf(
           "src/commonMain/kotlin",
-          "src/jvmMain/kotlin",
-          "src/androidMain/kotlin",
-          "src/sharedJvmMain/kotlin",
           "src/jvmTest/kotlin"
         ).forEach { put(it, "tachiyomi.domain") }
       }

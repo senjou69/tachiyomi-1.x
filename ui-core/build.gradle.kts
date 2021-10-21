@@ -6,8 +6,8 @@ plugins {
 }
 
 kotlin {
-  jvm()
   android()
+  jvm("desktop")
 
   sourceSets {
     named("commonMain") {
@@ -19,19 +19,17 @@ kotlin {
         compileOnly(compose.preview)
       }
     }
-    named("jvmMain") {
-      dependencies {
-        api(compose.desktop.currentOs)
-        implementation(Deps.toothpick.runtime)
-      }
-    }
     named("androidMain") {
       dependencies {
-        implementation(Deps.toothpick.runtime)
         implementation(Deps.androidx.emoji)
         implementation(Deps.androidx.lifecycle.viewModel)
         implementation(Deps.accompanist.insets)
         implementation(Deps.coil.compose)
+      }
+    }
+    named("desktopMain") {
+      dependencies {
+        api(compose.desktop.currentOs)
       }
     }
   }
@@ -43,8 +41,8 @@ idea {
       (this as ExtensionAware).configure<org.jetbrains.gradle.ext.PackagePrefixContainer> {
         arrayOf(
           "src/commonMain/kotlin",
-          "src/jvmMain/kotlin",
-          "src/androidMain/kotlin"
+          "src/androidMain/kotlin",
+          "src/desktopMain/kotlin"
         ).forEach { put(it, "tachiyomi.ui.core") }
       }
     }
