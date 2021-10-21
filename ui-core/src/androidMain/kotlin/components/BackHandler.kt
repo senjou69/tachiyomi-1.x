@@ -14,3 +14,8 @@ import androidx.compose.runtime.Composable
 actual fun BackHandler(enabled: Boolean, onBack: () -> Unit) {
   androidx.activity.compose.BackHandler(enabled, onBack)
 }
+
+@Composable
+actual fun BackHandler(onBack: () -> Unit) {
+  androidx.activity.compose.BackHandler(true, onBack)
+}
