@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
@@ -88,71 +87,4 @@ fun UpdatesItem(
       Icon(imageVector = Icons.Outlined.Download, contentDescription = "")
     }
   }
-}
-
-private val manga = Manga(
-  id = -1,
-  sourceId = -1,
-  key = "Key",
-  title = "Title",
-  cover = "",
-  favorite = true,
-  dateUpload = -1,
-  chapterId = -1,
-  name = "Name",
-  read = false,
-  number = 69f,
-  date = "2021-08-12"
-)
-
-@Preview(showBackground = true)
-@Composable
-fun UpdatesItemPreview() {
-  UpdatesItem(
-    manga = manga,
-    isSelected = false,
-    onClickItem = {},
-    onLongClickItem = {},
-    onClickCover = {},
-    onClickDownload = {}
-  )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UpdatesItemReadPreview() {
-  UpdatesItem(
-    manga = manga.copy(read = true),
-    isSelected = false,
-    onClickItem = {},
-    onLongClickItem = {},
-    onClickCover = {},
-    onClickDownload = {}
-  )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UpdatesItemSelectedPreview() {
-  UpdatesItem(
-    manga = manga,
-    isSelected = true,
-    onClickItem = {},
-    onLongClickItem = {},
-    onClickCover = {},
-    onClickDownload = {}
-  )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun UpdatesItemSelectedAndReadPreview() {
-  UpdatesItem(
-    manga = manga.copy(read = true),
-    isSelected = true,
-    onClickItem = {},
-    onLongClickItem = {},
-    onClickCover = {},
-    onClickDownload = {}
-  )
 }

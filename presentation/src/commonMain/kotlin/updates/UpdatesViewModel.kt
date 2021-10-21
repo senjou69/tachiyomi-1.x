@@ -11,9 +11,9 @@ package tachiyomi.ui.updates
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.updates.interactor.GetUpdatesGroupByDate
 import tachiyomi.ui.core.viewmodel.BaseViewModel
-import javax.inject.Inject
 import tachiyomi.domain.updates.model.UpdatesManga as Manga
 
 typealias UpdateMangaByDate = Map.Entry<LocalDate, List<Manga>>

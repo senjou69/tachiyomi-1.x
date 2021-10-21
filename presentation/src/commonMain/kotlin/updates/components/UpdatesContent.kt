@@ -17,9 +17,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
 import tachiyomi.ui.core.components.RelativeTimeText
+import tachiyomi.ui.core.modifiers.rememberNavigationBarsInsetsPaddingValues
 import tachiyomi.ui.updates.UpdatesState
 import tachiyomi.domain.updates.model.UpdatesManga as Manga
 
@@ -32,8 +31,7 @@ fun UpdatesContent(
   onClickDownload: (Manga) -> Unit
 ) {
   LazyColumn(
-    contentPadding = rememberInsetsPaddingValues(
-      insets = LocalWindowInsets.current.navigationBars,
+    contentPadding = rememberNavigationBarsInsetsPaddingValues(
       additionalBottom = 16.dp,
       additionalTop = 8.dp
     )
