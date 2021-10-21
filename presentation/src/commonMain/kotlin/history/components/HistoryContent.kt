@@ -17,10 +17,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.ui.core.components.RelativeTimeText
+import tachiyomi.ui.core.modifiers.rememberNavigationBarsInsetsPaddingValues
 import tachiyomi.ui.history.HistoryState
 
 @Composable
@@ -31,8 +30,7 @@ fun HistoryContent(
   onClickPlay: (HistoryWithRelations) -> Unit
 ) {
   LazyColumn(
-    contentPadding = rememberInsetsPaddingValues(
-      insets = LocalWindowInsets.current.navigationBars,
+    contentPadding = rememberNavigationBarsInsetsPaddingValues(
       additionalBottom = 16.dp,
       additionalTop = 8.dp
     )

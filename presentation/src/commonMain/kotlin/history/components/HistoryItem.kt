@@ -25,6 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import tachiyomi.core.util.DateTimeFormatter
+import tachiyomi.core.util.format
 import tachiyomi.domain.history.model.HistoryWithRelations
 import tachiyomi.ui.core.manga.MangaListItem
 import tachiyomi.ui.core.manga.MangaListItemColumn
@@ -32,10 +38,6 @@ import tachiyomi.ui.core.manga.MangaListItemImage
 import tachiyomi.ui.core.manga.MangaListItemSubtitle
 import tachiyomi.ui.core.manga.MangaListItemTitle
 import tachiyomi.ui.core.manga.rememberMangaCover
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun HistoryItem(
@@ -85,8 +87,8 @@ fun HistoryItem(
   }
 }
 
-private val formatter = DateTimeFormatter.ofPattern("HH:mm")
+private val formatter = DateTimeFormatter("HH:mm")
 
 private fun Long.toLocalDateTime(): LocalDateTime {
-  return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDateTime()
+  return Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.currentSystemDefault())
 }
