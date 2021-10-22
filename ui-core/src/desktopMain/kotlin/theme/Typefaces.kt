@@ -6,12 +6,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package tachiyomi.ui.core.util
+package tachiyomi.ui.core.theme
 
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import tachiyomi.ui.R
+import androidx.compose.ui.text.font.GenericFontFamily
 
-object Typefaces {
-  val ptSansFont = FontFamily(Font(R.font.ptsans_bold))
+actual object Typefaces {
+  @Suppress("INVISIBLE_MEMBER")
+  actual val condensed: FontFamily = GenericFontFamily("sans-serif-condensed")
 }

@@ -8,20 +8,15 @@
 
 package tachiyomi.ui.core.components
 
-import android.graphics.Color
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.emoji2.widget.EmojiTextView
 
+// TODO(inorichi): emojis do not work on desktop, this is just a dummy implementation
 @Composable
 actual fun EmojiText(
   text: String,
   modifier: Modifier
 ) {
-  AndroidView(
-    factory = { EmojiTextView(it, null).apply { setTextColor(Color.BLACK) } },
-    modifier = modifier,
-    update = { it.text = text }
-  )
+  Text(text, modifier)
 }

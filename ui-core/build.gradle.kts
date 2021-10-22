@@ -25,6 +25,7 @@ kotlin {
         implementation(Deps.androidx.lifecycle.viewModel)
         implementation(Deps.androidx.compose.activity)
         implementation(Deps.accompanist.insets)
+        implementation(Deps.accompanist.swipeRefresh)
         implementation(Deps.coil.compose)
       }
     }
