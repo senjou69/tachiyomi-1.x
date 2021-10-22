@@ -8,6 +8,7 @@
 
 package tachiyomi.ui.deeplink
 
+import tachiyomi.core.di.Inject
 import tachiyomi.core.log.Log
 import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.service.CatalogStore
@@ -15,7 +16,6 @@ import tachiyomi.source.DeepLinkSource
 import tachiyomi.source.Source
 import tachiyomi.source.model.DeepLink
 import tachiyomi.ui.core.viewmodel.BaseViewModel
-import javax.inject.Inject
 
 class DeepLinkHandlerViewModel @Inject constructor(
   private val store: CatalogStore,
