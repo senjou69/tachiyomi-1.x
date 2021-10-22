@@ -8,6 +8,8 @@
 
 package tachiyomi.ui.browse
 
+import tachiyomi.core.util.fromCodePoints
+
 /* inline */ data class Language(val code: String) {
 
   fun toEmoji(): String? {
@@ -29,9 +31,9 @@ package tachiyomi.ui.browse
 
   private fun toFlag(countryCode: String): String {
     return try {
-      val firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6
-      val secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6
-      String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
+      val firstLetter = countryCode[0].code - 0x41 + 0x1F1E6
+      val secondLetter = countryCode[1].code - 0x41 + 0x1F1E6
+      String.fromCodePoints(firstLetter, secondLetter)
     } catch (e: Exception) {
       ""
     }

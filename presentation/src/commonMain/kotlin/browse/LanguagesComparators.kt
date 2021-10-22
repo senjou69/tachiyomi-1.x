@@ -8,7 +8,7 @@
 
 package tachiyomi.ui.browse
 
-import androidx.core.os.LocaleListCompat
+import androidx.compose.ui.text.intl.LocaleList
 import tachiyomi.domain.catalog.model.CatalogLocal
 
 class UserLanguagesComparator : Comparator<Language> {
@@ -16,16 +16,16 @@ class UserLanguagesComparator : Comparator<Language> {
   private val userLanguages = mutableMapOf<String, Int>()
 
   init {
-    val userLocales = LocaleListCompat.getDefault()
-    val size = userLocales.size()
-    for (i in 0 until size) {
-      userLanguages[userLocales[i].language] = size - userLanguages.size
+    val userLocales = LocaleList.current.localeList
+    val size = userLocales.size
+    for (locale in userLocales) {
+      userLanguages[locale.language] = size - userLanguages.size
     }
   }
 
-  override fun compare(langOne: Language, langTwo: Language): Int {
-    val langOnePosition = userLanguages[langOne.code] ?: 0
-    val langTwoPosition = userLanguages[langTwo.code] ?: 0
+  override fun compare(a: Language, b: Language): Int {
+    val langOnePosition = userLanguages[a.code] ?: 0
+    val langTwoPosition = userLanguages[b.code] ?: 0
 
     return langTwoPosition.compareTo(langOnePosition)
   }
@@ -40,9 +40,9 @@ class InstalledLanguagesComparator(
     .groupBy { it.source.lang }
     .mapValues { it.value.size }
 
-  override fun compare(langOne: Language, langTwo: Language): Int {
-    val langOnePosition = preferredLanguages[langOne.code] ?: 0
-    val langTwoPosition = preferredLanguages[langTwo.code] ?: 0
+  override fun compare(a: Language, b: Language): Int {
+    val langOnePosition = preferredLanguages[a.code] ?: 0
+    val langTwoPosition = preferredLanguages[b.code] ?: 0
 
     return langTwoPosition.compareTo(langOnePosition)
   }

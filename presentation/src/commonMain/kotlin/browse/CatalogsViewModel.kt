@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.catalog.interactor.GetCatalogsByType
 import tachiyomi.domain.catalog.interactor.InstallCatalog
 import tachiyomi.domain.catalog.interactor.SyncRemoteCatalogs
@@ -25,7 +26,6 @@ import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
 import tachiyomi.ui.core.viewmodel.BaseViewModel
-import javax.inject.Inject
 
 class CatalogsViewModel @Inject constructor(
   private val state: CatalogsStateImpl,

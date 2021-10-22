@@ -15,14 +15,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import tachiyomi.domain.catalog.model.Catalog
 import tachiyomi.domain.catalog.model.CatalogInstalled
 import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.ui.browse.CatalogsState
+import tachiyomi.ui.core.components.SwipeRefresh
+import tachiyomi.ui.core.components.rememberSwipeRefreshState
+import tachiyomi.ui.core.modifiers.rememberNavigationBarsInsetsPaddingValues
 
 @Composable
 fun CatalogsContent(
@@ -50,8 +49,7 @@ fun CatalogsContent(
 
   SwipeRefresh(state = swipeState, onRefresh = onRefreshCatalogs) {
     LazyColumn(
-      contentPadding = rememberInsetsPaddingValues(
-        insets = LocalWindowInsets.current.navigationBars,
+      contentPadding = rememberNavigationBarsInsetsPaddingValues(
         additionalBottom = 16.dp
       )
     ) {

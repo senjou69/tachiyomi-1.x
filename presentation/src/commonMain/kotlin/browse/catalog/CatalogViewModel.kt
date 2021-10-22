@@ -14,13 +14,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import tachiyomi.core.di.Inject
+import tachiyomi.core.util.IO
 import tachiyomi.domain.catalog.interactor.GetLocalCatalog
 import tachiyomi.domain.manga.interactor.ListMangaPageFromCatalogSource
 import tachiyomi.domain.manga.interactor.MangaInitializer
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.source.CatalogSource
 import tachiyomi.ui.core.viewmodel.BaseViewModel
-import javax.inject.Inject
 
 class CatalogViewModel @Inject constructor(
   private val params: Params,

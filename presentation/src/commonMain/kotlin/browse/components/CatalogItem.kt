@@ -10,14 +10,11 @@ package tachiyomi.ui.browse.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
@@ -26,13 +23,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.GetApp
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
@@ -40,21 +32,17 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
 import tachiyomi.domain.catalog.model.Catalog
 import tachiyomi.domain.catalog.model.CatalogBundled
 import tachiyomi.domain.catalog.model.CatalogInstalled
-import tachiyomi.domain.catalog.model.CatalogLocal
 import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.domain.catalog.model.InstallStep
-import tachiyomi.i18n.MR
-import tachiyomi.i18n.localize
 import tachiyomi.ui.browse.Language
 import tachiyomi.ui.core.components.EmojiText
 import tachiyomi.ui.core.components.LetterIcon
+import tachiyomi.ui.core.image.rememberImagePainter
 import kotlin.math.max
 
 @Composable
@@ -217,60 +205,10 @@ private fun CatalogButtons(
   }
 }
 
+// TODO(inorichi): this is temporary until we have DropdownMenu in multiplatform
 @Composable
-private fun CatalogMenuButton(
+internal expect fun CatalogMenuButton(
   catalog: Catalog,
   onPinToggle: (() -> Unit)?,
-  onUninstall: (() -> Unit)?,
-  modifier: Modifier = Modifier
-) {
-  var expanded by remember { mutableStateOf(false) }
-  Box(modifier) {
-    IconButton(onClick = { expanded = true }) {
-      Icon(imageVector = Filled.MoreVert, contentDescription = null)
-    }
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-      DropdownMenuItem(onClick = { /*TODO*/ }) {
-        Text(localize(MR.strings.catalog_details))
-      }
-      if (onPinToggle != null && catalog is CatalogLocal) {
-        DropdownMenuItem(onClick = onPinToggle) {
-          Text(
-            localize(
-              if (!catalog.isPinned) MR.strings.catalog_pin else MR.strings
-                .catalog_unpin
-            )
-          )
-        }
-      }
-      if (onUninstall != null) {
-        DropdownMenuItem(onClick = onUninstall) {
-          Text(localize(MR.strings.catalog_uninstall))
-        }
-      }
-    }
-  }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun CatalogItemPreview() {
-  CatalogItem(
-    catalog = CatalogRemote(
-      name = "My Catalog",
-      description = "Some description",
-      sourceId = 0L,
-      pkgName = "my.catalog",
-      versionName = "1.0.0",
-      versionCode = 1,
-      lang = "en",
-      pkgUrl = "",
-      iconUrl = "",
-      nsfw = false,
-    ),
-    onClick = {},
-    onInstall = {},
-    onUninstall = {},
-    onPinToggle = {}
-  )
-}
+  onUninstall: (() -> Unit)?
+)

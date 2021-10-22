@@ -35,7 +35,7 @@ import com.google.accompanist.insets.rememberInsetsPaddingValues
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.ui.core.manga.rememberMangaCover
 import tachiyomi.ui.core.modifiers.selectedBackground
-import tachiyomi.ui.core.util.Typefaces
+import tachiyomi.ui.core.theme.Typefaces
 
 @Composable
 fun LibraryMangaComfortableGrid(
@@ -83,7 +83,7 @@ private fun LibraryMangaComfortableGridItem(
   onLongClick: () -> Unit
 ) {
   val fontStyle = LocalTextStyle.current.merge(
-    TextStyle(letterSpacing = 0.sp, fontFamily = Typefaces.ptSansFont, fontSize = 14.sp)
+    TextStyle(letterSpacing = 0.sp, fontFamily = Typefaces.condensed, fontSize = 14.sp)
   )
 
   Box(
