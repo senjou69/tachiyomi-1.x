@@ -23,22 +23,22 @@ object Deps {
   }
 
   object androidx {
-    const val core = "androidx.core:core-ktx:1.7.0-rc01"
-    const val appCompat = "androidx.appcompat:appcompat:1.4.0-beta01"
+    const val core = "androidx.core:core-ktx:1.7.0"
+    const val appCompat = "androidx.appcompat:appcompat:1.4.0-rc01"
     const val browser = "androidx.browser:browser:1.4.0-rc01"
     const val webkit = "androidx.webkit:webkit:1.4.0"
-    const val sqlite = "androidx.sqlite:sqlite-ktx:2.2.0-alpha02"
+    const val sqlite = "androidx.sqlite:sqlite-ktx:2.2.0-beta01"
     const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
-    const val emoji = "androidx.emoji2:emoji2-views:1.0.0-beta01"
+    const val emoji = "androidx.emoji2:emoji2-views:1.0.0-rc01"
 
     object compose {
-      const val activity = "androidx.activity:activity-compose:1.4.0-rc01"
-      const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha10"
-      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build411"
+      const val activity = "androidx.activity:activity-compose:1.4.0"
+      const val navigation = "androidx.navigation:navigation-compose:2.4.0-beta01"
+      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build418"
     }
 
     object lifecycle {
-      private const val version = "2.4.0-rc01"
+      private const val version = "2.4.0"
       const val common = "androidx.lifecycle:lifecycle-common-java8:$version"
       const val process = "androidx.lifecycle:lifecycle-process:$version"
       const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
@@ -51,7 +51,7 @@ object Deps {
   }
 
   object accompanist {
-    private const val version = "0.20.0"
+    private const val version = "0.21.0-beta"
     const val pager = "com.google.accompanist:accompanist-pager:$version"
     const val pagerIndicator = "com.google.accompanist:accompanist-pager-indicators:$version"
     const val flowlayout = "com.google.accompanist:accompanist-flowlayout:$version"
