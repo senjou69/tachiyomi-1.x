@@ -24,6 +24,7 @@ internal actual fun PlatformDropdownMenu(
   onDismissRequest: () -> Unit,
   modifier: Modifier,
   offset: DpOffset,
+  properties: PopupProperties,
   content: @Composable ColumnScope.() -> Unit
 ) {
 }

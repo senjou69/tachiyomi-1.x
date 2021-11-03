@@ -14,10 +14,21 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.MenuDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+
+@Immutable
+class PopupProperties(
+  val focusable: Boolean = false,
+  val dismissOnBackPress: Boolean = true,
+  val dismissOnClickOutside: Boolean = true,
+  val excludeFromSystemGesture: Boolean = true,
+  val clippingEnabled: Boolean = true,
+  val usePlatformDefaultWidth: Boolean = false
+)
 
 @Composable
 internal expect fun PlatformDropdownMenu(
@@ -25,6 +36,7 @@ internal expect fun PlatformDropdownMenu(
   onDismissRequest: () -> Unit,
   modifier: Modifier,
   offset: DpOffset,
+  properties: PopupProperties,
   content: @Composable ColumnScope.() -> Unit
 )
 
@@ -44,6 +56,7 @@ fun DropdownMenu(
   onDismissRequest: () -> Unit,
   modifier: Modifier = Modifier,
   offset: DpOffset = DpOffset(0.dp, 0.dp),
+  properties: PopupProperties = PopupProperties(),
   content: @Composable ColumnScope.() -> Unit
 ) {
   PlatformDropdownMenu(
@@ -51,6 +64,7 @@ fun DropdownMenu(
     onDismissRequest = onDismissRequest,
     modifier = modifier,
     offset = offset,
+    properties = properties,
     content = content
   )
 }
