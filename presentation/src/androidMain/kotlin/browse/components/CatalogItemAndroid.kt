@@ -28,40 +28,6 @@ import tachiyomi.domain.catalog.model.CatalogRemote
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 
-@Composable
-internal actual fun CatalogMenuButton(
-  catalog: Catalog,
-  onPinToggle: (() -> Unit)?,
-  onUninstall: (() -> Unit)?
-) {
-  var expanded by remember { mutableStateOf(false) }
-  Box {
-    IconButton(onClick = { expanded = true }) {
-      Icon(imageVector = Icons.Filled.MoreVert, contentDescription = null)
-    }
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-      DropdownMenuItem(onClick = { /*TODO*/ }) {
-        Text(localize(MR.strings.catalog_details))
-      }
-      if (onPinToggle != null && catalog is CatalogLocal) {
-        DropdownMenuItem(onClick = onPinToggle) {
-          Text(
-            localize(
-              if (!catalog.isPinned) MR.strings.catalog_pin else MR.strings
-                .catalog_unpin
-            )
-          )
-        }
-      }
-      if (onUninstall != null) {
-        DropdownMenuItem(onClick = onUninstall) {
-          Text(localize(MR.strings.catalog_uninstall))
-        }
-      }
-    }
-  }
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun CatalogItemPreview() {
