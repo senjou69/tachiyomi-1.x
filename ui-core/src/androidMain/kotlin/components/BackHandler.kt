@@ -6,16 +6,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+@file:JvmName("BackHandlerPlatform")
+
 package tachiyomi.ui.core.components
 
 import androidx.compose.runtime.Composable
 
 @Composable
-actual fun BackHandler(enabled: Boolean, onBack: () -> Unit) {
+internal actual fun PlatformBackHandler(enabled: Boolean, onBack: () -> Unit) {
   androidx.activity.compose.BackHandler(enabled, onBack)
-}
-
-@Composable
-actual fun BackHandler(onBack: () -> Unit) {
-  androidx.activity.compose.BackHandler(true, onBack)
 }

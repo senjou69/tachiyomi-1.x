@@ -10,10 +10,12 @@ package tachiyomi.ui.core.components
 
 import androidx.compose.runtime.Composable
 
-// TODO(inorichi): default parameters are not working properly on kotlin 1.5.31. "enabled" is set
-//  to false even if it's explicitly set as true, so we need two methods for now
+// TODO(inorichi): default parameters are not working on kotlin 1.5.31:
+//   https://github.com/JetBrains/compose-jb/issues/758
 @Composable
-expect fun BackHandler(enabled: Boolean, onBack: () -> Unit)
+internal expect fun PlatformBackHandler(enabled: Boolean, onBack: () -> Unit)
 
 @Composable
-expect fun BackHandler(onBack: () -> Unit)
+fun BackHandler(enabled: Boolean = true, onBack: () -> Unit) {
+  PlatformBackHandler(enabled, onBack)
+}
