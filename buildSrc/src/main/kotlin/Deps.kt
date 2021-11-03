@@ -34,7 +34,7 @@ object Deps {
     object compose {
       const val activity = "androidx.activity:activity-compose:1.4.0"
       const val navigation = "androidx.navigation:navigation-compose:2.4.0-beta01"
-      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0-alpha4-build418"
+      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0-beta5"
     }
 
     object lifecycle {
