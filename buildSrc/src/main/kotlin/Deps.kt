@@ -4,7 +4,7 @@ object Deps {
   object kotlin {
     const val version = "1.5.31"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-common:$version"
-    const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.0"
+    const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.1"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
     const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
 
@@ -82,13 +82,13 @@ object Deps {
   }
 
   object ktor {
-    private const val version = "1.6.4"
+    private const val version = "1.6.5"
     const val core = "io.ktor:ktor-client-core:$version"
     const val okhttp = "io.ktor:ktor-client-okhttp:$version"
     const val serialization = "io.ktor:ktor-client-serialization:$version"
   }
 
-  const val okio = "com.squareup.okio:okio:3.0.0-alpha.10"
+  const val okio = "com.squareup.okio:okio:3.0.0"
   const val quickjsAndroid = "app.cash.quickjs:quickjs-android:0.9.2"
   const val quickjsJvm = "app.cash.quickjs:quickjs-jvm:0.9.2"
   const val jsoup = "org.jsoup:jsoup:1.14.3"

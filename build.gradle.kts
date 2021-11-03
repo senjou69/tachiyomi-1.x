@@ -54,7 +54,6 @@ subprojects {
           optIn("kotlinx.coroutines.ObsoleteCoroutinesApi")
           optIn("kotlinx.serialization.ExperimentalSerializationApi")
           optIn("androidx.compose.foundation.ExperimentalFoundationApi")
-          optIn("okio.ExperimentalFileSystem")
           optIn("io.ktor.util.InternalAPI")
         }
       }
