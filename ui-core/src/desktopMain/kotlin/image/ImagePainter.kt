@@ -6,6 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+@file:JvmName("ImagePainterPlatform")
+
 package tachiyomi.ui.core.image
 
 import androidx.compose.runtime.Composable
@@ -13,8 +15,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
 
+actual class ImageRequest
+
+actual class ImageMetadata
+
+actual interface ImageRequestListener {
+  actual fun onStart(request: ImageRequest)
+  actual fun onCancel(request: ImageRequest)
+  actual fun onError(request: ImageRequest, throwable: Throwable)
+  actual fun onSuccess(request: ImageRequest, metadata: ImageMetadata)
+}
+
+actual class ImageRequestBuilder {
+  actual fun listener(listener: ImageRequestListener?) {
+
+  }
+}
+
 @Composable
-actual fun <T> rememberImagePainter(data: T): Painter {
+internal actual fun platformRememberImagePainter(
+  data: Any?,
+  builder: ImageRequestBuilder.() -> Unit
+): Painter {
   // TODO(inorichi): find out a way to draw images on JVM
   return ColorPainter(Color.Black)
 }
