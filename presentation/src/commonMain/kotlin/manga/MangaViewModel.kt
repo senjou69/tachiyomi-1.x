@@ -15,7 +15,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tachiyomi.core.di.Inject
 import tachiyomi.core.log.Log
+import tachiyomi.core.util.IO
 import tachiyomi.domain.catalog.service.CatalogStore
 import tachiyomi.domain.library.interactor.ChangeMangaFavorite
 import tachiyomi.domain.manga.interactor.GetChapters
@@ -25,7 +27,6 @@ import tachiyomi.domain.manga.interactor.SyncChaptersFromSource
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.source.Source
 import tachiyomi.ui.core.viewmodel.BaseViewModel
-import javax.inject.Inject
 
 class MangaViewModel @Inject constructor(
   private val params: Params,

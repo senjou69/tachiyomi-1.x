@@ -57,14 +57,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import com.google.accompanist.flowlayout.FlowRow
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 import tachiyomi.source.Source
 import tachiyomi.ui.core.components.BackIconButton
+import tachiyomi.ui.core.components.FlowRow
 import tachiyomi.ui.core.components.Toolbar
+import tachiyomi.ui.core.image.listener
+import tachiyomi.ui.core.image.rememberImagePainter
 import tachiyomi.ui.core.manga.rememberMangaCover
 
 @OptIn(ExperimentalAnimationApi::class)

@@ -36,15 +36,17 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import tachiyomi.core.util.DateTimeFormatter
+import tachiyomi.core.util.format
 import tachiyomi.domain.manga.model.Chapter
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 import tachiyomi.i18n.localizePlural
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
-private val dateFormat = SimpleDateFormat("dd/MM/yy", Locale.ENGLISH)
+private val dateFormat = DateTimeFormatter("dd/MM/yy")
 
 @Composable
 fun ChapterHeader(
@@ -95,7 +97,9 @@ fun ChapterRow(
       )
       val subtitleStr = buildAnnotatedString {
         if (chapter.dateUpload > 0) {
-          append(dateFormat.format(Date(chapter.dateUpload)))
+          val instant = Instant.fromEpochMilliseconds(chapter.dateUpload)
+          val dateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
+          append(dateTime.format(dateFormat))
         }
         if (!chapter.read && chapter.progress > 0) {
           if (length > 0) append(" • ")
