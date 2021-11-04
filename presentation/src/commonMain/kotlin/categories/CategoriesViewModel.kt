@@ -11,6 +11,7 @@ package tachiyomi.ui.categories
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.library.interactor.CreateCategoryWithName
 import tachiyomi.domain.library.interactor.DeleteCategories
 import tachiyomi.domain.library.interactor.GetCategories
@@ -18,7 +19,6 @@ import tachiyomi.domain.library.interactor.RenameCategory
 import tachiyomi.domain.library.interactor.ReorderCategory
 import tachiyomi.domain.library.model.Category
 import tachiyomi.ui.core.viewmodel.BaseViewModel
-import javax.inject.Inject
 
 class CategoriesViewModel @Inject constructor(
   private val state: CategoriesStateImpl,

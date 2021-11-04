@@ -30,7 +30,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tachiyomi.domain.library.model.Category
 import tachiyomi.i18n.MR
@@ -104,11 +103,4 @@ fun CategoryRow(
       }
     }
   }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CategoryRowPreview() {
-  val category = Category(1, "Category name", 0, 0)
-  CategoryRow(CategoriesState(), category, false)
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -30,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import tachiyomi.domain.library.model.Category
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
+import tachiyomi.ui.core.components.AlertDialog
 
 @Composable
 fun CreateCategoryDialog(
@@ -64,7 +64,6 @@ fun CreateCategoryDialog(
     }
   )
   LaunchedEffect(Unit) {
-    // TODO: find a way to also open keyboard
     focusRequester.requestFocus()
   }
 }
@@ -111,7 +110,6 @@ fun RenameCategoryDialog(
     }
   )
   LaunchedEffect(Unit) {
-    // TODO: find a way to also open keyboard
     focusRequester.requestFocus()
   }
 }
