@@ -24,20 +24,13 @@ expect interface ImageRequestListener {
 
 expect class ImageRequestBuilder {
   fun listener(listener: ImageRequestListener?)
+  fun listener(
+    onStart: (request: ImageRequest) -> Unit = {},
+    onCancel: (request: ImageRequest) -> Unit = {},
+    onError: (request: ImageRequest, throwable: Throwable) -> Unit = { _, _ -> },
+    onSuccess: (request: ImageRequest, metadata: ImageMetadata) -> Unit = { _, _ -> }
+  )
 }
-
-inline fun ImageRequestBuilder.listener(
-  crossinline onStart: (request: ImageRequest) -> Unit = {},
-  crossinline onCancel: (request: ImageRequest) -> Unit = {},
-  crossinline onError: (request: ImageRequest, throwable: Throwable) -> Unit = { _, _ -> },
-  crossinline onSuccess: (request: ImageRequest, metadata: ImageMetadata) -> Unit = { _, _ -> }
-) = listener(object : ImageRequestListener {
-  override fun onStart(request: ImageRequest) = onStart(request)
-  override fun onCancel(request: ImageRequest) = onCancel(request)
-  override fun onError(request: ImageRequest, throwable: Throwable) = onError(request, throwable)
-  override fun onSuccess(request: ImageRequest, metadata: ImageMetadata) =
-    onSuccess(request, metadata)
-})
 
 @Composable
 fun rememberImagePainter(

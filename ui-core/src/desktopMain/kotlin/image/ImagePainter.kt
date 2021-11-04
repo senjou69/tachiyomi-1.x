@@ -28,7 +28,14 @@ actual interface ImageRequestListener {
 
 actual class ImageRequestBuilder {
   actual fun listener(listener: ImageRequestListener?) {
+  }
 
+  actual fun listener(
+    onStart: (request: ImageRequest) -> Unit,
+    onCancel: (request: ImageRequest) -> Unit,
+    onError: (request: ImageRequest, throwable: Throwable) -> Unit,
+    onSuccess: (request: ImageRequest, metadata: ImageMetadata) -> Unit
+  ) {
   }
 }
 

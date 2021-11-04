@@ -64,7 +64,6 @@ import tachiyomi.source.Source
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.FlowRow
 import tachiyomi.ui.core.components.Toolbar
-import tachiyomi.ui.core.image.listener
 import tachiyomi.ui.core.image.rememberImagePainter
 import tachiyomi.ui.core.manga.rememberMangaCover
 

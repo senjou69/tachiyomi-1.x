@@ -25,9 +25,23 @@ actual interface ImageRequestListener : coil.request.ImageRequest.Listener {
   actual override fun onSuccess(request: ImageRequest, metadata: ImageMetadata)
 }
 
-actual class ImageRequestBuilder(private val coilBuilder: coil.request.ImageRequest.Builder) {
+actual class ImageRequestBuilder(private val builder: coil.request.ImageRequest.Builder) {
   actual fun listener(listener: ImageRequestListener?) {
-    coilBuilder.listener(listener = listener)
+    builder.listener(listener = listener)
+  }
+
+  actual fun listener(
+    onStart: (request: ImageRequest) -> Unit,
+    onCancel: (request: ImageRequest) -> Unit,
+    onError: (request: ImageRequest, throwable: Throwable) -> Unit,
+    onSuccess: (request: ImageRequest, metadata: ImageMetadata) -> Unit
+  ) {
+    builder.listener(
+      onStart = onStart,
+      onCancel = onCancel,
+      onError = onError,
+      onSuccess = onSuccess
+    )
   }
 }
 
