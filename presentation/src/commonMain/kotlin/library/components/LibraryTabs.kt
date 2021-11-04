@@ -19,14 +19,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.pagerTabIndicatorOffset
 import tachiyomi.domain.library.model.CategoryWithCount
 import tachiyomi.ui.categories.visibleName
+import tachiyomi.ui.core.components.PagerState
+import tachiyomi.ui.core.components.pagerTabIndicatorOffset
 import tachiyomi.ui.core.theme.AppColors
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LibraryTabs(
   state: PagerState,

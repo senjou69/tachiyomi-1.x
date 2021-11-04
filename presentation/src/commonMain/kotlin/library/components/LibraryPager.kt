@@ -15,16 +15,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalConfiguration
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import tachiyomi.domain.library.model.DisplayMode
 import tachiyomi.domain.library.model.LibraryManga
+import tachiyomi.ui.core.components.HorizontalPager
+import tachiyomi.ui.core.components.PagerState
+import tachiyomi.ui.core.providers.LocalWindow
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun LibraryPager(
   state: PagerState,
@@ -37,8 +35,8 @@ fun LibraryPager(
   onLongClickManga: (LibraryManga) -> Unit
 ) {
   val columns by if (displayMode != DisplayMode.List) {
-    val configuration = LocalConfiguration.current
-    val isLandscape = configuration.screenWidthDp > configuration.screenHeightDp
+    val window = LocalWindow.current
+    val isLandscape = window.screenWidthDp > window.screenHeightDp
 
     with(rememberCoroutineScope()) {
       remember(isLandscape) { getColumnsForOrientation(isLandscape) }.collectAsState()

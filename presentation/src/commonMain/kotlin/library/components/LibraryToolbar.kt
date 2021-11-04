@@ -8,7 +8,6 @@
 
 package tachiyomi.ui.library.components
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -31,6 +30,7 @@ import tachiyomi.domain.library.model.CategoryWithCount
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 import tachiyomi.ui.categories.visibleName
+import tachiyomi.ui.core.components.BackHandler
 import tachiyomi.ui.core.components.SearchField
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.library.LibraryState

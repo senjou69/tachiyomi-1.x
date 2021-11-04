@@ -20,13 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.rememberInsetsPaddingValues
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.ui.core.manga.MangaListItem
 import tachiyomi.ui.core.manga.MangaListItemImage
 import tachiyomi.ui.core.manga.MangaListItemTitle
 import tachiyomi.ui.core.manga.rememberMangaCover
+import tachiyomi.ui.core.modifiers.rememberNavigationBarsInsetsPaddingValues
 import tachiyomi.ui.core.modifiers.selectedBackground
 
 @Composable
@@ -37,8 +36,7 @@ fun LibraryMangaList(
   onLongClickManga: (LibraryManga) -> Unit = {}
 ) {
   LazyColumn(
-    contentPadding = rememberInsetsPaddingValues(
-      insets = LocalWindowInsets.current.navigationBars,
+    contentPadding = rememberNavigationBarsInsetsPaddingValues(
       additionalBottom = 64.dp
     ),
     modifier = Modifier.fillMaxSize()

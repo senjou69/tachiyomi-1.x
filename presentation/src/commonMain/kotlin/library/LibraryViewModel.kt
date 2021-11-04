@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +25,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.library.interactor.GetLibraryCategory
 import tachiyomi.domain.library.interactor.GetUserCategories
 import tachiyomi.domain.library.interactor.SetCategoriesForMangas
@@ -33,9 +33,7 @@ import tachiyomi.domain.library.interactor.UpdateLibraryCategory
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.domain.library.service.LibraryPreferences
 import tachiyomi.ui.core.viewmodel.BaseViewModel
-import javax.inject.Inject
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalPagerApi::class)
 class LibraryViewModel @Inject constructor(
   private val state: LibraryStateImpl,
   private val getUserCategories: GetUserCategories,

@@ -43,14 +43,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import tachiyomi.domain.library.model.DisplayMode
@@ -60,12 +54,16 @@ import tachiyomi.domain.library.model.LibrarySort
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.ChoiceChip
+import tachiyomi.ui.core.components.FlowRow
+import tachiyomi.ui.core.components.HorizontalPager
+import tachiyomi.ui.core.components.pagerTabIndicatorOffset
+import tachiyomi.ui.core.components.rememberPagerState
+import tachiyomi.ui.core.providers.LocalWindow
 import tachiyomi.ui.core.theme.AppColors
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.library.LibrarySheetViewModel
 import kotlin.math.round
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun LibrarySheet(
   currentPage: Int,
@@ -79,7 +77,7 @@ fun LibrarySheet(
       onPageChanged(it)
     }
   }
-  val configuration = LocalConfiguration.current
+  val window = LocalWindow.current
 
   TabRow(
     modifier = Modifier.requiredHeight(48.dp),
@@ -108,7 +106,7 @@ fun LibrarySheet(
         1 -> SortPage(sorting = vm.sorting, onClick = vm::toggleSort)
         2 -> {
           val (columns, setColumns) =
-            if (configuration.screenWidthDp > configuration.screenHeightDp) {
+            if (window.screenWidthDp > window.screenHeightDp) {
               vm.columnsInLandscape to vm::changeColumnsInLandscape
             } else {
               vm.columnsInPortrait to vm::changeColumnsInPortrait
@@ -213,8 +211,9 @@ private fun LazyListScope.DisplayPage(
             localize(MR.strings.columns_auto)
         ), Modifier.padding(top = 8.dp)
       )
-      val maxValue = round(LocalConfiguration.current.screenWidthDp.dp / 64.dp)
-      var columnsFloat by remember(LocalConfiguration.current) { mutableStateOf(columns.toFloat()) }
+      val window = LocalWindow.current
+      val maxValue = round(window.screenWidthDp.dp / 64.dp)
+      var columnsFloat by remember(window) { mutableStateOf(columns.toFloat()) }
       Slider(
         value = columnsFloat,
         onValueChange = {

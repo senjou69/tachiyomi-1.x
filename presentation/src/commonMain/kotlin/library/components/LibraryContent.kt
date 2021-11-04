@@ -14,8 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -23,8 +21,9 @@ import kotlinx.coroutines.launch
 import tachiyomi.domain.library.model.CategoryWithCount
 import tachiyomi.domain.library.model.DisplayMode
 import tachiyomi.domain.library.model.LibraryManga
+import tachiyomi.ui.core.components.rememberPagerState
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun LibraryContent(
   categories: List<CategoryWithCount>,
