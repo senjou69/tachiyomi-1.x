@@ -8,18 +8,32 @@
 
 package tachiyomi.app
 
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import kotlinx.coroutines.flow.collect
 import tachiyomi.ui.MainApp
+import tachiyomi.ui.core.providers.LocalWindow
 import kotlin.system.exitProcess
 
 fun main() = application {
+  val state = rememberWindowState()
   Window(
     onCloseRequest = { exitProcess(0) },
     title = "Tachiyomi for Desktop",
-    state = rememberWindowState()
+    state = state
   ) {
-    MainApp()
+    val window = remember { tachiyomi.ui.core.providers.Window() }
+    LaunchedEffect(state) {
+      snapshotFlow { state.size }
+        .collect { window.setSize(it.width, it.height) }
+    }
+    CompositionLocalProvider(LocalWindow provides window) {
+      MainApp()
+    }
   }
 }
