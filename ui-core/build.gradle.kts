@@ -26,6 +26,8 @@ kotlin {
         implementation(Deps.androidx.compose.activity)
         implementation(Deps.accompanist.insets)
         implementation(Deps.accompanist.swipeRefresh)
+        implementation(Deps.accompanist.pager)
+        implementation(Deps.accompanist.pagerIndicator)
         implementation(Deps.coil.compose)
       }
     }

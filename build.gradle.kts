@@ -54,6 +54,7 @@ subprojects {
           optIn("kotlinx.coroutines.ObsoleteCoroutinesApi")
           optIn("kotlinx.serialization.ExperimentalSerializationApi")
           optIn("androidx.compose.foundation.ExperimentalFoundationApi")
+          optIn("com.google.accompanist.pager.ExperimentalPagerApi")
           optIn("io.ktor.util.InternalAPI")
         }
       }
