@@ -13,15 +13,21 @@ kotlin {
     named("commonMain") {
       dependencies {
         compileOnly(compose.runtime)
+        compileOnly(compose.ui)
         api(Deps.moko.core)
       }
     }
     named("androidMain") {
-      dependencies {
-        compileOnly(compose.ui)
-      }
     }
     named("desktopMain") {
+    }
+  }
+}
+
+android {
+  sourceSets {
+    named("main") {
+      res.srcDir("src/commonMain/resources")
     }
   }
 }
