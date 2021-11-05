@@ -33,7 +33,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -56,6 +55,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ExperimentalGraphicsApi
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.isSpecified
 import androidx.compose.ui.graphics.luminance
@@ -68,6 +68,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import kotlin.math.round
+
 
 @Composable
 fun ColorPickerDialog(
@@ -204,12 +205,13 @@ private fun ColorPresetItem(
 }
 
 private fun getColorShades(color: Color): List<Color> {
-  val f = String.format("%06X", 0xFFFFFF and color.toArgb()).toLong(16)
+  // Remove transparency from color
+  val c = (0xFFFFFF and color.toArgb()).toLong()
   return listOf(
-    shadeColor(f, 0.9), shadeColor(f, 0.7), shadeColor(f, 0.5),
-    shadeColor(f, 0.333), shadeColor(f, 0.166), shadeColor(f, -0.125),
-    shadeColor(f, -0.25), shadeColor(f, -0.375), shadeColor(f, -0.5),
-    shadeColor(f, -0.675), shadeColor(f, -0.7), shadeColor(f, -0.775)
+    shadeColor(c, 0.9), shadeColor(c, 0.7), shadeColor(c, 0.5),
+    shadeColor(c, 0.333), shadeColor(c, 0.166), shadeColor(c, -0.125),
+    shadeColor(c, -0.25), shadeColor(c, -0.375), shadeColor(c, -0.5),
+    shadeColor(c, -0.675), shadeColor(c, -0.7), shadeColor(c, -0.775)
   )
 }
 
@@ -385,15 +387,27 @@ private fun hueToCoordinate(hue: Float, size: IntSize): Float {
 
 // Color space conversions
 
+@OptIn(ExperimentalGraphicsApi::class)
 private fun hsvToColor(hue: Float, saturation: Float, value: Float): Color {
-  val f = floatArrayOf(hue, saturation, value)
-  return Color(android.graphics.Color.HSVToColor(f))
+  return Color.hsv(hue, saturation, value)
 }
 
+// Adapted from Skia's implementation
 private fun Color.toHsv(): FloatArray {
-  val result = floatArrayOf(0f, 0f, 0f)
-  android.graphics.Color.colorToHSV(toArgb(), result)
-  return result
+  val min = minOf(red, green, blue)
+  val value = maxOf(red, green, blue)
+  val delta = value - min
+  if (delta == 0f) { // we're a shade of gray
+    return floatArrayOf(0f, 0f, value)
+  }
+
+  val sat = delta / value
+  val hue = (when {
+    red == value -> (green - blue) / delta
+    green == value -> 2 + (blue - red) / delta
+    else -> 4 + (red - green) / delta
+  } * 60).let { if (it < 0) it + 360 else it }
+  return floatArrayOf(hue, sat, value)
 }
 
 private fun hueToColor(hue: Float): Color {
@@ -401,12 +415,17 @@ private fun hueToColor(hue: Float): Color {
 }
 
 private fun Color.toHexString(): String {
-  return String.format("#%06X", (0xFFFFFF and toArgb()))
+  return buildString {
+    append("#")
+    val color = (0xFFFFFF and toArgb()).toString(16).uppercase()
+    repeat(6 - color.length) { append(0) } // Prepend 0s if needed
+    append(color)
+  }
 }
 
 private fun hexStringToColor(hex: String): Color? {
   return try {
-    Color(android.graphics.Color.parseColor(hex))
+    Color(0xFF000000 or hex.removePrefix("#").toLong(16))
   } catch (e: Exception) {
     null
   }
