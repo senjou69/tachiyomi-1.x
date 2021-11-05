@@ -8,15 +8,19 @@
 
 package tachiyomi.ui.more.settings
 
-import android.content.Intent
-import android.os.Build
-import android.provider.Settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.intl.Locale
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import tachiyomi.core.di.Inject
+import tachiyomi.core.util.DateTimeFormatter
+import tachiyomi.core.util.format
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.StartScreen
 import tachiyomi.i18n.MR
@@ -24,15 +28,9 @@ import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.ChoicePreference
-import tachiyomi.ui.core.prefs.PreferenceRow
 import tachiyomi.ui.core.prefs.SwitchPreference
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import tachiyomi.ui.core.viewmodel.viewModel
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import javax.inject.Inject
 
 class SettingsGeneralViewModel @Inject constructor(
   uiPreferences: UiPreferences
@@ -44,11 +42,11 @@ class SettingsGeneralViewModel @Inject constructor(
   val language = uiPreferences.language().asState()
   val dateFormat = uiPreferences.dateFormat().asState()
 
-  private val now = Date()
+  private val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
   @Composable
   fun getLanguageChoices(): Map<String, String> {
-    val currentLocaleDisplayName = Locale.getDefault().let { it.getDisplayName(it).capitalize() }
+    val currentLocaleDisplayName = Locale.current.toLanguageTag()
     return mapOf(
       "" to "${localize(MR.strings.system_default)} ($currentLocaleDisplayName)"
     )
@@ -65,10 +63,15 @@ class SettingsGeneralViewModel @Inject constructor(
   }
 
   private fun getFormattedDate(prefValue: String): String {
-    return when (prefValue) {
-      "" -> DateFormat.getDateInstance(DateFormat.SHORT)
-      else -> SimpleDateFormat(prefValue, Locale.getDefault())
-    }.format(now.time)
+//    return when (prefValue) {
+//      "" -> DateFormat.getDateInstance(DateFormat.SHORT)
+//      else -> SimpleDateFormat(prefValue, Locale.getDefault())
+//    }.format(now.time)
+    val formatter = when (prefValue) {
+      "" -> DateTimeFormatter("dd/MM/yy") // TODO get SHORT format for current locale
+      else -> DateTimeFormatter(prefValue)
+    }
+    return now.format(formatter)
   }
 }
 
@@ -77,7 +80,6 @@ fun SettingsGeneralScreen(
   navigateUp: () -> Unit
 ) {
   val vm = viewModel<SettingsGeneralViewModel>()
-  val context = LocalContext.current
   Column {
     Toolbar(
       title = { Text(localize(MR.strings.general_label)) },
@@ -106,16 +108,7 @@ fun SettingsGeneralScreen(
           title = MR.strings.hide_bottom_bar_on_scroll
         )
       }
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        item {
-          PreferenceRow(title = MR.strings.manage_notifications, onClick = {
-            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-              putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            }
-            context.startActivity(intent)
-          })
-        }
-      }
+      settingsGeneralManageNotifications()
       item {
         Divider()
       }
@@ -136,3 +129,5 @@ fun SettingsGeneralScreen(
     }
   }
 }
+
+internal expect fun LazyListScope.settingsGeneralManageNotifications()

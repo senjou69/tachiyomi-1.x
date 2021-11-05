@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.track.sites.TrackServices
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
@@ -21,7 +22,6 @@ import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.prefs.PreferenceRow
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import tachiyomi.ui.core.viewmodel.viewModel
-import javax.inject.Inject
 
 class TrackersViewModel @Inject constructor(
   trackServices: TrackServices,

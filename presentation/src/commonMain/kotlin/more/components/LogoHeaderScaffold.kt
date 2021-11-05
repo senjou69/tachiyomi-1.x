@@ -19,13 +19,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import dev.icerock.moko.resources.StringResource
+import tachiyomi.i18n.Images
 import tachiyomi.i18n.localize
-import tachiyomi.ui.R
 import tachiyomi.ui.core.components.NoElevationOverlay
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.theme.AppColors
@@ -54,10 +52,11 @@ fun LogoHeaderScaffold(
         elevation = 4.dp
       ) {
         Icon(
-          ImageVector.vectorResource(R.drawable.ic_tachi), modifier = Modifier
+          imageVector = Images.tachi(),
+          contentDescription = null,
+          modifier = Modifier
             .padding(32.dp)
-            .size(56.dp),
-          contentDescription = null
+            .size(56.dp)
         )
       }
     }

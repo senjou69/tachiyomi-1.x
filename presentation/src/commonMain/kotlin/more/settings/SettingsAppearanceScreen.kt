@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.ui.UiPreferences
 import tachiyomi.domain.ui.model.ThemeMode
 import tachiyomi.i18n.MR
@@ -51,7 +52,6 @@ import tachiyomi.ui.core.theme.getLightColors
 import tachiyomi.ui.core.theme.themes
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import tachiyomi.ui.core.viewmodel.viewModel
-import javax.inject.Inject
 
 class ThemesViewModel @Inject constructor(
   private val uiPreferences: UiPreferences,

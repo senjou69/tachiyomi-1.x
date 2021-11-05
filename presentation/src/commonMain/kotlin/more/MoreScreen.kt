@@ -18,18 +18,16 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Label
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.res.vectorResource
+import tachiyomi.core.di.Inject
 import tachiyomi.domain.ui.UiPreferences
+import tachiyomi.i18n.Images
 import tachiyomi.i18n.MR
-import tachiyomi.ui.R
 import tachiyomi.ui.core.prefs.PreferenceRow
 import tachiyomi.ui.core.prefs.SwitchPreference
 import tachiyomi.ui.core.viewmodel.BaseViewModel
 import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.more.components.LogoHeaderScaffold
-import javax.inject.Inject
 
 class MoreViewModel @Inject constructor(
   uiPreferences: UiPreferences
@@ -64,7 +62,7 @@ fun MoreScreen(
           preference = vm.incognitoMode,
           title = MR.strings.incognito_mode,
           subtitle = MR.strings.incognito_mode_subtitle,
-          icon = ImageVector.vectorResource(R.drawable.ic_glasses),
+          icon = Images.glasses(),
         )
       }
       item {
