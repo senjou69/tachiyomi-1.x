@@ -9,9 +9,12 @@
 package tachiyomi.i18n
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 
 expect object Images {
   @Composable
-  fun tachi(): Painter
+  fun tachi(): ImageVector
+
+  @Composable
+  fun glasses(): ImageVector
 }

@@ -9,9 +9,13 @@
 package tachiyomi.i18n
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 
 actual object Images {
   @Composable
-  actual fun tachi() = painterResource(R.drawable.ic_tachi)
+  actual fun tachi() = ImageVector.vectorResource(R.drawable.ic_tachi)
+
+  @Composable
+  actual fun glasses() = ImageVector.vectorResource(R.drawable.ic_glasses)
 }

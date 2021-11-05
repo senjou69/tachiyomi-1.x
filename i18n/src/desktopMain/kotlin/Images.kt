@@ -9,9 +9,27 @@
 package tachiyomi.i18n
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.loadXmlImageVector
+import androidx.compose.ui.res.useResource
+import org.xml.sax.InputSource
 
 actual object Images {
   @Composable
-  actual fun tachi() = painterResource("drawable/ic_tachi.xml")
+  actual fun tachi() = rememberVectorXmlResource("drawable/ic_tachi.xml")
+
+  @Composable
+  actual fun glasses() = rememberVectorXmlResource("drawable/ic_glasses.xml")
+
+  @Composable
+  private fun rememberVectorXmlResource(resourcePath: String): ImageVector {
+    val density = LocalDensity.current
+    return remember(resourcePath, density) {
+      useResource(resourcePath) {
+        loadXmlImageVector(InputSource(it), density)
+      }
+    }
+  }
 }
