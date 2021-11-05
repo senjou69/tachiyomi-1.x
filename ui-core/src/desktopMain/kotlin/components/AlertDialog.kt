@@ -10,10 +10,12 @@
 
 package tachiyomi.ui.core.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.window.Dialog
 
 @Composable
 internal actual fun PlatformAlertDialog(
@@ -27,4 +29,13 @@ internal actual fun PlatformAlertDialog(
   contentColor: Color,
   properties: DialogProperties
 ) {
+  Dialog(
+    onCloseRequest = onDismissRequest
+  ) {
+    Column(modifier = modifier) {
+      title?.invoke()
+      text?.invoke()
+      buttons.invoke()
+    }
+  }
 }
