@@ -40,7 +40,7 @@ fun LinkIcon(
   Icon(
     modifier = modifier
       .clickable(onClick = onClick)
-      .padding(8.dp),
+      .padding(16.dp),
     imageVector = icon,
     contentDescription = localize(labelRes),
   )

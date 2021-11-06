@@ -8,14 +8,18 @@
 
 package tachiyomi.ui.more.about
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import tachiyomi.i18n.Images
 import tachiyomi.i18n.MR
 import tachiyomi.ui.core.components.BackIconButton
 import tachiyomi.ui.core.prefs.PreferenceRow
@@ -67,36 +71,38 @@ fun AboutScreen(
       }
 
       item {
-        // TODO: custom icons
-        Row {
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.Center,
+        ) {
           LinkIcon(
             labelRes = MR.strings.website_label,
-            url = "https://tachiyomi.org",
             icon = Icons.Outlined.Public,
+            url = "https://tachiyomi.org",
           )
           LinkIcon(
             labelRes = MR.strings.discord_label,
-            icon = Icons.Outlined.Chat,
+            icon = Images.discord(),
             url = "https://discord.gg/tachiyomi",
           )
           LinkIcon(
             labelRes = MR.strings.twitter_label,
-            icon = Icons.Outlined.Code,
+            icon = Images.twitter(),
             url = "https://twitter.com/tachiyomiorg",
           )
           LinkIcon(
             labelRes = MR.strings.facebook_label,
-            icon = Icons.Outlined.Code,
+            icon = Images.facebook(),
             url = "https://facebook.com/tachiyomiorg",
           )
           LinkIcon(
             labelRes = MR.strings.reddit_label,
-            icon = Icons.Outlined.Code,
+            icon = Images.reddit(),
             url = "https://www.reddit.com/r/Tachiyomi",
           )
           LinkIcon(
             labelRes = MR.strings.github_label,
-            icon = Icons.Outlined.Code,
+            icon = Images.github(),
             url = "https://github.com/tachiyomiorg",
           )
         }

@@ -17,11 +17,27 @@ import androidx.compose.ui.res.useResource
 import org.xml.sax.InputSource
 
 actual object Images {
+
+  @Composable
+  actual fun discord() = rememberVectorXmlResource("drawable/ic_discord.xml")
+
+  @Composable
+  actual fun facebook() = rememberVectorXmlResource("drawable/ic_facebook.xml")
+
+  @Composable
+  actual fun github() = rememberVectorXmlResource("drawable/ic_github.xml")
+
+  @Composable
+  actual fun glasses() = rememberVectorXmlResource("drawable/ic_glasses.xml")
+
+  @Composable
+  actual fun reddit() = rememberVectorXmlResource("drawable/ic_reddit.xml")
+
   @Composable
   actual fun tachi() = rememberVectorXmlResource("drawable/ic_tachi.xml")
 
   @Composable
-  actual fun glasses() = rememberVectorXmlResource("drawable/ic_glasses.xml")
+  actual fun twitter() = rememberVectorXmlResource("drawable/ic_twitter.xml")
 
   @Composable
   private fun rememberVectorXmlResource(resourcePath: String): ImageVector {
