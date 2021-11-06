@@ -59,6 +59,7 @@ object Deps {
     const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
     const val swipeRefresh = "com.google.accompanist:accompanist-swiperefresh:$version"
     const val navAnimation = "com.google.accompanist:accompanist-navigation-animation:$version"
+    const val navMaterial = "com.google.accompanist:accompanist-navigation-material:$version"
   }
 
   object sqldelight {

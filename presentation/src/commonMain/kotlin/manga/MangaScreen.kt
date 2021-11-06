@@ -32,7 +32,8 @@ fun MangaScreen(
   mangaId: Long,
   navigateUp: () -> Unit,
   openChapter: (Long) -> Unit,
-  openWebView: (Long, String) -> Unit
+  openTrack: () -> Unit,
+  openWebView: (Long, String) -> Unit,
 ) {
   val vm = viewModel<MangaViewModel, MangaViewModel.Params>(
     initialState = { MangaViewModel.Params(mangaId) }
@@ -56,15 +57,6 @@ fun MangaScreen(
     return
   }
 
-  // TODO
-  val onTracking = {}
-  val onWebView = {
-    val url = URLEncoder.encode(manga.key, StandardCharsets.UTF_8.toString())
-    openWebView(manga.sourceId, url)
-  }
-  val onFavorite = { vm.toggleFavorite() }
-  val onToggle = { vm.toggleExpandedSummary() }
-
   TransparentStatusBar {
     SwipeRefresh(
       state = rememberSwipeRefreshState(vm.isRefreshing),
@@ -77,10 +69,13 @@ fun MangaScreen(
             vm.source,
             vm.expandedSummary,
             navigateUp,
-            onFavorite,
-            onTracking,
-            onWebView,
-            onToggle
+            onFavorite = { vm.toggleFavorite() },
+            onTracking = openTrack,
+            onWebView = {
+              val url = URLEncoder.encode(manga.key, StandardCharsets.UTF_8.toString())
+              openWebView(manga.sourceId, url)
+            },
+            onToggle = { vm.toggleExpandedSummary() },
           )
         }
 

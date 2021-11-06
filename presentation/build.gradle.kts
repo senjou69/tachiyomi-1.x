@@ -35,6 +35,7 @@ kotlin {
         implementation(Deps.accompanist.systemUiController)
         implementation(Deps.accompanist.swipeRefresh)
         implementation(Deps.accompanist.navAnimation)
+        implementation(Deps.accompanist.navMaterial)
 
         implementation(Deps.coil.core)
         implementation(Deps.coil.compose)

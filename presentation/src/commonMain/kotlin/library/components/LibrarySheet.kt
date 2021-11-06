@@ -64,6 +64,7 @@ import tachiyomi.ui.core.viewmodel.viewModel
 import tachiyomi.ui.library.LibrarySheetViewModel
 import kotlin.math.round
 
+// TODO: move this to a route
 @Composable
 fun LibrarySheet(
   currentPage: Int,
