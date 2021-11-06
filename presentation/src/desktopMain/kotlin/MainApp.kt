@@ -14,6 +14,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import tachiyomi.ui.core.components.Toolbar
 import tachiyomi.ui.core.theme.AppColors
 import tachiyomi.ui.core.theme.themes
@@ -24,7 +26,7 @@ fun MainApp() {
   AppColors(theme.materialColors, theme.extraColors) {
     Surface {
       Toolbar(
-        title = { Text("Tachiyomi") }
+        title = { Text(localize(MR.strings.app_name)) }
       )
       Box(Modifier.fillMaxSize())
     }

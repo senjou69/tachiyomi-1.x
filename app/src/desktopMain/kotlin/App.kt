@@ -16,6 +16,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import kotlinx.coroutines.flow.collect
+import tachiyomi.i18n.localize
+import tachiyomi.i18n.MR
 import tachiyomi.ui.MainApp
 import tachiyomi.ui.core.providers.LocalWindow
 import kotlin.system.exitProcess
@@ -24,7 +26,7 @@ fun main() = application {
   val state = rememberWindowState()
   Window(
     onCloseRequest = { exitProcess(0) },
-    title = "Tachiyomi for Desktop",
+    title = localize(MR.strings.app_name),
     state = state
   ) {
     val window = remember { tachiyomi.ui.core.providers.Window() }
