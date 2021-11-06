@@ -131,10 +131,10 @@ class TestSource : CatalogSource {
     val manga1 = MangaInfo(
       "$id",
       "Manga $id",
-      "",
-      "",
-      "",
-      emptyList(),
+      "Artist $id",
+      "Author $id",
+      "Lorem ipsum",
+      listOf("Foo", "Bar"),
       0,
       ""
     )
