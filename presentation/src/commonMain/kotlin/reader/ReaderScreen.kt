@@ -12,10 +12,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import tachiyomi.ui.core.modifiers.statusBarsPadding
+import tachiyomi.ui.core.viewmodel.viewModel
+import tachiyomi.ui.manga.MangaViewModel
 
 @Composable
 fun ReaderScreen(
   chapterId: Long
 ) {
+  val vm = viewModel<ReaderViewModel, ReaderViewModel.Params>(
+    initialState = { ReaderViewModel.Params(chapterId) }
+  )
+
   Text("Chapter ID: $chapterId", modifier = Modifier.statusBarsPadding())
 }
