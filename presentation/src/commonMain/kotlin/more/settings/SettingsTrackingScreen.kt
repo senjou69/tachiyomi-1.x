@@ -13,7 +13,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalUriHandler
 import tachiyomi.core.di.Inject
+import tachiyomi.domain.track.sites.BasicTrackSite
+import tachiyomi.domain.track.sites.OAuthTrackSite
 import tachiyomi.domain.track.sites.TrackServices
 import tachiyomi.i18n.MR
 import tachiyomi.i18n.localize
@@ -35,6 +38,7 @@ fun SettingsTrackingScreen(
   navigateUp: () -> Unit
 ) {
   val vm = viewModel<TrackersViewModel>()
+  val uriHandler = LocalUriHandler.current
 
   Column {
     Toolbar(
@@ -44,7 +48,14 @@ fun SettingsTrackingScreen(
     LazyColumn {
       items(vm.trackers) { tracker ->
         PreferenceRow(title = tracker.name, onClick = {
-          // TODO
+          when (tracker) {
+            is OAuthTrackSite -> {
+              uriHandler.openUri(tracker.loginUrl.toString())
+            }
+            is BasicTrackSite -> {
+              // TODO: login dialog
+            }
+          }
         })
       }
     }
