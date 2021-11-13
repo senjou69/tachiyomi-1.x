@@ -10,13 +10,13 @@
 
 package tachiyomi.ui.core.components
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.window.Dialog
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal actual fun PlatformAlertDialog(
   onDismissRequest: () -> Unit,
@@ -29,13 +29,14 @@ internal actual fun PlatformAlertDialog(
   contentColor: Color,
   properties: DialogProperties
 ) {
-  Dialog(
-    onCloseRequest = onDismissRequest
-  ) {
-    Column(modifier = modifier) {
-      title?.invoke()
-      text?.invoke()
-      buttons.invoke()
-    }
-  }
+  androidx.compose.material.AlertDialog(
+    onDismissRequest = onDismissRequest,
+    buttons = buttons,
+    modifier = modifier,
+    title = title,
+    text = text,
+    shape = shape,
+    backgroundColor = backgroundColor,
+    contentColor = contentColor
+  )
 }
