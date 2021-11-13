@@ -67,6 +67,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import tachiyomi.i18n.MR
+import tachiyomi.i18n.localize
 import kotlin.math.round
 
 
@@ -74,9 +76,6 @@ import kotlin.math.round
 fun ColorPickerDialog(
   onDismissRequest: () -> Unit,
   onSelected: (Color) -> Unit,
-  customText: String,
-  presetsText: String,
-  selectText: String,
   modifier: Modifier = Modifier,
   title: (@Composable () -> Unit)? = null,
   initialColor: Color = Color.Unspecified,
@@ -110,13 +109,15 @@ fun ColorPickerDialog(
         TextButton(onClick = {
           showPresets = !showPresets
         }) {
-          Text(if (showPresets) customText else presetsText)
+          val text =
+            if (showPresets) MR.strings.color_picker_custom else MR.strings.color_picker_presets
+          Text(localize(text))
         }
         Spacer(Modifier.weight(1f))
         TextButton(onClick = {
           onSelected(currentColor)
         }) {
-          Text(selectText)
+          Text(localize(MR.strings.action_select))
         }
       }
     }

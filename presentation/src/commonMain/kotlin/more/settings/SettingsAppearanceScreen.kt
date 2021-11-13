@@ -121,9 +121,6 @@ fun SettingsAppearance(
           preference = customizedColors.primaryState,
           title = "Color primary",
           subtitle = "Displayed most frequently across your app",
-          customText = localize(MR.strings.color_picker_custom),
-          presetsText = localize(MR.strings.color_picker_presets),
-          selectText = localize(MR.strings.action_select),
           unsetColor = MaterialTheme.colors.primary
         )
       }
@@ -132,9 +129,6 @@ fun SettingsAppearance(
           preference = customizedColors.secondaryState,
           title = "Color secondary",
           subtitle = "Accents select parts of the UI",
-          customText = localize(MR.strings.color_picker_custom),
-          presetsText = localize(MR.strings.color_picker_presets),
-          selectText = localize(MR.strings.action_select),
           unsetColor = MaterialTheme.colors.secondary
         )
       }
@@ -142,9 +136,6 @@ fun SettingsAppearance(
         ColorPreference(
           preference = customizedColors.barsState,
           title = "Toolbar color",
-          customText = localize(MR.strings.color_picker_custom),
-          presetsText = localize(MR.strings.color_picker_presets),
-          selectText = localize(MR.strings.action_select),
           unsetColor = AppColors.current.bars
         )
       }
