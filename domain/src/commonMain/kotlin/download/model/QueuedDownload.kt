@@ -8,13 +8,13 @@
 
 package tachiyomi.domain.download.model
 
-import tachiyomi.source.model.Page
+import tachiyomi.source.model.Video
 
 data class QueuedDownload(
   val chapterId: Long,
   val sourceId: Long
 ) {
 
-  var pages: List<Page>? = null
+  var pages: List<Video>? = null
     internal set
 }

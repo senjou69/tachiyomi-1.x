@@ -9,7 +9,7 @@
 package tachiyomi.domain.manga.util
 
 import tachiyomi.source.Source
-import tachiyomi.source.model.ChapterInfo
+import tachiyomi.source.model.EpisodeInfo
 
 /**
  * -R> = regex conversion.
@@ -53,7 +53,7 @@ object ChapterRecognition {
    * @param source source object used to get regex if available.
    * @return chapter number TODO implement (vol|title? create general rules how to format Regex)
    */
-  fun parse(chapter: ChapterInfo, mangaTitle: String, source: Source): Float {
+  fun parse(chapter: EpisodeInfo, mangaTitle: String, source: Source): Float {
     return if (!source.getRegex().pattern.isEmpty()) {
       return findMatch(source.getRegex().find(chapter.name))
     } else {
@@ -64,7 +64,7 @@ object ChapterRecognition {
   /**
    * Todo Rewrite to include title / volume, is this even needed with source providing regex?
    */
-  private fun parseDefault(chapter: ChapterInfo, mangaTitle: String): Float {
+  private fun parseDefault(chapter: EpisodeInfo, mangaTitle: String): Float {
 
 //    // If chapter number is known return.
 //    if (chapter.number == -2f || chapter.number > -1f)

@@ -13,7 +13,7 @@ package tachiyomi.source.model
  *
  * TODO: we should avoid data class due to possible incompatibilities across versions
  */
-data class MangaInfo(
+data class AnimeInfo(
   val key: String,
   val title: String,
   val artist: String = "",

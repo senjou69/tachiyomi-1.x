@@ -10,33 +10,33 @@ package tachiyomi.source
 
 import kotlinx.coroutines.delay
 import kotlinx.datetime.Clock
-import tachiyomi.source.model.ChapterInfo
+import tachiyomi.source.model.EpisodeInfo
 import tachiyomi.source.model.Filter
 import tachiyomi.source.model.FilterList
 import tachiyomi.source.model.ImageUrl
 import tachiyomi.source.model.Listing
-import tachiyomi.source.model.MangaInfo
-import tachiyomi.source.model.MangasPageInfo
-import tachiyomi.source.model.Page
+import tachiyomi.source.model.AnimeInfo
+import tachiyomi.source.model.AnimesPageInfo
+import tachiyomi.source.model.Video
 
 class TestSource : CatalogSource {
   override val id = 1L
 
   override val name = "Test source"
   override val lang get() = "en"
-  override suspend fun getMangaDetails(manga: MangaInfo): MangaInfo {
+  override suspend fun getMangaDetails(manga: AnimeInfo): AnimeInfo {
     delay(1000)
     val noHipstersOffset = 10
     val picId = manga.title.split(" ")[1].toInt() + noHipstersOffset
     return manga.copy(cover = "https://picsum.photos/300/400/?image=$picId")
   }
 
-  override suspend fun getMangaList(sort: Listing?, page: Int): MangasPageInfo {
+  override suspend fun getAnimeList(sort: Listing?, page: Int): AnimesPageInfo {
     delay(1000)
-    return MangasPageInfo(getTestManga(page), true)
+    return AnimesPageInfo(getTestManga(page), true)
   }
 
-  override suspend fun getMangaList(filters: FilterList, page: Int): MangasPageInfo {
+  override suspend fun getAnimeList(filters: FilterList, page: Int): AnimesPageInfo {
     var mangaList = getTestManga(page)
 
     filters.forEach { filter ->
@@ -45,15 +45,15 @@ class TestSource : CatalogSource {
       }
     }
 
-    return MangasPageInfo(mangaList, true)
+    return AnimesPageInfo(mangaList, true)
   }
 
-  override suspend fun getChapterList(manga: MangaInfo): List<ChapterInfo> {
+  override suspend fun getChapterList(manga: AnimeInfo): List<EpisodeInfo> {
     delay(1000)
     return getTestChapters()
   }
 
-  override suspend fun getPageList(chapter: ChapterInfo): List<Page> {
+  override suspend fun getPageList(chapter: EpisodeInfo): List<Video> {
     delay(1000)
     return getTestPages()
   }
@@ -125,10 +125,10 @@ class TestSource : CatalogSource {
     Filter.Genre("Isekai")
   )
 
-  private fun getTestManga(page: Int): List<MangaInfo> {
-    val list = mutableListOf<MangaInfo>()
+  private fun getTestManga(page: Int): List<AnimeInfo> {
+    val list = mutableListOf<AnimeInfo>()
     val id = (page - 1) * 20 + 1
-    val manga1 = MangaInfo(
+    val manga1 = AnimeInfo(
       "$id",
       "Manga $id",
       "Artist $id",
@@ -147,8 +147,8 @@ class TestSource : CatalogSource {
     return list
   }
 
-  private fun getTestChapters(): List<ChapterInfo> {
-    val chapter1 = ChapterInfo(
+  private fun getTestChapters(): List<EpisodeInfo> {
+    val chapter1 = EpisodeInfo(
       "1",
       "Chapter 1",
       Clock.System.now().toEpochMilliseconds()
@@ -159,7 +159,7 @@ class TestSource : CatalogSource {
     return listOf(chapter1, chapter2, chapter3)
   }
 
-  private fun getTestPages(): List<Page> {
+  private fun getTestPages(): List<Video> {
     return listOf(
       ImageUrl("imageUrl1"),
       ImageUrl("imageUrl2")

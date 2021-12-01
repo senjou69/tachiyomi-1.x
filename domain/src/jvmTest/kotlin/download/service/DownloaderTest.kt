@@ -39,7 +39,7 @@ import tachiyomi.domain.download.service.Downloader.Result.Success
 import tachiyomi.source.HttpSource
 import tachiyomi.source.model.ImageBase64
 import tachiyomi.source.model.ImageUrl
-import tachiyomi.source.model.PageUrl
+import tachiyomi.source.model.VideoUrl
 import tachiyomi.source.model.Text
 import java.io.File
 import java.nio.file.Files
@@ -130,7 +130,7 @@ class DownloaderTest : FunSpec({
 
   context("incomplete page") {
     beforeTest {
-      coEvery { source.getPageList(any()) } returns listOf(PageUrl("a"))
+      coEvery { source.getPageList(any()) } returns listOf(VideoUrl("a"))
     }
     fun everyPage() = coEvery { source.getPage(any()) }
     val text = Text("a")
@@ -160,12 +160,12 @@ class DownloaderTest : FunSpec({
       result.download.pages!!.first().shouldBeInstanceOf<Text>()
     }
     test("resumes to next page on failure") {
-      coEvery { source.getPageList(any()) } returns listOf(PageUrl("a"), PageUrl("b"))
-      coEvery { source.getPage(PageUrl("a")) } throws error
-      coEvery { source.getPage(PageUrl("b")) } returns text
+      coEvery { source.getPageList(any()) } returns listOf(VideoUrl("a"), VideoUrl("b"))
+      coEvery { source.getPage(VideoUrl("a")) } throws error
+      coEvery { source.getPage(VideoUrl("b")) } returns text
       val result = awaitDownload()
       result.success shouldBe false
-      coVerify(exactly = 1) { source.getPage(PageUrl("b")) }
+      coVerify(exactly = 1) { source.getPage(VideoUrl("b")) }
     }
   }
 

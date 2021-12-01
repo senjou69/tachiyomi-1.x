@@ -18,7 +18,7 @@ import tachiyomi.domain.manga.model.MangaUpdate
 import tachiyomi.domain.manga.service.ChapterRepository
 import tachiyomi.domain.manga.service.MangaRepository
 import tachiyomi.domain.manga.util.ChapterRecognition
-import tachiyomi.source.model.MangaInfo
+import tachiyomi.source.model.AnimeInfo
 
 class SyncChaptersFromSource @Inject internal constructor(
   private val chapterRepository: ChapterRepository,
@@ -34,7 +34,7 @@ class SyncChaptersFromSource @Inject internal constructor(
   )
 
   suspend fun await(manga: MangaBase): Result {
-    val mangaInfo = MangaInfo(manga.key, manga.title)
+    val mangaInfo = AnimeInfo(manga.key, manga.title)
     val catalog = catalogStore.get(manga.sourceId)
     val source = catalog?.source ?: return Result.SourceNotFound(manga.sourceId)
 

@@ -8,11 +8,10 @@
 
 package tachiyomi.source.model
 
-sealed class Page
-
-data class PageUrl(val url: String) : Page()
-sealed class PageComplete : Page()
-
-data class ImageUrl(val url: String) : PageComplete()
-data class ImageBase64(val data: String) : PageComplete()
-data class Text(val text: String) : PageComplete()
+data class EpisodeInfo(
+  var key: String,
+  var name: String,
+  var dateUpload: Long = 0,
+  var number: Float = -1f,
+  var scanlator: String = ""
+)

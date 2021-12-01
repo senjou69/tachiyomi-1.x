@@ -18,7 +18,7 @@ import tachiyomi.domain.library.model.LibraryFilter.Value.*
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.domain.library.model.LibrarySort
 import tachiyomi.domain.library.service.LibraryRepository
-import tachiyomi.source.model.MangaInfo
+import tachiyomi.source.model.AnimeInfo
 
 class GetLibraryCategory @Inject internal constructor(
   private val libraryRepository: LibraryRepository
@@ -58,7 +58,7 @@ class GetLibraryCategory @Inject internal constructor(
           { it.unread > 0 }
         }
         Completed -> {
-          { it.status == MangaInfo.COMPLETED }
+          { it.status == AnimeInfo.COMPLETED }
         }
         Downloaded -> {
           { false /* TODO */ }

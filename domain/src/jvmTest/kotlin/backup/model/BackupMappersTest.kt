@@ -16,7 +16,7 @@ import tachiyomi.domain.manga.model.Chapter
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.track.model.Track
 import tachiyomi.domain.track.model.TrackStatus
-import tachiyomi.source.model.MangaInfo
+import tachiyomi.source.model.AnimeInfo
 
 class BackupMappersTest : StringSpec({
 
@@ -37,7 +37,7 @@ class BackupMappersTest : StringSpec({
       author = "test author",
       description = "test description",
       genres = listOf("test genre1", "test genre2"),
-      status = MangaInfo.ONGOING,
+      status = AnimeInfo.ONGOING,
       cover = "test cover",
       customCover = "test customCover",
       favorite = true,

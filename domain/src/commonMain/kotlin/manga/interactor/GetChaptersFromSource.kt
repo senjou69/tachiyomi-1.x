@@ -11,13 +11,13 @@ package tachiyomi.domain.manga.interactor
 import tachiyomi.core.di.Inject
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.source.Source
-import tachiyomi.source.model.ChapterInfo
-import tachiyomi.source.model.MangaInfo
+import tachiyomi.source.model.EpisodeInfo
+import tachiyomi.source.model.AnimeInfo
 
 class GetChaptersFromSource @Inject internal constructor() {
 
-  suspend fun await(source: Source, manga: Manga): List<ChapterInfo> {
-    val mangaInfo = MangaInfo(
+  suspend fun await(source: Source, manga: Manga): List<EpisodeInfo> {
+    val mangaInfo = AnimeInfo(
       manga.key,
       manga.title,
       manga.artist,

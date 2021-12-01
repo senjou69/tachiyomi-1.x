@@ -11,7 +11,7 @@ package tachiyomi.domain.manga.interactor
 import tachiyomi.core.di.Inject
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.source.DeepLinkSource
-import tachiyomi.source.model.MangaInfo
+import tachiyomi.source.model.AnimeInfo
 
 class FindOrInitMangaFromChapterKey @Inject internal constructor(
   private val getOrAddMangaFromSource: GetOrAddMangaFromSource,
@@ -21,7 +21,7 @@ class FindOrInitMangaFromChapterKey @Inject internal constructor(
   suspend fun await(chapterKey: String, source: DeepLinkSource): Manga {
     val mangaKey = source.findMangaKey(chapterKey)
     return if (mangaKey != null) {
-      val mangaInfo = MangaInfo(key = mangaKey, title = "")
+      val mangaInfo = AnimeInfo(key = mangaKey, title = "")
       val manga = getOrAddMangaFromSource.await(mangaInfo, source.id)
       mangaInitializer.await(source, manga)
       manga

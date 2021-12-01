@@ -38,7 +38,7 @@
   <string name="webview_label">WebView</string>
   <string name="action_more">More</string>
   <string name="action_less">Less</string>
-  <string name="page_progress_num">Page %d</string>
+  <string name="page_progress_num">Video %d</string>
 
   <!-- Updates screen -->
   <string name="updates_subtitle">Ch. %1$.1f - %2$s</string>

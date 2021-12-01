@@ -14,7 +14,7 @@ import io.ktor.client.request.url
 import tachiyomi.source.model.ImageUrl
 import tachiyomi.source.model.Listing
 import tachiyomi.source.model.PageComplete
-import tachiyomi.source.model.PageUrl
+import tachiyomi.source.model.VideoUrl
 
 /**
  * A simple implementation for sources from a website.
@@ -44,8 +44,8 @@ abstract class HttpSource(private val dependencies: Dependencies) : CatalogSourc
    */
   override fun toString() = "$name (${lang.uppercase()})"
 
-  open suspend fun getPage(page: PageUrl): PageComplete {
-    throw Exception("Incomplete source implementation. Please override getPage when using PageUrl")
+  open suspend fun getPage(page: VideoUrl): PageComplete {
+    throw Exception("Incomplete source implementation. Please override getPage when using VideoUrl")
   }
 
   open fun getImageRequest(page: ImageUrl): Pair<HttpClient, HttpRequestBuilder> {

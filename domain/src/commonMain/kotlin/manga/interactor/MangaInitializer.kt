@@ -16,7 +16,7 @@ import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.MangaUpdate
 import tachiyomi.domain.manga.service.MangaRepository
 import tachiyomi.source.Source
-import tachiyomi.source.model.MangaInfo
+import tachiyomi.source.model.AnimeInfo
 import java.util.concurrent.TimeUnit
 
 class MangaInitializer @Inject internal constructor(
@@ -31,7 +31,7 @@ class MangaInitializer @Inject internal constructor(
 
     val now = Clock.System.now().toEpochMilliseconds()
 
-    val infoQuery = MangaInfo(
+    val infoQuery = AnimeInfo(
       key = manga.key,
       title = manga.title,
       artist = manga.artist,

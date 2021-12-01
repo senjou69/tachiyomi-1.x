@@ -10,15 +10,15 @@ package tachiyomi.source
 
 import tachiyomi.source.model.FilterList
 import tachiyomi.source.model.Listing
-import tachiyomi.source.model.MangasPageInfo
+import tachiyomi.source.model.AnimesPageInfo
 
 interface CatalogSource : Source {
 
   override val lang: String
 
-  suspend fun getMangaList(sort: Listing?, page: Int): MangasPageInfo
+  suspend fun getAnimeList(sort: Listing?, page: Int): AnimesPageInfo
 
-  suspend fun getMangaList(filters: FilterList, page: Int): MangasPageInfo
+  suspend fun getAnimeList(filters: FilterList, page: Int): AnimesPageInfo
 
   fun getListings(): List<Listing>
 

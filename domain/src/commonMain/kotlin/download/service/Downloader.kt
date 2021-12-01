@@ -37,13 +37,13 @@ import tachiyomi.core.util.ImageUtil
 import tachiyomi.domain.catalog.interactor.GetLocalCatalog
 import tachiyomi.domain.download.model.QueuedDownload
 import tachiyomi.source.HttpSource
-import tachiyomi.source.model.ChapterInfo
+import tachiyomi.source.model.EpisodeInfo
 import tachiyomi.source.model.ImageBase64
 import tachiyomi.source.model.ImageUrl
-import tachiyomi.source.model.Page
+import tachiyomi.source.model.Video
 import tachiyomi.source.model.PageComplete
 import tachiyomi.source.model.PageListEmpty
-import tachiyomi.source.model.PageUrl
+import tachiyomi.source.model.VideoUrl
 import tachiyomi.source.model.Text
 
 internal open class Downloader @Inject constructor(
@@ -81,7 +81,7 @@ internal open class Downloader @Inject constructor(
     require(source is HttpSource) { "Source must be an HttpSource for downloading" }
 
     // TODO
-    val chapter = ChapterInfo("", "")
+    val chapter = EpisodeInfo("", "")
 
     val pages = (download.pages as? MutableList)
       ?: flow { emit(source.getPageList(chapter)) }
@@ -123,14 +123,14 @@ internal open class Downloader @Inject constructor(
         // Check if page was downloaded
         val nameWithoutExtension = getPageName(index + 1, digits)
         if (nameWithoutExtension in downloadedFilesWithoutExtensionOnStart) {
-          return@flatMapConcat emptyFlow<Page>()
+          return@flatMapConcat emptyFlow<Video>()
         }
 
         val tmpFile = tmpChapterDir / "$nameWithoutExtension.tmp"
 
         // Retrieve complete page if needed
         val completePageFlow = when (page) {
-          is PageUrl -> {
+          is VideoUrl -> {
             flow { emit(source.getPage(page)) }
               .retry(1) { delay(retryDelay); true }
               .onEach { pages[index] = it }

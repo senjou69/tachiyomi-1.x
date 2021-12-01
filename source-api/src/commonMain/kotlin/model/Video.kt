@@ -8,10 +8,11 @@
 
 package tachiyomi.source.model
 
-data class ChapterInfo(
-  var key: String,
-  var name: String,
-  var dateUpload: Long = 0,
-  var number: Float = -1f,
-  var scanlator: String = ""
-)
+sealed class Video
+
+data class VideoUrl(val url: String) : Video()
+sealed class PageComplete : Video()
+
+data class ImageUrl(val url: String) : PageComplete()
+data class ImageBase64(val data: String) : PageComplete()
+data class Text(val text: String) : PageComplete()
