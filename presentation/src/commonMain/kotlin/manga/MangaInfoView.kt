@@ -60,12 +60,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.SubcomposeLayout
-import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import tachiyomi.domain.manga.model.Manga
@@ -284,14 +283,12 @@ fun MangaInfoHeader(
   }
 
   // Description
-  Box(modifier = Modifier.animateContentSize()) {
-    MangaSummary(
-      onToggle,
-      manga.description,
-      manga.genres,
-      expandedSummary
-    )
-  }
+  MangaSummary(
+    onToggle,
+    manga.description,
+    manga.genres,
+    expandedSummary
+  )
 }
 
 @Composable
@@ -301,9 +298,14 @@ private fun MangaSummary(
   genres: List<String>,
   expandedSummary: Boolean
 ) {
-  var (isExpandable, setIsExpandable) = remember { mutableStateOf(false) }
+  val (isExpandable, setIsExpandable) = remember { mutableStateOf<Boolean?>(null) }
 
-  Column {
+  val modifier = when (isExpandable) {
+    true -> Modifier.animateContentSize()
+    else -> Modifier
+  }
+
+  Column(modifier = modifier) {
     MangaSummaryDescription(
       description,
       isExpandable,
@@ -311,7 +313,7 @@ private fun MangaSummary(
       expandedSummary,
       onClickToggle
     )
-    if (expandedSummary || !isExpandable) {
+    if (expandedSummary || isExpandable != true) {
       FlowRow(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
         mainAxisSpacing = 4.dp,
@@ -331,98 +333,77 @@ private fun MangaSummary(
         }
       }
     }
-
   }
 }
 
-private val TextLayoutResult.textHeight: Int
-  get() {
-    return multiParagraph.height.toInt()
-  }
-
-const val COLLAPSED_MAX_LINES = 3
+private const val COLLAPSED_MAX_LINES = 3
 
 @Composable
 fun MangaSummaryDescription(
   description: String,
-  isExpandable: Boolean,
+  isExpandable: Boolean?,
   setIsExpandable: (Boolean) -> Unit,
   isExpanded: Boolean,
   onClickToggle: () -> Unit
 ) {
-  var collapseMaxHeight by remember { mutableStateOf(0) }
+  Layout(
+    modifier = Modifier.clickable(enabled = isExpandable == true, onClick = onClickToggle),
+    measurePolicy = { measurables, constraints ->
+      val textPlaceable = measurables.first { it.layoutId == "text" }.measure(constraints)
 
-  SubcomposeLayout(
-    modifier = Modifier
-      .clipToBounds()
-      .clickable(enabled = isExpandable, onClick = onClickToggle),
-    measurePolicy = { constraints ->
-      val isCollapsed = !isExpanded
-      val icon = if (isCollapsed) Icons.Outlined.ExpandMore else Icons.Outlined.ExpandLess
-      var slotId = 0
-
-      val textPlaceable = subcompose(slotId++) {
-        Text(
-          text = description,
-          modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-          onTextLayout = { layoutResult ->
-            setIsExpandable(layoutResult.lineCount > COLLAPSED_MAX_LINES)
-            collapseMaxHeight =
-              (layoutResult.textHeight / layoutResult.lineCount) * COLLAPSED_MAX_LINES
-          }
-        )
-      }
-        .first()
-        .measure(constraints)
-
-      if (!isExpandable) {
-        return@SubcomposeLayout layout(constraints.maxWidth, textPlaceable.height) {
+      if (isExpandable != true) {
+        layout(constraints.maxWidth, textPlaceable.height) {
           textPlaceable.placeRelative(0, 0)
         }
-      }
+      } else {
+        val iconPlaceable = measurables.first { it.layoutId == "icon" }.measure(constraints)
 
-      val buttonPlaceable = subcompose(slotId++) {
-        IconButton(
-          onClick = onClickToggle
-        ) {
-          Icon(icon, null)
+        val layoutHeight = textPlaceable.height +
+          if (isExpanded) iconPlaceable.height else iconPlaceable.height / 2
+
+        val scrimPlaceable = measurables.find { it.layoutId == "scrim" }
+          ?.measure(constraints.copy(maxHeight = layoutHeight / 2))
+
+        layout(constraints.maxWidth, layoutHeight) {
+          textPlaceable.placeRelative(0, 0)
+          scrimPlaceable?.placeRelative(0, layoutHeight - scrimPlaceable.height)
+          iconPlaceable.placeRelative(
+            x = constraints.maxWidth / 2 - iconPlaceable.width / 2,
+            y = layoutHeight - iconPlaceable.height
+          )
         }
       }
-        .first()
-        .measure(constraints)
-
-      var height = if (isCollapsed) collapseMaxHeight else textPlaceable.height
-      height += if (isCollapsed) buttonPlaceable.height / 2 else buttonPlaceable.height
-
-      val boxConstraints = constraints.copy(
-        maxHeight = height / 2
+    },
+    content = {
+      Text(
+        text = description,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp).layoutId("text"),
+        maxLines = if (!isExpanded) COLLAPSED_MAX_LINES else Int.MAX_VALUE,
+        onTextLayout = { result ->
+          if (isExpandable == null) setIsExpandable(result.didOverflowHeight)
+        },
       )
-      val boxPlaceable = subcompose(slotId++) {
-        Box(
-          modifier = Modifier
-            .fillMaxSize()
-            .background(
-              Brush.verticalGradient(
-                0f to Color.Transparent,
-                0.4f to MaterialTheme.colors.background.copy(alpha = 0.9f),
-                0.5f to MaterialTheme.colors.background
+      if (isExpandable == true) {
+        if (!isExpanded) {
+          Box(
+            modifier = Modifier
+              .fillMaxSize()
+              .background(
+                Brush.verticalGradient(
+                  0f to Color.Transparent,
+                  0.4f to MaterialTheme.colors.background.copy(alpha = 0.9f),
+                  0.5f to MaterialTheme.colors.background
+                )
               )
-            )
-        )
-      }
-        .first()
-        .measure(boxConstraints)
-
-      layout(constraints.maxWidth, height) {
-        textPlaceable.placeRelative(0, 0)
-        if (isCollapsed) {
-          boxPlaceable.placeRelative(0, height - boxPlaceable.height)
+              .layoutId("scrim")
+          )
         }
-        buttonPlaceable.placeRelative(
-          x = constraints.maxWidth / 2 - buttonPlaceable.width / 2,
-          y = height - buttonPlaceable.height
-        )
+        IconButton(
+          onClick = onClickToggle,
+          modifier = Modifier.layoutId("icon")
+        ) {
+          Icon(if (!isExpanded) Icons.Outlined.ExpandMore else Icons.Outlined.ExpandLess, null)
+        }
       }
     }
   )
