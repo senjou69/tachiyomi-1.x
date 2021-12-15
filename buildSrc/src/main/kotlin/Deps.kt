@@ -2,7 +2,7 @@
 object Deps {
 
   object kotlin {
-    const val version = "1.5.31"
+    const val version = "1.6.10"
     const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-common:$version"
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.3.1"
     const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
@@ -34,7 +34,7 @@ object Deps {
     object compose {
       const val activity = "androidx.activity:activity-compose:1.4.0"
       const val navigation = "androidx.navigation:navigation-compose:2.4.0-beta02"
-      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.0"
+      const val plugin = "org.jetbrains.compose:compose-gradle-plugin:1.0.1-rc2"
     }
 
     object lifecycle {
