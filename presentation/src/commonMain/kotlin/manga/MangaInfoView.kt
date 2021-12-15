@@ -17,7 +17,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,9 +60,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.SubcomposeLayout
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import tachiyomi.domain.manga.model.Manga
@@ -299,33 +301,17 @@ private fun MangaSummary(
   genres: List<String>,
   expandedSummary: Boolean
 ) {
-  // TODO(ghostbear): Add Constraint Layout
+  var (isExpandable, setIsExpandable) = remember { mutableStateOf(false) }
+
   Column {
-    Text(
+    MangaSummaryDescription(
       description,
-      modifier = Modifier
-        .clickable(
-          indication = null,
-          interactionSource = remember { MutableInteractionSource() },
-          onClick = onClickToggle
-        )
-        .padding(horizontal = 16.dp, vertical = 4.dp)
-        .fillMaxWidth(),
-      style = MaterialTheme.typography.body2,
-      color = LocalContentColor.current.copy(ContentAlpha.medium),
-      maxLines = if (expandedSummary) Int.MAX_VALUE else 3
+      isExpandable,
+      setIsExpandable,
+      expandedSummary,
+      onClickToggle
     )
-    // TODO(ghostbear): Add scrim for when summary is collapsed
-    IconButton(
-      onClick = onClickToggle,
-      modifier = Modifier.align(Alignment.CenterHorizontally)
-    ) {
-      Icon(
-        if (expandedSummary) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
-        null
-      )
-    }
-    if (expandedSummary) {
+    if (expandedSummary || !isExpandable) {
       FlowRow(
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
         mainAxisSpacing = 4.dp,
@@ -347,6 +333,99 @@ private fun MangaSummary(
     }
 
   }
+}
+
+private val TextLayoutResult.textHeight: Int
+  get() {
+    return multiParagraph.height.toInt()
+  }
+
+const val COLLAPSED_MAX_LINES = 3
+
+@Composable
+fun MangaSummaryDescription(
+  description: String,
+  isExpandable: Boolean,
+  setIsExpandable: (Boolean) -> Unit,
+  isExpanded: Boolean,
+  onClickToggle: () -> Unit
+) {
+  var collapseMaxHeight by remember { mutableStateOf(0) }
+
+  SubcomposeLayout(
+    modifier = Modifier
+      .clipToBounds()
+      .clickable(enabled = isExpandable, onClick = onClickToggle),
+    measurePolicy = { constraints ->
+      val isCollapsed = !isExpanded
+      val icon = if (isCollapsed) Icons.Outlined.ExpandMore else Icons.Outlined.ExpandLess
+      var slotId = 0
+
+      val textPlaceable = subcompose(slotId++) {
+        Text(
+          text = description,
+          modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+          onTextLayout = { layoutResult ->
+            setIsExpandable(layoutResult.lineCount > COLLAPSED_MAX_LINES)
+            collapseMaxHeight =
+              (layoutResult.textHeight / layoutResult.lineCount) * COLLAPSED_MAX_LINES
+          }
+        )
+      }
+        .first()
+        .measure(constraints)
+
+      if (!isExpandable) {
+        return@SubcomposeLayout layout(constraints.maxWidth, textPlaceable.height) {
+          textPlaceable.placeRelative(0, 0)
+        }
+      }
+
+      val buttonPlaceable = subcompose(slotId++) {
+        IconButton(
+          onClick = onClickToggle
+        ) {
+          Icon(icon, null)
+        }
+      }
+        .first()
+        .measure(constraints)
+
+      var height = if (isCollapsed) collapseMaxHeight else textPlaceable.height
+      height += if (isCollapsed) buttonPlaceable.height / 2 else buttonPlaceable.height
+
+      val boxConstraints = constraints.copy(
+        maxHeight = height / 2
+      )
+      val boxPlaceable = subcompose(slotId++) {
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .background(
+              Brush.verticalGradient(
+                0f to Color.Transparent,
+                0.4f to MaterialTheme.colors.background.copy(alpha = 0.9f),
+                0.5f to MaterialTheme.colors.background
+              )
+            )
+        )
+      }
+        .first()
+        .measure(boxConstraints)
+
+      layout(constraints.maxWidth, height) {
+        textPlaceable.placeRelative(0, 0)
+        if (isCollapsed) {
+          boxPlaceable.placeRelative(0, height - boxPlaceable.height)
+        }
+        buttonPlaceable.placeRelative(
+          x = constraints.maxWidth / 2 - buttonPlaceable.width / 2,
+          y = height - buttonPlaceable.height
+        )
+      }
+    }
+  )
 }
 
 @Composable
