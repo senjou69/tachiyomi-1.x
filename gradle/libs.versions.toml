@@ -16,7 +16,7 @@ sqldelight-android = { module = "com.squareup.sqldelight:android-driver", versio
 sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
 
 requerySqlite = "com.github.requery:sqlite-android:3.36.0"
-androidSqlite = "androidx.sqlite:sqlite-framework:2.2.0-alpha02"
+androidSqlite = "androidx.sqlite:sqlite-framework:2.3.0-alpha01"
 
 toothpick-runtime = { module = "com.github.stephanenicolas.toothpick:ktp", version.ref ="toothpick" }
 toothpick-smoothie = { module = "com.github.stephanenicolas.toothpick:smoothie", version.ref ="toothpick" }
