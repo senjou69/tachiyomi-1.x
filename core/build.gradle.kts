@@ -19,6 +19,7 @@ kotlin {
         api(kotlinx.datetime)
         api(kotlinx.serialization.json)
         api(libs.ktor.core)
+        api(libs.ktor.contentnegotiation)
         api(libs.ktor.serialization)
         api(libs.okio)
         api(libs.toothpick.runtime)
