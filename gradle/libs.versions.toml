@@ -4,9 +4,9 @@ toothpick = "3.1.0"
 ktor = "2.0.0"
 tinylog = "2.4.1"
 coil = "1.4.0"
-moko = "0.17.3"
-aboutLibraries = "10.0.0-b03"
-kotest = "4.6.4"
+moko = "0.19.0"
+aboutLibraries = "10.1.0"
+kotest = "5.2.3"
 
 [libraries]
 sqldelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sqldelight" }
@@ -47,7 +47,7 @@ aboutLibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", versi
 
 desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
-mockk = "io.mockk:mockk:1.12.1"
+mockk = "io.mockk:mockk:1.12.3"
 
 kotest-framework = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
@@ -57,7 +57,7 @@ tinylog = ["tinylog-impl", "tinylog-api"]
 kotest = ["kotest-framework", "kotest-assertions"]
 
 [plugins]
-gradleVersions = { id = "com.github.ben-manes.versions", version = "0.39.0" }
+gradleVersions = { id = "com.github.ben-manes.versions", version = "0.42.0" }
 ideaExt = { id = "org.jetbrains.gradle.plugin.idea-ext", version = "1.1" }
 
 
