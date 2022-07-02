@@ -4,7 +4,7 @@ toothpick = "3.1.0"
 ktor = "2.0.0"
 tinylog = "2.4.1"
 coil = "1.4.0"
-moko = "0.19.0"
+moko = "0.20.1"
 aboutLibraries = "10.1.0"
 kotest = "5.2.3"
 

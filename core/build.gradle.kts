@@ -51,6 +51,10 @@ dependencies {
   add("kapt", libs.toothpick.compiler)
 }
 
+android {
+  namespace = "tachiyomi.core"
+}
+
 afterEvaluate {
   configure<PublishingExtension> {
     publications.all {
